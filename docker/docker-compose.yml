@@ -1,0 +1,18 @@
+ volumes:
+  benefitsiq-sit:
+ services:
+   # this DB is for benefitsIQ
+  benefitsiq-sit-db:
+    image: postgres:15.17
+    volumes:
+      - benefitsiq-sit:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: benefitsIQ_user
+      POSTGRES_PASSWORD: benefitsIQ_password
+      POSTGRES_DB: benefitsiq-sit
+      ENCODING: = UTF8
+      LOCALE_PROVIDER: = libc
+      CONNECTION LIMIT: = -1
+      IS_TEMPLATE: = False;
+    ports:
+      - "5432:5432" # Useful if we only want to run the DB w/o other services 

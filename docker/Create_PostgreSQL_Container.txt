@@ -1,0 +1,14 @@
+Create PostgreSQL Container
+
+1. Copy docker-compose.yml to C:\Dev\benefitsIQ_docker_compose
+
+2. Start Docker Desktop
+
+3. Open terminal
+   a. cd C:\Dev\benefitsIQ_docker_compose
+   b. docker compose up
+   c. docker compose logs
+   d. Check for new containers in Docker Desktop
+      1. benefits_iq_docker_compose  
+         a. benefitsiq-sit
+  

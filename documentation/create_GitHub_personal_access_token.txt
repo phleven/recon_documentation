@@ -1,0 +1,55 @@
+GitHUb Create Personal Access Token 
+
+1. https://github.com/Deloitte-US/BenefitsIQ_Recon_POC
+
+2. In the upper-right corner of any page on GitHub, click your profile picture, then click  Settings.
+
+3. In the left sidebar, click Developer settings.
+
+4. In the left sidebar, under Personal access tokens, click Fine-grained tokens.
+
+5. Click Generate new token.
+
+6. Under Token name, enter a name for the token.
+
+7. Under Expiration, select an expiration for the token. Infinite lifetimes are allowed but may be blocked by a maximum lifetime
+   policy set by your organization or enterprise owner. For more information, 
+   See Enforcing a maximum lifetime policy for personal access tokens.
+
+8. Optionally, under Description, add a note to describe the purpose of the token.
+
+9. Under Resource owner, select a resource owner. The token will only be able to access resources owned by the 
+   selected resource owner. Organizations that you are a member of will not appear if the organization has blocked 
+   the use of fine-grained personal access tokens. For more information, see Setting a personal access token policy 
+   for your organization.
+
+10. Optionally, if the resource owner is an organization that requires approval for fine-grained personal access tokens, 
+    below the resource owner, in the box, enter a justification for the request.
+
+11. Under Repository access, select which repositories you want the token to access. You should choose the minimal repository 
+     access that meets your needs. Tokens always include read-only access to all public repositories on GitHub.
+
+12. If you selected Only select repositories in the previous step, under the Selected repositories dropdown, 
+    select the repositories that you want the token to access.
+
+13. Under Permissions, select which permissions to grant the token. Depending on which resource owner and which repository 
+    access you specified, there are repository, organization, and account permissions. 
+    You should choose the minimal permissions necessary for your needs.
+
+14. Click Generate token.
+
+15. Save your token somewhere safe.
+
+
+
+
+
+1. https://github.com/Deloitte-US/BenefitsIQ_Recon_POC
+
+2. In the upper-right corner of any page on GitHub, click your profile picture, then click  Settings.
+
+3. In the left sidebar, click Developer settings.
+
+4. In the left sidebar, under Personal access tokens, click Fine-grained tokens.
+
+
