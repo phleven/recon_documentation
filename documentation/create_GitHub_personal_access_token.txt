@@ -1,6 +1,9 @@
-GitHUb Create Personal Access Token 
+Create GitHUb Personal Access Token
+View GitHUb Personal Access Tokens
 
-1. https://github.com/Deloitte-US/BenefitsIQ_Recon_POC
+
+Create GitHUb Personal Access Token
+1. https://github.com/Deloitte-US/biq-ai-recon-service
 
 2. In the upper-right corner of any page on GitHub, click your profile picture, then click  Settings.
 
@@ -42,9 +45,8 @@ GitHUb Create Personal Access Token
 
 
 
-
-
-1. https://github.com/Deloitte-US/BenefitsIQ_Recon_POC
+View GitHUb Personal Access Tokens:
+1. https://github.com/Deloitte-US/biq-ai-recon-service
 
 2. In the upper-right corner of any page on GitHub, click your profile picture, then click  Settings.
 

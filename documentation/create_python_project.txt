@@ -1,0 +1,19 @@
+Create Python Project
+
+1. Install and configure PyDev
+
+2. Create a new Python project
+   a. Eclipse --> File --> New --> Project --> PyDEv --> PyDev Project
+      1. Project name = biq-ai-recon-service
+      2. Project contents
+         a. Uncheck Use default
+         b. Directory = C:\Users\phleven\git\biq-ai-recon-service
+   b. Project type = Python
+   c. Grammar Version = Same as interpreter
+   d. Interpreter
+      1. Please configure an interpreter before proceeding --> Choose from list --Select All --> OK
+   e. Check Add project directory to PYTHONPATH      
+   
+ 2. Right click on project (biq-ai-recon-service) --> New --> PyDev Module 
+    a. Name welcome
+       1. Module Main

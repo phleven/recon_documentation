@@ -1,26 +1,49 @@
+Create a new local GitHub repository
+Create a new Deloitte-US GitHub repository 
+Push existing local repository to remote repository
+Add Users to remote repository
 
-Create a new Deloitte GitHub Repository 
 
+
+Create a new local GitHub repository
+1. Open terminal
+   a. cd C:\Users\phleven\git\biq-ai-recon-service
+   b. git init -b main
+   
+   
+   
+   
+ Create a new Deloitte-US remote repository
 1. https://github.com/Deloitte-US
 
 2. Repositories --> New
    a. Owner = Deloitte-US
-   b. Repository Name = benefitsIQRecon
-   c. Description = BenefitsIQ Recon POC
+   b. Repository Name = biq-ai-recon-service
+   c. Description = BenefitsIQ Recon service
 
    d. Configuration
       1. Visibility = Private
       2. Start with template = No template
-      3. Add README = On
-      4. Add .gitignore = Python
+      3. Add README = Off
+      4. Add .gitignore = No .gitignore
       5. Add license = No license
       6. Connect GitHub Apps
          a. Google Cloud Build
          b. Azure Boards
-
-3. Add Users
+         
+         
+         
+Push existing local repository to remote repository
+1. Open terminal
+   a. cd C:\Users\phleven\git\biq-ai-recon-service
+   b. git add .
+   c. git commit -m "Initial commit."
+   
+   d. git remote add origin https://github.com/Deloitte-US/biq-ai-recon-service.git 
+   e. git branch -M main
+   
+   
+    
+Add Users to remote repository
+1. https://github.com/Deloitte-US/biq-ai-recon-service
    a. Settings --> Team and member roles --> Manage Access --> Add people
-
-Deloitte GitHub support 
-deloittegithub@deloitte.com
- 
