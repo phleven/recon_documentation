@@ -1,2 +1,0 @@
-https://github.com/Deloitte-US/biq-ai-recon-service
-https://github.com/Deloitte-US/biq-ai-recon-service.git

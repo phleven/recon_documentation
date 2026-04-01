@@ -7,7 +7,7 @@ Add Users to remote repository
 
 Create a new local GitHub repository
 1. Open terminal
-   a. cd C:\Users\phleven\git\biq-ai-recon-service
+   a. cd C:\Dev\biq-ai-recon\biq-ai-recon-service
    b. git init -b main
    
    
