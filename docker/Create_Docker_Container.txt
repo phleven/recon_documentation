@@ -6,7 +6,7 @@ Create PostgreSQL Container
 
 3. Open terminal
    a. cd C:\Dev\biq-ai-recon-schema_docker_compose
-   b. docker compose up
+   b. docker compose up -d
    c. docker compose logs
    d. Check for new containers in Docker Desktop
       1. biq-ai-recon-schema_docker_compose  

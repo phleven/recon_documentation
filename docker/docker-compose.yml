@@ -1,14 +1,14 @@
 services:
 
   postgres:
-    image: postgres:15
+    image: postgres:15.17
     container_name: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: recon
+      POSTGRES_USER: recon
+      POSTGRES_PASSWORD: recon
+      POSTGRES_DB: recon benefitsiq-dev
     ports:
-      - "5432:5432"
+      - "5433:5432"
     command:
       - postgres
       - -c
@@ -46,7 +46,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
   kafka-connect:
-    image: debezium/connect:2.5
+    image: quay.io/debezium/connect:2.7.0.Final
     container_name: kafka-connect
     depends_on:
       - kafka

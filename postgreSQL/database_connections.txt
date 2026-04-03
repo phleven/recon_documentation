@@ -1,0 +1,42 @@
+Database Connections
+
+
+
+PostgreSQL
+local
+1. DBeaver --> Database --> New DataBase Connection
+   a. PostgreSQL
+      1. Connected by Host
+      2. Host = localhost
+      3. Port = 5433
+      4. Database = benefitsiq-dev
+      5. Authentication = Username/password
+      6. Username = recon
+      7. Password = recon
+      8. Check Save password
+
+dev      
+2. DBeaver --> Database --> New DataBase Connection
+   a. PostgreSQL
+      1. Connected by Host
+      2. Host = be-iq-npd-rds.cal882m02hcx.us-east-1.rds.amazonaws.com
+      3. Port = 5432
+      4. Database = benefitsiq-dev
+      5. Authentication = Username/password
+      6. Username = phleven
+      7. Password = <password>
+      8. Check Save password
+      
+      
+      
+SQLServer
+1. DBeaver --> Database --> New DataBase Connection
+   a. SQL Server
+      1. Connected by Host
+      2. Host = 10.128.94.134
+      3. Port = 1433
+      4. Database = master
+      5. Authentication = Username/password
+      6. Username = phleven
+      7. Password = <password>
+      8. Check Save password

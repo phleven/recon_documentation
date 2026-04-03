@@ -1,0 +1,26 @@
+Create GitLab Personal Access Token
+View GitHUb Personal Access Tokens
+
+
+Create GitLab Personal Access Token
+1. https://sts.aiee-cfg.com/adfs/ls/idpinitiatedsignon?
+   a. Sign in to one of the following sites = AIEE-Gitlab
+      phleven@aiee-cfg.com
+      TIFB!55??iltz!6?1c#
+   b. Repo = biq-analytics-recon-schema
+
+
+2. In the left sidebar, click your avatar --> Edit Profile --> Access Tokens --> Add new token.
+   a. Token name = biq-analytics-recon-schema token
+   b. Description biq-analytics-recon-schema token
+   c. Expirartion date = 2027-04-02
+   d. Select scopes
+      1. Check all   
+      
+phleven@BENEFITSIQ.ORG 
+
+Personal Access Token     
+glpat-ThXXcjh8vLfYKCH9n-VOQW86MQp1OjlvCA.01.0y11uaxsl
+
+
+

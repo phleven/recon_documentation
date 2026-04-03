@@ -1,0 +1,98 @@
+Create a new remote GitLab feature branch 
+Create a new local branch from an existing remote Gitlab feature branch
+
+
+
+Create a new remote GitLab feature branch
+1. Open Global Protect
+   a.Portal = gpvpn1.aiee-cfg.com
+     phleven@aiee-cfg.com
+     TIFB!55??iltz!6?1c#
+
+2. GitLab
+   a. https://sts.aiee-cfg.com/adfs/ls/idpinitiatedsignon?
+   
+   b. Sign in to one of the following sites = AIEE-Gitlab
+      phleven@aiee-cfg.com
+      TIFB!55??iltz!6?1c#
+      
+   c. Repo = biq-analytics-recon-schema
+   
+   d. In the left sidebar, click Code --> Branches New Branch
+      1. Branch name = postgreSQL-Flyway
+      2. Create from = develop
+      3. Press Create Branch
+      
+      
+      
+Create a new local branch from an existing remote Gitlab feature branch
+1. Eclipse --> Git Repositories --> Clone Git Repository --> Clone URI
+    a. URL = https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-ai/biq-analytics-recon-schema.git
+    b. User = phleven@BENEFITSIQ.ORG
+    c. Password (personal access token) = 
+    d. Branch Selection = Select All
+    d. Directory = C:\Users\phleven\git\biq-analytics-recon-schema
+    e. Initial branch = postgreSQL-Flyway
+    f. Remote name = origin
+ 
+ 2. Eclipse --> Git Repositories --> biq-analytics-recon-schema [postgreSQL-Flyway] --> right click on Working Tree
+    a. Import Projects 
+ 
+
+
+
+
+
+
+
+
+
+Create a new local GitHub repository
+Create a new Deloitte-US GitHub repository 
+Push existing local repository to remote repository
+Add Users to remote repository
+
+
+
+Create a new local GitHub repository
+1. Open terminal
+   a. cd C:\Dev\biq-ai-recon\biq-ai-recon-service
+   b. git init -b main
+   
+   
+   
+   
+ Create a new Deloitte-US remote repository
+1. https://github.com/Deloitte-US
+
+2. Repositories --> New
+   a. Owner = Deloitte-US
+   b. Repository Name = biq-ai-recon-service
+   c. Description = BenefitsIQ Recon service
+
+   d. Configuration
+      1. Visibility = Private
+      2. Start with template = No template
+      3. Add README = Off
+      4. Add .gitignore = No .gitignore
+      5. Add license = No license
+      6. Connect GitHub Apps
+         a. Google Cloud Build
+         b. Azure Boards
+         
+         
+         
+Push existing local repository to remote repository
+1. Open terminal
+   a. cd C:\Users\phleven\git\biq-ai-recon-service
+   b. git add .
+   c. git commit -m "Initial commit."
+   
+   d. git remote add origin https://github.com/Deloitte-US/biq-ai-recon-service.git 
+   e. git branch -M main
+   
+   
+    
+Add Users to remote repository
+1. https://github.com/Deloitte-US/biq-ai-recon-service
+   a. Settings --> Team and member roles --> Manage Access --> Add people

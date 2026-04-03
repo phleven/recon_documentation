@@ -1,0 +1,2 @@
+https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-ai/biq-analytics-recon-schema
+https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-ai/biq-analytics-recon-schema.git

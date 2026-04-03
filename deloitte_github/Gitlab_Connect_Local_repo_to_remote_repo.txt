@@ -1,5 +1,0 @@
-1. Open terminal
-   a. cd existing_repo
-   b. git remote add origin https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-ai/biq-analytics-recon-schema.git
-   c. git branch -M main
-   d. git push -uf origin main
