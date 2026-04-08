@@ -29,7 +29,7 @@ Create a new local branch from an existing remote Gitlab feature branch
 1. Eclipse --> Git Repositories --> Clone Git Repository --> Clone URI
     a. URL = https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-ai/biq-analytics-recon-schema.git
     b. User = phleven@BENEFITSIQ.ORG
-    c. Password (personal access token) = 
+    c. Password (personal access token) = glpat-ThXXcjh8vLfYKCH9n-VOQW86MQp1OjlvCA.01.0y11uaxsl
     d. Branch Selection = Select All
     d. Directory = C:\Users\phleven\git\biq-analytics-recon-schema
     e. Initial branch = postgreSQL-Flyway

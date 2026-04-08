@@ -1,0 +1,17 @@
+Build application with Gradle
+Run application with Gradle
+
+
+
+Build application with Gradle
+1. Open terminal
+   a. cd C:\Users\phleven\git\biq-analytics-recon-schema
+   b. .\gradlew clean build
+   
+   
+   
+Run application with Gradle
+1. Open terminal
+   a. cd C:\Users\phleven\git\biq-analytics-recon-schema
+   b. .\gradlew bootRun --args='--spring.profiles.active=dev'   
+ 
