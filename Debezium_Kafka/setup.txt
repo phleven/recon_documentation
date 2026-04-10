@@ -1,0 +1,37 @@
+Install PostgreSQL
+Install Kafka
+Install Debezium PostgreSQL Connector
+
+
+Install PostgreSQL
+1. Run postgresql-15.17-2-windows-x64.exe
+   a. Installation directory = C:\Program Files\PostgreSQL\15
+   b. Select all components
+   c. Data directory = C:\Program Files\PostgreSQL\15\data
+   d. Password for postgres= phil55.cindy61
+   e. Port = 5432
+   f. Locale = DEFAULT
+   
+2. Add c:\program files\postgresql\15\bin to path
+
+
+ 
+
+Insatll Kafka
+1. Unzip kafka_2.13-4.2.0.tgz to C:\
+
+Configure Kafka
+1. Open terminal
+   a. Generate a cluster UUID
+      1. .\bin\windows\kafka-storage.bat random-uuid
+      2. .\bin\windows\kafka-storage.bat format --standalone -t _3-7yGYST8qFi52DQHdCiA -c .\config\server.properties 
+      
+   b. Start Kafka
+      1. .\bin\windows\kafka-server-start.bat .\config\server.properties 
+      
+      
+      
+Install Debezium PostgreSQL Connector 
+1. md \plugins\debezium-postgres 
+2. Unzip debezium-connector-postgres-3.5.0.Final-plugin.tar.gz to \plugins\debezium-postgres 
+3. Copy connect-standalone-local.properties and Debezium-poc-postgres.properties to C:\kafka_2.13-4.2.0\config\

@@ -1,0 +1,6 @@
+set search_path = recon;
+CREATE ROLE debezium WITH REPLICATION LOGIN PASSWORD 'debezium_password';
+GRANT CONNECT ON DATABASE "benefitsiq-dev" TO debezium;
+GRANT USAGE ON SCHEMA recon TO debezium;
+GRANT SELECT ON ALL TABLES IN SCHEMA recon TO debezium;
+ALTER DEFAULT PRIVILEGES IN SCHEMA recon GRANT SELECT ON TABLES TO debezium;
