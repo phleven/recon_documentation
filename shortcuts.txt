@@ -1,0 +1,11 @@
+Gitlab
+https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-ai
+User = phleven@BENEFITSIQ.ORG
+Password (personal access token) = glpat-ThXXcjh8vLfYKCH9n-VOQW86MQp1OjlvCA.01.0y11uaxsl
+
+
+Remove local branch
+git branch -d <local-branch-name>
+
+Remove remote branch
+git push origin --delete <branch_name>

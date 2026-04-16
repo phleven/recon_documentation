@@ -1,0 +1,77 @@
+See commits (including where branch was cloned from)
+
+Create new local feature branch from existing local feature branch
+Merge changes from parent local feature branch into dependent local feature branch
+-- OR --
+Update local feature branch from existing remote feature branch   
+Create a new local feature branch from existing remote feature branch
+
+Reset local feature branch to previous commit
+
+
+
+See commits (including where branch was cloned from)
+1. Open terminal
+   a. git log --oneline -n 15 --graph
+   
+   
+   
+Create new local feature branch from existing local feature branch: <=====
+1. Open terminal
+   a. cd <existing local feature branch>
+   b. git pull
+   c. git switch -c <new local feature branch>
+   d. git push --set-upstream origin <new local feature branch>
+   
+   
+   
+Merge changes from parent local feature branch into dependent local feature branch:  
+1. Open terminal
+   a. cd <new local feature branch>
+   b. git merge <existing local feature branch>
+   
+-- OR --
+
+Update local feature branch from existing remote feature branch: <=====
+1. Open terminal 
+   a. cd C:\Users\phleven\git\elrrserviceentities
+   
+   b. git switch main
+   c. git pull
+   
+   d. git switch elrr-rules
+   e. git merge main 
+   f. git push
+   
+   
+   
+Create a new local feature branch from existing remote feature branch (if no remote repository exists locally):
+1. Open terminal 
+   a. cd C:\Users\phleven\git\elrr
+   b. git remote set-branches --add origin main
+   c. git fetch origin
+   d. git checkout --track origin/main
+   e. git branch -a
+   
+Create a new local feature branch from existing remote feature branch (if remote repository exists locally): <=====
+1. Open terminal 
+   a. cd C:\Users\phleven\git\elrr
+   d. git checkout --track origin/dev-update-base
+   e. git branch -a
+   
+   
+   
+ 
+ Rename local feature branch:
+ 1. Open terminal 
+   a. cd C:\Users\phleven\git\elrrexternalservices
+   b. git switch <local branch to be renamed>
+   c. git branch -m <new Local branch name>
+ 
+ 
+ 
+ Reset local feature branch to previous commit
+ 1. Open terminal
+    a. cd C:\Users\phleven\git\elrrexternalservices
+    b. git reset --hard origin/elrr-rules  
+  

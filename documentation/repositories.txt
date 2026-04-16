@@ -1,7 +1,5 @@
 https://sts.aiee-cfg.com/adfs/ls/idpinitiatedsignon? <---
 
-https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-ai/biq-analytics-recon-schema
 https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-ai/biq-analytics-recon-schema.git
-
-https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-analytics/biq-analytics-recon-consumer
 https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-analytics/biq-analytics-recon-consumer.git
+https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-analytics/biq-analytics-recon-jobs.git
