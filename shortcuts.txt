@@ -9,3 +9,10 @@ git branch -d <local-branch-name>
 
 Remove remote branch
 git push origin --delete <branch_name>
+
+Remove outdated references locally (removes local references to branches that no longer exist on the remote)
+git fetch --prune
+
+Undo last local commit
+git reset --soft HEAD~1
+git reset --hard HEAD~1
