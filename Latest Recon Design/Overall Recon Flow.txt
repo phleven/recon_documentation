@@ -1,0 +1,31 @@
+┌──────────────────────────────────────────────────────────────────────────────────────────────┐
+│                        RECONCILIATION FLOW                                                                                  │
+├──────────────────────────────────────────────────────────────────────────────────────────────                                                |
+│                                                                                                                             │
+│  STEP 1: Snapshot Batch (INT-REC-MST-DATA-MLY-PRC)                                                                          │
+│  ─────────────────────────────────────────────────                                                          │
+│  • Reads PSHBS enrollment data (Active, cancelled, Disenrolled , Suspended) for last 7 years                                │
+│  • Creates snapshot records                                                                                                 │
+│  • Status: processing_status = 'P', matched_sw = NULL                                                                       │
+│                              ↓                                                                                              │
+│  STEP 2: Inbound Batch (INT-ENRL-RECON-IN)                                                                                  │
+│  ─────────────────────────────────────────                                                                    │
+│  • Reads MENR records (processing_status = 'P') for latest Recon Month                                                      │
+│  • Matches MENR ↔ Snapshot by SSN  Claim dob  Plan Code + Cov Start Date                                                    │
+│  • 1:1 Match    → Snapshot: matched_sw = 'Y', MENR: status = 'MI'                                                           │
+│  • Multi Match  → Snapshot by coverage end date                                                           				      │
+│  • No Match     → MENR: status = 'P' (unchanged)                                                                            │
+│                              ↓                                                                                              │
+│  STEP 3: NEW Batch (INT-SNAP-UNMATCH-REPROC)  ←                                                                             │
+│  ─────────────────────────────────────────────                                                               │
+│  • Reads unmatched snapshots (matched_sw = NULL or 'N' processing status P)                                                 │
+│  • Finds matching MENR recs for logical id with status = 'S' by SSN + Claim + dob + PlanCode + Cov Start Date+ cov end date │ 
+│  • 1:1 Match    → MENR: 'S' → 'P', Snapshot: matched_sw = 'Y'                                                               │
+│                              ↓                                                                                              │
+│  STEP 4: Outbound Batch (INT-REC-OUT-MLY-PRC)                                                                               │
+│  ─────────────────────────────────────────────                                                               │
+│  • MENR Step: Creates RCNO with MENR + PSHBS data                                                                           │
+│  • PSHBS Step: Creates RCNO with PSHBS only (unmatched)                                                                     │
+│  • Final Status: MENR = 'S', Snapshot = 'I'                                                                                 │
+│                                                                                                                             │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
