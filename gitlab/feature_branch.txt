@@ -7,6 +7,7 @@ Update local feature branch from existing remote feature branch
 Create a new local feature branch from existing remote feature branch
 
 Reset local feature branch to previous commit
+Remove outdated references locally (removes local references to branches that no longer exist on the remote)
 
 
 
@@ -74,4 +75,12 @@ Create a new local feature branch from existing remote feature branch (if remote
  1. Open terminal
     a. cd C:\Users\phleven\git\elrrexternalservices
     b. git reset --hard origin/elrr-rules  
+    
+    
+    
+    
+Remove outdated references locally (removes local references to branches that no longer exist on the remote)
+1. Open terminal
+   a. git fetch --prune
+
   

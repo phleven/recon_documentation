@@ -1,0 +1,60 @@
+1. Drive inbound batch using distinct Member ssn+dob
+2. Fetch all menr record using ssn and dob
+3. Iterate through each MENR to match associated snapshot records.
+ 
+Logic to fetch snapshot records -
+	While iterating grp of menr record(3) fetch snapshot using
+		- ssn recon month and carrier name if records found continue with matching logic
+		- if no records using ssn check with claim id
+		- if no records with claim id then fetch using first name last name and dob
+ 
+Matching logic - 
+Step 1 — Member SSN           [NO CHANGE]
+  if size == 1 → MATCH ✓
+  if size  > 1 → Step 2
+  if size == 0 → fallback to Claim lookup (existing behaviour)
+ 
+Step 2 — Claim Number         [NO CHANGE]
+  filter pool by claimNum == menr.claimId
+  if 0 → retain pre-filter; Step 3
+  if 1 → MATCH ✓
+  if >1 → Step 3
+ 
+Step 3 — First Name/Last Name/DOB   [NO CHANGE]
+  filter by firstName + lastName + DOB
+  if 0 → retain pre-filter; Step 4
+  if 1 → MATCH ✓
+  if >1 → Step 4  ← previously stopped here; now continues
+ 
+Step 4 — Plan Code            [NEW]
+  filter by snapshot.planCd == menr.enrollmentCd
+  if 0 → retain pre-filter; Step 5
+  if 1 → MATCH ✓
+  if >1 → Step 5
+ 
+Step 5 — Coverage Start Date  [NEW]
+  filter by snapshot.covStrDt == menr.coverageStartDt
+  if 0 → retain pre-filter; Step 6
+  if 1 → MATCH ✓
+  if >1 → Step 6
+ 
+Step 6 — Coverage End Date    [NEW]
+  filter by snapshot.covEndDt == menr.coverageEndDt
+  if 0 → retain pre-filter
+  if 1 → MATCH ✓
+  if >1 → still multiple:
+    → set mulMatchSw='Y' on ALL remaining candidates
+    → pick candidate with MAX seq_num (DESC order, highest id)  ← HC-20946 unchanged
+    → set mul_match_sw='Y', multipleMatchSwitch='Y' on MENR
+    → MATCH ✓ with mul_match_sw=Y
+ 
+On MATCH (any step):
+  snapshot.matchedSw     = 'Y'
+  snapshot.subscrId      = menr.subscriberId
+  snapshot.mbrId         = menr.memberId
+  menr.processingStatus  = 'MI'
+  menr.snapSequenceNum   = snapshot.id  (max id in mul-match case)
+  remove snapshot from PSHBS pool
+ 
+On NO MATCH (pool empty after all fallbacks):
+  menr.snapSequenceNum   = null  (status stays 'P')

@@ -1,0 +1,1 @@
+SHOW max_replication_slots;

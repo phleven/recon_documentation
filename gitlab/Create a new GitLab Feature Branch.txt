@@ -1,5 +1,9 @@
 Create a new remote GitLab feature branch 
 Create a new local branch from an existing remote Gitlab feature branch
+Create a new local GitHub repository
+Create a new Deloitte-US GitHub repository 
+Push existing local repository to remote repository
+Add Users to remote repository
 
 
 
@@ -37,20 +41,6 @@ Create a new local branch from an existing remote Gitlab feature branch
  
  2. Eclipse --> Git Repositories --> biq-analytics-recon-schema [postgreSQL-Flyway] --> right click on Working Tree
     a. Import Projects 
- 
-
-
-
-
-
-
-
-
-
-Create a new local GitHub repository
-Create a new Deloitte-US GitHub repository 
-Push existing local repository to remote repository
-Add Users to remote repository
 
 
 
