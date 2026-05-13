@@ -1,0 +1,402 @@
+-- =============================================================================
+-- SOURCE QUERY: Complete query for interfaces.int_recon_mly_snapshot
+-- Includes: ReconMasterDataConfig.java getSQL() + ReconMasterDataServiceImpl.getPersonDetails()
+-- Target Table  : interfaces.int_recon_mly_snapshot
+-- Parameters    : p_recon_date (DATE, e.g. '2025-03-01')
+--                 p_recon_month (VARCHAR(6), e.g. '202503')
+--                 p_lookback_years (INT, default 7)
+--                 p_carrier_list (VARCHAR, e.g. '''BCBS'',''AETNA''')
+--                 p_batch_run_id (BIGINT)
+-- 
+-- NOTE: This query assumes interfaces._snapshot_latest_plan_enrt temp table
+--       is already created by the Java tasklet (latestSnapshotPlan)
+--
+-- ARCHITECTURE: 
+--   1. base_data CTE: Combines Active + Historical base fields (matches Java query)
+--   2. Final SELECT: Enriches with phone, email, addresses (like Java getPersonDetails())
+-- =============================================================================
+
+WITH 
+-- =============================================================================
+-- BASE DATA CTE: 22 fields matching Java's activeApplnQuery + historicalApplnQuery
+-- This CTE handles the UNION of Active (SMT/ACT) + Historical (DEN_INI/CNC/SUSP)
+-- =============================================================================
+base_data AS (
+    -- =========================================================================
+    -- PART 1: Active applications (status SMT, enrollment ACT)
+    -- =========================================================================
+    SELECT 
+        pm.person_membership_id,
+        pm.person_id,
+        a.appln_id,
+        pm.is_primary_application_code,
+        a.logcl_appln_id_tx,
+        pn.first_name,
+        pn.middle_name,
+        pn.last_name,
+        paa.ssn_tx,
+        paa.csa_csf_num,
+        paa.birth_date,
+        rd1.reference_code AS member_type_code,
+        latest_pepma.enrt_cd,
+        latest_pepma.member_cov_start_dt,
+        latest_pepma.member_cov_end_dt,
+        paa.itprwy_code,
+        latest_pepma.plan_enrt_id,
+        latest_pepma.issuer_assigned_member_id,
+        latest_pepma.issuer_assigned_subscriber_id,
+        latest_pepma.carrier_name,
+        pe1.organization_code,
+        paa.gender_code
+    FROM hbe.appln a
+    INNER JOIN person_management.person_mbrsh pm ON a.appln_id = pm.application_id
+    INNER JOIN interfaces._snapshot_latest_plan_enrt latest_pepma ON pm.person_membership_id = latest_pepma.person_mbrsh_id
+    LEFT JOIN person_management.person_mbrsh_person_name_ac pmpna ON pmpna.person_membership_id = pm.person_membership_id
+    LEFT JOIN person_management.person_name pn ON pn.person_name_id = pmpna.person_name_id
+    LEFT JOIN person_management.person_mbrsh_person_aa_ac pmpa ON pmpa.person_membership_id = pm.person_membership_id
+    LEFT JOIN person_management.person_addl_attr paa ON paa.person_additional_attribute_id = pmpa.person_additional_attribute_id
+    LEFT JOIN person_management.person_organization_association pe1 ON pe1.person_membership_id = pm.person_membership_id
+    LEFT JOIN admin_pglogical.reference_data rd1 ON rd1.reference_data_id = pe1.member_type
+    LEFT JOIN admin_pglogical.reference_data rd ON rd.reference_code = 'YES'
+    WHERE a.appln_status_cd IN (
+        SELECT reference_data_id FROM admin_pglogical.reference_data rd 
+        WHERE rd.effective_end_date IS NULL AND rd.reference_code = 'SMT' AND rd.reference_type = 'ApplicationStatus'
+    )
+    AND a.appln_rtrd_cd IS NULL
+    AND rd.reference_data_id = pm.is_cover_required_code
+    AND pmpa.effective_end_date IS NULL
+    AND rd.effective_end_date IS NULL
+    AND rd1.effective_end_date IS NULL
+    AND latest_pepma.member_enrt_status_cd IN (
+        SELECT reference_data_id FROM admin_pglogical.reference_data rd 
+        WHERE rd.effective_end_date IS NULL AND rd.reference_code = 'ACT' AND reference_type = 'EnrollmentStatus'
+    )
+    AND (latest_pepma.member_cov_end_dt IS NULL OR DATE(latest_pepma.member_cov_end_dt) >= (DATE(p_recon_date) - INTERVAL '7 years')::date)
+    AND (latest_pepma.member_cov_end_dt IS NULL OR latest_pepma.member_cov_end_dt >= latest_pepma.member_cov_start_dt)
+    AND latest_pepma.carrier_name IN (p_carrier_list)
+
+    UNION
+
+    -- =========================================================================
+    -- PART 2: Historical data (DEN_INI, CNC, SUSP) with deduplication
+    -- =========================================================================
+    SELECT 
+        person_membership_id, person_id, appln_id, is_primary_application_code, logcl_appln_id_tx,
+        first_name, middle_name, last_name, ssn_tx, csa_csf_num, birth_date, member_type_code,
+        enrt_cd, member_cov_start_dt, member_cov_end_dt, itprwy_code, plan_enrt_id,
+        issuer_assigned_member_id, issuer_assigned_subscriber_id, carrier_name, organization_code, gender_code
+    FROM (
+        SELECT *, 
+               ROW_NUMBER() OVER (PARTITION BY person_id, enrt_cd, member_cov_start_dt, member_cov_end_dt ORDER BY appln_id DESC) AS rn
+        FROM (
+            -- Part A: Historical from person_management schema
+            SELECT 
+                pm.person_membership_id,
+                pm.person_id,
+                a.appln_id,
+                pm.is_primary_application_code,
+                a.logcl_appln_id_tx,
+                pn.first_name,
+                pn.middle_name,
+                pn.last_name,
+                paa.ssn_tx,
+                paa.csa_csf_num,
+                paa.birth_date,
+                rd1.reference_code AS member_type_code,
+                latest_pepma.enrt_cd,
+                latest_pepma.member_cov_start_dt,
+                latest_pepma.member_cov_end_dt,
+                paa.itprwy_code,
+                latest_pepma.plan_enrt_id,
+                latest_pepma.issuer_assigned_member_id,
+                latest_pepma.issuer_assigned_subscriber_id,
+                latest_pepma.carrier_name,
+                pe1.organization_code,
+                paa.gender_code
+            FROM hbe.appln a
+            INNER JOIN person_management.person_mbrsh pm ON a.appln_id = pm.application_id
+            INNER JOIN interfaces._snapshot_latest_plan_enrt latest_pepma ON pm.person_membership_id = latest_pepma.person_mbrsh_id
+            LEFT JOIN person_management.person_mbrsh_person_name_ac pmpna ON pmpna.person_membership_id = pm.person_membership_id
+            LEFT JOIN person_management.person_name pn ON pn.person_name_id = pmpna.person_name_id
+            LEFT JOIN person_management.person_mbrsh_person_aa_ac pmpa ON pmpa.person_membership_id = pm.person_membership_id
+            LEFT JOIN person_management.person_addl_attr paa ON paa.person_additional_attribute_id = pmpa.person_additional_attribute_id
+            LEFT JOIN person_management.person_organization_association pe1 ON pe1.person_membership_id = pm.person_membership_id
+            LEFT JOIN admin_pglogical.reference_data rd1 ON rd1.reference_data_id = pe1.member_type
+            LEFT JOIN admin_pglogical.reference_data rd ON rd.reference_code = 'YES'
+            WHERE rd.reference_data_id = pm.is_cover_required_code
+              AND pmpa.effective_end_date IS NULL
+              AND rd.effective_end_date IS NULL
+              AND rd1.effective_end_date IS NULL
+              AND latest_pepma.member_enrt_status_cd IN (
+                  SELECT reference_data_id FROM admin_pglogical.reference_data rd 
+                  WHERE rd.effective_end_date IS NULL AND rd.reference_code IN ('DEN_INI','CNC','SUSP') AND reference_type = 'EnrollmentStatus'
+              )
+              AND (latest_pepma.member_cov_end_dt IS NULL OR DATE(latest_pepma.member_cov_end_dt) >= (DATE(p_recon_date) - INTERVAL '7 years')::date)
+              AND (latest_pepma.member_cov_end_dt IS NULL OR latest_pepma.member_cov_end_dt >= latest_pepma.member_cov_start_dt)
+              AND latest_pepma.carrier_name IN (p_carrier_list)
+
+            UNION ALL
+
+            -- Part B: Historical from hbe schema (legacy)
+            SELECT 
+                pm.person_mbrsh_id AS person_membership_id,
+                pm.person_id,
+                a.appln_id,
+                pm.is_prim_appl_cd AS is_primary_application_code,
+                a.logcl_appln_id_tx,
+                pn.first_na AS first_name,
+                pn.middle_na AS middle_name,
+                pn.last_na AS last_name,
+                paa.ssn_tx,
+                paa.csa_csf_num,
+                paa.dob_dt AS birth_date,
+                rd1.reference_code AS member_type_code,
+                latest_pepma.enrt_cd,
+                latest_pepma.member_cov_start_dt,
+                latest_pepma.member_cov_end_dt,
+                paa.itprwy_cd AS itprwy_code,
+                latest_pepma.plan_enrt_id,
+                latest_pepma.issuer_assigned_member_id,
+                latest_pepma.issuer_assigned_subscriber_id,
+                latest_pepma.carrier_name,
+                pe1.payroll_office AS organization_code,
+                paa.gender_cd AS gender_code
+            FROM hbe.appln a
+            INNER JOIN hbe.person_mbrsh pm ON a.appln_id = pm.appln_id
+            INNER JOIN interfaces._snapshot_latest_plan_enrt latest_pepma ON pm.person_mbrsh_id = latest_pepma.person_mbrsh_id
+            LEFT JOIN hbe.person_mbrsh_person_name_ac pmpna ON pmpna.person_mbrsh_id = pm.person_mbrsh_id
+            LEFT JOIN hbe.person_name pn ON pn.person_name_id = pmpna.person_name_id
+            LEFT JOIN hbe.person_mbrsh_person_aa_ac pmpa ON pmpa.person_mbrsh_id = pm.person_mbrsh_id
+            LEFT JOIN hbe.person_addl_attr paa ON paa.person_addl_attr_id = pmpa.person_addl_attr_id
+            LEFT JOIN hbe.person_employment pe1 ON pe1.person_mbrsh_id = pm.person_mbrsh_id
+            LEFT JOIN admin_pglogical.reference_data rd1 ON rd1.reference_data_id = pe1.member_type
+            LEFT JOIN admin_pglogical.reference_data rd ON rd.reference_code = 'YES'
+            WHERE rd.reference_data_id = pm.is_cov_reqd_cd
+              AND pmpa.effv_end_dt IS NULL
+              AND rd.effective_end_date IS NULL
+              AND rd1.effective_end_date IS NULL
+              AND latest_pepma.member_enrt_status_cd IN (
+                  SELECT reference_data_id FROM admin_pglogical.reference_data rd 
+                  WHERE rd.effective_end_date IS NULL AND rd.reference_code IN ('DEN_INI','CNC','SUSP') AND reference_type = 'EnrollmentStatus'
+              )
+              AND (latest_pepma.member_cov_end_dt IS NULL OR DATE(latest_pepma.member_cov_end_dt) >= (DATE(p_recon_date) - INTERVAL '7 years')::date)
+              AND (latest_pepma.member_cov_end_dt IS NULL OR latest_pepma.member_cov_end_dt >= latest_pepma.member_cov_start_dt)
+              AND latest_pepma.carrier_name IN (p_carrier_list)
+        ) AS combined_historical
+    ) AS deduped WHERE rn = 1
+)
+
+-- =============================================================================
+-- FINAL SELECT: Enrich base_data with phone, email, addresses, reference translations
+-- This mirrors Java's getPersonDetails() method
+-- =============================================================================
+SELECT 
+    -- 1-14: Basic person/enrollment fields
+    CAST(p_recon_month AS varchar(6)) AS recon_month,
+    b.appln_id,
+    b.logcl_appln_id_tx AS logical_id,
+    b.issuer_assigned_subscriber_id AS subscr_id,
+    b.issuer_assigned_member_id AS mbr_id,
+    LEFT(b.first_name, 30) AS first_na,
+    LEFT(b.middle_name, 30) AS middle_na,
+    LEFT(b.last_name, 30) AS last_na,
+    CAST(b.birth_date AS date) AS birth_dt,
+    CASE WHEN rd_primary.reference_code = 'YES' THEN b.ssn_tx ELSE subscr_ssn.ssn_tx END AS subscr_ssn_num,
+    b.ssn_tx AS mbr_ssn_num,
+    b.csa_csf_num AS claim_num,
+    b.member_type_code AS member_type,
+    b.enrt_cd AS plan_cd,
+    
+    -- 15-18: Match flags (NULL for new records)
+    CAST(NULL AS varchar(1)) AS matched_sw,
+    CAST(NULL AS varchar(1)) AS mapped_sw,
+    CAST(NULL AS varchar(1)) AS mul_match_sw,
+    CAST(NULL AS text) AS comments,
+    
+    -- 19-21: Dates
+    current_date AS crtd_dt,
+    CAST(b.member_cov_start_dt AS date) AS cov_str_dt,
+    CAST(b.member_cov_end_dt AS date) AS cov_end_dt,
+    
+    -- 22-30: Contact info (phone, email, address)
+    phone.phone_number AS phone_num,
+    email.email_address AS email,
+    mail_addr.adr_str_1,
+    mail_addr.adr_str_2,
+    mail_addr.adr_str_3,
+    mail_addr.city_na,
+    mail_addr.state_cd,
+    mail_addr.zip_code,
+    mail_addr.ctry_cd,
+    
+    -- 31-36: Status fields
+    CASE WHEN rd_primary.reference_code = 'YES' THEN 'Y' ELSE 'N' END AS is_primary,
+    b.person_membership_id AS person_mbrsh_id,
+    'P' AS processing_status,
+    b.carrier_name,
+    CAST(p_batch_run_id AS bigint) AS batch_run_id,
+    CAST(NULL AS varchar) AS error_cd,
+    
+    -- 37-40: Audit fields
+    'INT-REC-MST-DATA-MLY-PRC' AS created_by,
+    now() AS created_dt,
+    'INT-REC-MST-DATA-MLY-PRC' AS updated_by,
+    now() AS updated_dt,
+    
+    -- 41-44: Additional fields
+    ird_payroll.reference_code AS payroll_office_number,
+    CASE WHEN rd_primary.reference_code = 'YES' THEN '18' ELSE ird_reln.reference_code END AS relationship_cd,
+    CAST(NULL AS date) AS extnd_cov_end_dt,
+    COALESCE(ird_gender.reference_code, 'U') AS sex_cd,
+    
+    -- 45-51: Home address
+    home_addr.home_adr_str_1,
+    home_addr.home_adr_str_2,
+    home_addr.home_adr_str_3,
+    home_addr.home_city_na,
+    home_addr.home_state_cd,
+    home_addr.home_zip_code,
+    home_addr.home_ctry_cd
+
+FROM base_data b
+
+-- IS_PRIMARY CHECK
+LEFT JOIN admin_pglogical.reference_data rd_primary
+    ON rd_primary.reference_data_id = b.is_primary_application_code
+   AND rd_primary.effective_end_date IS NULL
+
+-- SUBSCRIBER SSN (for dependents - get primary member's SSN)
+LEFT JOIN LATERAL (
+    SELECT paa_p.ssn_tx
+    FROM person_management.person_mbrsh pm_p
+    INNER JOIN admin_pglogical.reference_data rd_yes 
+        ON rd_yes.reference_code = 'YES' 
+       AND rd_yes.effective_end_date IS NULL
+       AND pm_p.is_primary_application_code = rd_yes.reference_data_id
+    INNER JOIN person_management.person_mbrsh_person_aa_ac pmpa_p 
+        ON pmpa_p.person_membership_id = pm_p.person_membership_id
+       AND pmpa_p.effective_end_date IS NULL
+    INNER JOIN person_management.person_addl_attr paa_p 
+        ON paa_p.person_additional_attribute_id = pmpa_p.person_additional_attribute_id
+    WHERE pm_p.application_id = b.appln_id
+    LIMIT 1
+) subscr_ssn ON TRUE
+
+-- PHONE (HOME_PHONE, prefer primary - matches Java getAllByPersonMbrshId)
+LEFT JOIN LATERAL (
+    SELECT pp.phone_number
+    FROM person_management.person_mbrsh_person_phone_ac pmppa
+    INNER JOIN person_management.person_phone pp ON pp.person_phone_id = pmppa.person_phone_id
+    LEFT JOIN admin_pglogical.reference_data rd_home 
+        ON rd_home.reference_code = 'HOME_PHONE'
+    LEFT JOIN admin_pglogical.reference_data rd_yes 
+        ON rd_yes.reference_code = 'YES'
+    LEFT JOIN admin_pglogical.reference_data rd_no 
+        ON rd_no.reference_code = 'NO'
+    WHERE pmppa.person_membership_id = b.person_membership_id
+      AND pmppa.effective_end_date IS NULL
+      AND rd_home.effective_end_date IS NULL
+      AND rd_yes.effective_end_date IS NULL
+      AND rd_no.effective_end_date IS NULL
+      AND pp.phone_type_code = rd_home.reference_data_id
+      AND (pp.is_primary_phone_number_code = rd_yes.reference_data_id OR pp.is_primary_phone_number_code = rd_no.reference_data_id)
+    ORDER BY CASE WHEN pp.is_primary_phone_number_code = rd_yes.reference_data_id THEN 1 ELSE 2 END, pp.person_phone_id DESC
+    LIMIT 1
+) phone ON TRUE
+
+-- EMAIL
+LEFT JOIN LATERAL (
+    SELECT pe_email.email AS email_address
+    FROM person_management.person_email pe_email
+    WHERE pe_email.person_membership_id = b.person_membership_id
+      AND pe_email.effective_end_date IS NULL
+    ORDER BY pe_email.person_email_id DESC
+    LIMIT 1
+) email ON TRUE
+
+-- MAILING ADDRESS (with itprwy_code logic)
+-- If PRIMARY → own address; If DEPENDENT with itprwy_code='YES' → PRIMARY's address
+LEFT JOIN LATERAL (
+    SELECT
+        LEFT(addr.line1_address, 64) AS adr_str_1,
+        LEFT(addr.line2_address, 64) AS adr_str_2,
+        LEFT(addr.line3_address, 64) AS adr_str_3,
+        LEFT(addr.city, 35) AS city_na,
+        rd_state.reference_code AS state_cd,
+        LEFT(addr.zip_code, 10) AS zip_code,
+        CASE WHEN rd_intl.reference_code = 'YES' THEN COALESCE(ird_ctry.reference_code, 'US') ELSE 'US' END AS ctry_cd
+    FROM person_management.person_mbrsh_person_adr_ac ac
+    INNER JOIN person_management.person_adr pa ON pa.person_address_id = ac.person_address_id AND pa.effective_end_date IS NULL
+    INNER JOIN person_management.adr addr ON addr.address_id = pa.address_id
+    LEFT JOIN admin_pglogical.reference_data rd_mail_type ON rd_mail_type.reference_type = 'AddressType' AND rd_mail_type.reference_code = 'MAILING_ADDRESS' AND rd_mail_type.effective_end_date IS NULL
+    LEFT JOIN admin_pglogical.reference_data rd_home_type ON rd_home_type.reference_type = 'AddressType' AND rd_home_type.reference_code = 'HOME_ADDRESS' AND rd_home_type.effective_end_date IS NULL
+    LEFT JOIN admin_pglogical.reference_data rd_same_as ON rd_same_as.reference_type = 'YesNo' AND rd_same_as.reference_code = 'YES' AND rd_same_as.effective_end_date IS NULL
+    LEFT JOIN admin_pglogical.reference_data rd_state ON rd_state.reference_data_id = addr.state_code AND rd_state.effective_end_date IS NULL
+    LEFT JOIN admin_pglogical.reference_data rd_intl ON rd_intl.reference_data_id = addr.is_international_address_code AND rd_intl.effective_end_date IS NULL
+    LEFT JOIN interfaces.int_reference_data ird_ctry ON ird_ctry.interface_name = 'ALL' AND ird_ctry.reference_type = '2DigitCountryCode' AND ird_ctry.reference_data_id = addr.country_code
+    WHERE ac.effective_end_date IS NULL
+      AND (addr.address_type_code = rd_mail_type.reference_data_id OR (addr.address_type_code = rd_home_type.reference_data_id AND pa.is_physical_adr_same_as_mailing_adr = rd_same_as.reference_data_id))
+      AND ac.person_membership_id = CASE 
+          WHEN rd_primary.reference_code = 'YES' THEN b.person_membership_id
+          WHEN EXISTS (SELECT 1 FROM admin_pglogical.reference_data rd_dep WHERE rd_dep.reference_data_id = b.itprwy_code AND rd_dep.reference_code = 'YES' AND rd_dep.effective_end_date IS NULL)
+          THEN (SELECT pm_pri.person_membership_id FROM person_management.person_mbrsh pm_pri
+                INNER JOIN admin_pglogical.reference_data rd_yes ON rd_yes.reference_code = 'YES' AND rd_yes.effective_end_date IS NULL AND pm_pri.is_primary_application_code = rd_yes.reference_data_id
+                WHERE pm_pri.application_id = b.appln_id LIMIT 1)
+          ELSE b.person_membership_id
+      END
+    ORDER BY ac.person_mbrsh_person_adr_ac_id DESC
+    LIMIT 1
+) mail_addr ON TRUE
+
+-- HOME ADDRESS (with itprwy_code logic)
+LEFT JOIN LATERAL (
+    SELECT
+        LEFT(addr.line1_address, 64) AS home_adr_str_1,
+        LEFT(addr.line2_address, 64) AS home_adr_str_2,
+        LEFT(addr.line3_address, 64) AS home_adr_str_3,
+        LEFT(addr.city, 35) AS home_city_na,
+        rd_state.reference_code AS home_state_cd,
+        LEFT(addr.zip_code, 10) AS home_zip_code,
+        CASE WHEN rd_intl.reference_code = 'YES' THEN COALESCE(ird_ctry.reference_code, 'US') ELSE 'US' END AS home_ctry_cd
+    FROM person_management.person_mbrsh_person_adr_ac ac
+    INNER JOIN person_management.person_adr pa ON pa.person_address_id = ac.person_address_id AND pa.effective_end_date IS NULL
+    INNER JOIN person_management.adr addr ON addr.address_id = pa.address_id
+    INNER JOIN admin_pglogical.reference_data rd_home_type ON rd_home_type.reference_type = 'AddressType' AND rd_home_type.reference_code = 'HOME_ADDRESS' AND rd_home_type.effective_end_date IS NULL AND addr.address_type_code = rd_home_type.reference_data_id
+    LEFT JOIN admin_pglogical.reference_data rd_state ON rd_state.reference_data_id = addr.state_code AND rd_state.effective_end_date IS NULL
+    LEFT JOIN admin_pglogical.reference_data rd_intl ON rd_intl.reference_data_id = addr.is_international_address_code AND rd_intl.effective_end_date IS NULL
+    LEFT JOIN interfaces.int_reference_data ird_ctry ON ird_ctry.interface_name = 'ALL' AND ird_ctry.reference_type = '2DigitCountryCode' AND ird_ctry.reference_data_id = addr.country_code
+    WHERE ac.effective_end_date IS NULL
+      AND ac.person_membership_id = CASE 
+          WHEN rd_primary.reference_code = 'YES' THEN b.person_membership_id
+          WHEN EXISTS (SELECT 1 FROM admin_pglogical.reference_data rd_dep WHERE rd_dep.reference_data_id = b.itprwy_code AND rd_dep.reference_code = 'YES' AND rd_dep.effective_end_date IS NULL)
+          THEN (SELECT pm_pri.person_membership_id FROM person_management.person_mbrsh pm_pri
+                INNER JOIN admin_pglogical.reference_data rd_yes ON rd_yes.reference_code = 'YES' AND rd_yes.effective_end_date IS NULL AND pm_pri.is_primary_application_code = rd_yes.reference_data_id
+                WHERE pm_pri.application_id = b.appln_id LIMIT 1)
+          ELSE b.person_membership_id
+      END
+    ORDER BY ac.person_mbrsh_person_adr_ac_id DESC
+    LIMIT 1
+) home_addr ON TRUE
+
+-- GENDER CODE TRANSLATION
+LEFT JOIN interfaces.int_reference_data ird_gender
+    ON ird_gender.interface_name = 'ALL'
+   AND ird_gender.reference_type = 'Gender'
+   AND ird_gender.reference_data_id = CAST(b.gender_code AS bigint)
+
+-- PAYROLL OFFICE TRANSLATION
+LEFT JOIN interfaces.int_reference_data ird_payroll
+    ON ird_payroll.interface_name = 'ALL'
+   AND ird_payroll.reference_type = 'PayrollOfficeNumber'
+   AND ird_payroll.reference_code = b.organization_code
+
+-- RELATIONSHIP CODE (for non-primary members)
+LEFT JOIN relationship.person_reln pr
+    ON pr.person_mbrsh_id = b.person_membership_id
+   AND pr.effv_end_dt IS NULL
+
+LEFT JOIN interfaces.int_reference_data ird_reln
+    ON ird_reln.interface_name = 'IN-MACON-DH-2809-OUT'
+   AND ird_reln.reference_type = 'Relationship'
+   AND ird_reln.reference_data_id = CAST(pr.reln_cd AS bigint)
+;
