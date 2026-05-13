@@ -7,11 +7,11 @@ Build application with Gradle
 1. Open terminal
    a. cd C:\Users\phleven\git\biq-analytics-recon-schema
    b. .\gradlew clean build
-   
+      gradle.bat clean build   
    
    
 Run application with Gradle
 1. Open terminal
    a. cd C:\Users\phleven\git\biq-analytics-recon-schema
-   b. .\gradlew bootRun --args='--spring.profiles.active=dev'   
- 
+   b. .\gradlew bootRun --args='--spring.profiles.active=dev' 
+      .\run-flyway-migrate.bat
