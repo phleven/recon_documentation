@@ -1,0 +1,26 @@
+{
+  "source": "SmartDev",
+  "cycle_id": "20260706",
+  "source_record_id": "SMARTDEV-20260706-000000144507-2",
+  "source_file_name": "SMARTDEV_SYNTHETIC_20260707.txt",
+  "record_position": 2,
+  "relationship": {
+    "employeeId": "000000144507",
+    "relationship": "C",
+    "nonEmployeeTaxIdNumber": "1585c485211dcaba1f02e9c01a55c0eab4eb1f6d7d88357adc3f6f6d1749976e",
+    "lastName": "Miller",
+    "firstName": "James",
+    "dateOfBirth": "1992-05-17",
+    "personType": "NONEMPLOYEE",
+    "addresses": [
+      {
+        "addressType": "H",
+        "streetAddress": "456 Oak Ave",
+        "city": "Washington",
+        "state": "DC",
+        "zipCode": "20001",
+        "country": "US"
+      }
+    ]
+  }
+}

@@ -1,0 +1,484 @@
+[
+  {
+    "employeeId": "000000129031",
+    "lastName": "Johnson",
+    "firstName": "James",
+    "dateOfBirth": "1990-09-10",
+    "personType": "EMPLOYEE",
+    "taxIdNumber": "7329ed5c8594f83469ac397d1d4cb6251df10fbefafd639821ddc29d4e6bbf5d",
+    "taxIdType": "SSN",
+    "primaryAddressType": "H",
+    "primaryPhoneType": "P",
+    "primaryEmailType": "P",
+    "preferredCommunication": "E",
+    "addresses": [
+      {
+        "addressType": "H",
+        "streetAddress": "123 Main St",
+        "city": "Washington",
+        "state": "DC",
+        "zipCode": "20001",
+        "country": "US"
+      }
+    ],
+    "emails": [
+      {
+        "emailType": "P",
+        "email": "james.johnson@example.com"
+      },
+      {
+        "emailType": "W",
+        "email": "james.johnson@postal.gov"
+      }
+    ],
+    "phones": [
+      {
+        "phoneType": "P",
+        "countryCode": "1",
+        "phoneNumber": "5715605727"
+      },
+      {
+        "phoneType": "W",
+        "countryCode": "1",
+        "phoneNumber": "2023274131"
+      }
+    ],
+    "employment": {
+      "effectiveDate": "2026-07-06",
+      "updateType": "CURRENT",
+      "status": "Active",
+      "jobType": "FT",
+      "fullTimePercentage": 1.0,
+      "positionStatus": "R",
+      "departmentCode": null,
+      "businessUnitCode": null,
+      "payPlan": "FW",
+      "grade": "15",
+      "payLevel": "06",
+      "pshbEligibilityStatus": "E",
+      "pshbEligibilityEffectiveDate": "2026-07-06",
+      "payrollOfficeId": "PO371727",
+      "pshbRateScheduleCode": "PB",
+      "pshbRateCategoryCode": "C"
+    },
+    "relationships": [
+      {
+        "relationship": "SP",
+        "nonEmployeeTaxIdNumber": "35138aebecc146d4ab52bcd89ad85c83b1e2be5e582d1ad78712ea4168e6cc50",
+        "nonEmployeeTaxIdType": "SSN",
+        "lastName": "Jones",
+        "firstName": "Michael",
+        "dateOfBirth": "1978-06-24",
+        "personType": "NONEMPLOYEE",
+        "primaryAddressType": "H",
+        "addresses": [
+          {
+            "addressType": "H",
+            "streetAddress": "123 Main St",
+            "city": "Washington",
+            "state": "DC",
+            "zipCode": "20001",
+            "country": "US"
+          }
+        ],
+        "emails": [
+          {
+            "emailType": "P",
+            "email": "michael.jones@example.com"
+          }
+        ]
+      },
+      {
+        "relationship": "C",
+        "nonEmployeeTaxIdNumber": "8d7df068fd0ffd446fff5917d9ef1d05a44c7b1d3de2d57ed73da48639720107",
+        "nonEmployeeTaxIdType": "SSN",
+        "lastName": "Johnson",
+        "firstName": "Patricia",
+        "dateOfBirth": "2014-07-24",
+        "personType": "NONEMPLOYEE",
+        "primaryAddressType": "H",
+        "addresses": [
+          {
+            "addressType": "H",
+            "streetAddress": "123 Main St",
+            "city": "Washington",
+            "state": "DC",
+            "zipCode": "20001",
+            "country": "US"
+          }
+        ]
+      },
+      {
+        "relationship": "C",
+        "nonEmployeeTaxIdNumber": "7b3bd980b4bbdfab27971be49b94aa2c2423c18d3f785d20307da52520431043",
+        "nonEmployeeTaxIdType": "SSN",
+        "lastName": "Johnson",
+        "firstName": "David",
+        "dateOfBirth": "2009-11-11",
+        "personType": "NONEMPLOYEE",
+        "primaryAddressType": "H",
+        "addresses": [
+          {
+            "addressType": "H",
+            "streetAddress": "123 Main St",
+            "city": "Washington",
+            "state": "DC",
+            "zipCode": "20001",
+            "country": "US"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "employeeId": "000000616645",
+    "lastName": "Williams",
+    "firstName": "Maria",
+    "dateOfBirth": "1976-07-28",
+    "personType": "EMPLOYEE",
+    "taxIdNumber": "6580167207b7986a40f76649531f6c9d1935101d36b17e3148776a3bab14da10",
+    "taxIdType": "SSN",
+    "primaryAddressType": "H",
+    "primaryPhoneType": "P",
+    "primaryEmailType": "P",
+    "preferredCommunication": "E",
+    "addresses": [
+      {
+        "addressType": "H",
+        "streetAddress": "456 Oak Ave",
+        "city": "Chicago",
+        "state": "IL",
+        "zipCode": "60601",
+        "country": "US"
+      }
+    ],
+    "emails": [
+      {
+        "emailType": "P",
+        "email": "maria.williams@example.com"
+      },
+      {
+        "emailType": "W",
+        "email": "maria.williams@postal.gov"
+      }
+    ],
+    "phones": [
+      {
+        "phoneType": "P",
+        "countryCode": "1",
+        "phoneNumber": "5711396224"
+      },
+      {
+        "phoneType": "W",
+        "countryCode": "1",
+        "phoneNumber": "2027465582"
+      }
+    ],
+    "employment": {
+      "effectiveDate": "2026-07-06",
+      "updateType": "CURRENT",
+      "status": "Active",
+      "jobType": "FT",
+      "fullTimePercentage": 1.0,
+      "positionStatus": "R",
+      "departmentCode": null,
+      "businessUnitCode": null,
+      "payPlan": "SES",
+      "grade": "14",
+      "payLevel": "07",
+      "pshbEligibilityStatus": "E",
+      "pshbEligibilityEffectiveDate": "2026-07-06",
+      "payrollOfficeId": "PO355574",
+      "pshbRateScheduleCode": "PB",
+      "pshbRateCategoryCode": "C"
+    },
+    "relationships": [
+      {
+        "relationship": "SP",
+        "nonEmployeeTaxIdNumber": "1c40261b65bbcf6e1e38bec7fad7b27f51ab5e6399184fff496356188035b4e9",
+        "nonEmployeeTaxIdType": "SSN",
+        "lastName": "Garcia",
+        "firstName": "Patricia",
+        "dateOfBirth": "1965-02-01",
+        "personType": "NONEMPLOYEE",
+        "primaryAddressType": "H",
+        "addresses": [
+          {
+            "addressType": "H",
+            "streetAddress": "456 Oak Ave",
+            "city": "Chicago",
+            "state": "IL",
+            "zipCode": "60601",
+            "country": "US"
+          }
+        ],
+        "emails": [
+          {
+            "emailType": "P",
+            "email": "patricia.garcia@example.com"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "employeeId": "000000758339",
+    "lastName": "Brown",
+    "firstName": "Robert",
+    "dateOfBirth": "1981-08-03",
+    "personType": "EMPLOYEE",
+    "taxIdNumber": "b35d5aaf79da6b2f6818aab9fa18fd2b14a2ba15dfbd6783cad145d3d6b44421",
+    "taxIdType": "SSN",
+    "primaryAddressType": "H",
+    "primaryPhoneType": "P",
+    "primaryEmailType": "P",
+    "preferredCommunication": "E",
+    "addresses": [
+      {
+        "addressType": "H",
+        "streetAddress": "789 Elm Blvd",
+        "city": "New York",
+        "state": "NY",
+        "zipCode": "10001",
+        "country": "US"
+      }
+    ],
+    "emails": [
+      {
+        "emailType": "P",
+        "email": "robert.brown@example.com"
+      },
+      {
+        "emailType": "W",
+        "email": "robert.brown@postal.gov"
+      }
+    ],
+    "phones": [
+      {
+        "phoneType": "P",
+        "countryCode": "1",
+        "phoneNumber": "5718851829"
+      },
+      {
+        "phoneType": "W",
+        "countryCode": "1",
+        "phoneNumber": "2022104898"
+      }
+    ],
+    "employment": {
+      "effectiveDate": "2026-07-06",
+      "updateType": "CURRENT",
+      "status": "Active",
+      "jobType": "FT",
+      "fullTimePercentage": 1.0,
+      "positionStatus": "R",
+      "departmentCode": null,
+      "businessUnitCode": null,
+      "payPlan": "GS",
+      "grade": "14",
+      "payLevel": "07",
+      "pshbEligibilityStatus": "E",
+      "pshbEligibilityEffectiveDate": "2026-07-06",
+      "payrollOfficeId": "PO895191",
+      "pshbRateScheduleCode": "PB",
+      "pshbRateCategoryCode": "C"
+    },
+    "relationships": [
+      {
+        "relationship": "C",
+        "nonEmployeeTaxIdNumber": "56c35a7f506ce7cbf7b9aa671479a03b24ff1e0913dd74aa73d8597d71c4015c",
+        "nonEmployeeTaxIdType": "SSN",
+        "lastName": "Brown",
+        "firstName": "Jennifer",
+        "dateOfBirth": "2014-06-23",
+        "personType": "NONEMPLOYEE",
+        "primaryAddressType": "H",
+        "addresses": [
+          {
+            "addressType": "H",
+            "streetAddress": "789 Elm Blvd",
+            "city": "New York",
+            "state": "NY",
+            "zipCode": "10001",
+            "country": "US"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "employeeId": "000000300637",
+    "lastName": "Jones",
+    "firstName": "Linda",
+    "dateOfBirth": "1957-10-03",
+    "personType": "EMPLOYEE",
+    "taxIdNumber": "4d7cd70890ffb526457b707531a22dcd658e8a7cab1403464eec1d3b70cf7ec0",
+    "taxIdType": "SSN",
+    "primaryAddressType": "H",
+    "primaryPhoneType": "P",
+    "primaryEmailType": "P",
+    "preferredCommunication": "E",
+    "addresses": [
+      {
+        "addressType": "H",
+        "streetAddress": "321 Pine Rd",
+        "city": "Los Angeles",
+        "state": "CA",
+        "zipCode": "90001",
+        "country": "US"
+      }
+    ],
+    "emails": [
+      {
+        "emailType": "P",
+        "email": "linda.jones@example.com"
+      },
+      {
+        "emailType": "W",
+        "email": "linda.jones@postal.gov"
+      }
+    ],
+    "phones": [
+      {
+        "phoneType": "P",
+        "countryCode": "1",
+        "phoneNumber": "5716930336"
+      },
+      {
+        "phoneType": "W",
+        "countryCode": "1",
+        "phoneNumber": "2027426576"
+      }
+    ],
+    "employment": {
+      "effectiveDate": "2026-07-06",
+      "updateType": "CURRENT",
+      "status": "Active",
+      "jobType": "FT",
+      "fullTimePercentage": 1.0,
+      "positionStatus": "R",
+      "departmentCode": null,
+      "businessUnitCode": null,
+      "payPlan": "GS",
+      "grade": "13",
+      "payLevel": "05",
+      "pshbEligibilityStatus": "E",
+      "pshbEligibilityEffectiveDate": "2026-07-06",
+      "payrollOfficeId": "PO358761",
+      "pshbRateScheduleCode": "PB",
+      "pshbRateCategoryCode": "C"
+    },
+    "relationships": []
+  },
+  {
+    "employeeId": "000000558382",
+    "lastName": "Garcia",
+    "firstName": "Michael",
+    "dateOfBirth": "1988-09-06",
+    "personType": "EMPLOYEE",
+    "taxIdNumber": "02042f6c72a6b85fe3589b0ed8fea36181c97f2d4a1fe3ef9862844a1f8aa89e",
+    "taxIdType": "SSN",
+    "primaryAddressType": "H",
+    "primaryPhoneType": "P",
+    "primaryEmailType": "P",
+    "preferredCommunication": "E",
+    "addresses": [
+      {
+        "addressType": "H",
+        "streetAddress": "654 Maple Dr",
+        "city": "Houston",
+        "state": "TX",
+        "zipCode": "77001",
+        "country": "US"
+      }
+    ],
+    "emails": [
+      {
+        "emailType": "P",
+        "email": "michael.garcia@example.com"
+      },
+      {
+        "emailType": "W",
+        "email": "michael.garcia@postal.gov"
+      }
+    ],
+    "phones": [
+      {
+        "phoneType": "P",
+        "countryCode": "1",
+        "phoneNumber": "5715014654"
+      },
+      {
+        "phoneType": "W",
+        "countryCode": "1",
+        "phoneNumber": "2027098176"
+      }
+    ],
+    "employment": {
+      "effectiveDate": "2026-07-06",
+      "updateType": "CURRENT",
+      "status": "Active",
+      "jobType": "FT",
+      "fullTimePercentage": 1.0,
+      "positionStatus": "R",
+      "departmentCode": null,
+      "businessUnitCode": null,
+      "payPlan": "FW",
+      "grade": "13",
+      "payLevel": "05",
+      "pshbEligibilityStatus": "E",
+      "pshbEligibilityEffectiveDate": "2026-07-06",
+      "payrollOfficeId": "PO957706",
+      "pshbRateScheduleCode": "PB",
+      "pshbRateCategoryCode": "C"
+    },
+    "relationships": [
+      {
+        "relationship": "SP",
+        "nonEmployeeTaxIdNumber": "def58c9bc42e88d90939833f3f642f79bd5acbd2094bd445acf3aa9fe87ee49d",
+        "nonEmployeeTaxIdType": "SSN",
+        "lastName": "Wilson",
+        "firstName": "Carlos",
+        "dateOfBirth": "1980-07-01",
+        "personType": "NONEMPLOYEE",
+        "primaryAddressType": "H",
+        "addresses": [
+          {
+            "addressType": "H",
+            "streetAddress": "654 Maple Dr",
+            "city": "Houston",
+            "state": "TX",
+            "zipCode": "77001",
+            "country": "US"
+          }
+        ],
+        "emails": [
+          {
+            "emailType": "P",
+            "email": "carlos.wilson@example.com"
+          }
+        ]
+      },
+      {
+        "relationship": "C",
+        "nonEmployeeTaxIdNumber": "6d2ddf8febb54587f8588c8763b0e0d7da12ce04e177caa50f9163769fb890c5",
+        "nonEmployeeTaxIdType": "SSN",
+        "lastName": "Garcia",
+        "firstName": "Priya",
+        "dateOfBirth": "2012-03-26",
+        "personType": "NONEMPLOYEE",
+        "primaryAddressType": "H",
+        "addresses": [
+          {
+            "addressType": "H",
+            "streetAddress": "654 Maple Dr",
+            "city": "Houston",
+            "state": "TX",
+            "zipCode": "77001",
+            "country": "US"
+          }
+        ]
+      }
+    ]
+  }
+]

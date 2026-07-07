@@ -1,0 +1,11 @@
+aws s3
+
+1. Global Protect --> AIEE-AWS
+
+2. https://sts.aiee-cfg.com/adfs/ls/idpinitiatedsignon?
+
+3. Select Account: 901760679202
+ BE_IQ_PERF_TEST_App_Developer
+
+4. S3 --> be-iq-npd-analytics-recon (bucket) --> iceberg/ --> bronze/  --> recon --> INT_RECON_MENR_IN_MLY_STG/ --> data/ --> run_date_day=2026-06-02/
+--> 00000-15-b6051f07-41c0-4081-960f- (PARQUET)

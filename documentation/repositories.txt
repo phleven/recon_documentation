@@ -2,4 +2,14 @@ https://sts.aiee-cfg.com/adfs/ls/idpinitiatedsignon? <---
 
 https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-ai/biq-analytics-recon-schema.git
 https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-analytics/biq-analytics-recon-consumer.git
-https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-analytics/biq-analytics-recon-jobs.git
+
+https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-analytics/biq-recon-snapshot-job.git
+
+
+https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-common/data-migration-utility.git
+https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-common/beniq-data-load.git
+
+https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-hw/hw-data-analytics-reporting.git
+
+https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-analytics/biq-data-load-file-ingestion-processor.git
+https://gitlab.aiee-cfg.com/aicloud-benefitsiq/benefitsiq-app/benefitsiq-analytics/biq-data-load-processor.git

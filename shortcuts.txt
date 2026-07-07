@@ -16,3 +16,14 @@ git fetch --prune
 Undo last local commit
 git reset --soft HEAD~1
 git reset --hard HEAD~1
+
+Run tests
+1. cd C:\Users\phleven\git\biq-analytics-recon-jobs\tests
+2. python -m pytest tests
+
+
+Run recon batch jobs
+1. cd "C:\Users\phleven\git\biq-recon-snapshot-job"
+2. python -m jobs.job1_bronze_ingest
+3. python -m jobs.job2_silver_dq
+
