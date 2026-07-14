@@ -1,0 +1,224 @@
+{
+  "domain": "enrollment",
+  "database": "benefitsiq-sit",
+  "pg_schema": "hc_plan_management",
+  "source_system": "BENEFITIQ",
+  "sample_data": {
+    "issuer": [
+      {
+        "issuer_id": "ii000001-0001-4e5f-8a9b-000000000001",
+        "issuer_na": "BlueCross BlueShield of Texas",
+        "state_cd": "TX",
+        "issuer_type_cd": "QHP",
+        "hios_issuer_id": "88192",
+        "last_update_ts": "2025-10-01T06:00:00Z",
+        "run_date": "2025-10-01"
+      },
+      {
+        "issuer_id": "ii000002-0002-4e5f-8a9b-000000000002",
+        "issuer_na": "Ambetter from Superior HealthPlan",
+        "state_cd": "TX",
+        "issuer_type_cd": "QHP",
+        "hios_issuer_id": "74423",
+        "last_update_ts": "2025-10-01T06:00:00Z",
+        "run_date": "2025-10-01"
+      },
+      {
+        "issuer_id": "ii000003-0003-4e5f-8a9b-000000000003",
+        "issuer_na": "Florida Blue",
+        "state_cd": "FL",
+        "issuer_type_cd": "QHP",
+        "hios_issuer_id": "35182",
+        "last_update_ts": "2025-10-01T06:00:00Z",
+        "run_date": "2025-10-01"
+      }
+    ],
+    "hpf_plan": [
+      {
+        "plan_id": "pp000001-0001-4e5f-8a9b-000000000001",
+        "issuer_id": "ii000001-0001-4e5f-8a9b-000000000001",
+        "plan_na": "BCBSTX Silver Select HMO 2500",
+        "hios_plan_id": "88192TX0010001",
+        "metal_level_cd": "SILVER",
+        "market_type_cd": "INDIVIDUAL",
+        "plan_type_cd": "HMO",
+        "effv_start_dt": "2025-01-01",
+        "effv_end_dt": "2025-12-31",
+        "last_update_ts": "2025-10-01T06:00:00Z",
+        "run_date": "2025-10-01"
+      },
+      {
+        "plan_id": "pp000002-0002-4e5f-8a9b-000000000002",
+        "issuer_id": "ii000002-0002-4e5f-8a9b-000000000002",
+        "plan_na": "Ambetter Balanced Care Bronze 7000",
+        "hios_plan_id": "74423TX0020001",
+        "metal_level_cd": "BRONZE",
+        "market_type_cd": "INDIVIDUAL",
+        "plan_type_cd": "HMO",
+        "effv_start_dt": "2025-01-01",
+        "effv_end_dt": "2025-12-31",
+        "last_update_ts": "2025-10-01T06:00:00Z",
+        "run_date": "2025-10-01"
+      },
+      {
+        "plan_id": "pp000003-0003-4e5f-8a9b-000000000003",
+        "issuer_id": "ii000003-0003-4e5f-8a9b-000000000003",
+        "plan_na": "Florida Blue Gold PPO 1500",
+        "hios_plan_id": "35182FL0030001",
+        "metal_level_cd": "GOLD",
+        "market_type_cd": "SHOP",
+        "plan_type_cd": "PPO",
+        "effv_start_dt": "2025-01-01",
+        "effv_end_dt": "2025-12-31",
+        "last_update_ts": "2025-10-01T06:00:00Z",
+        "run_date": "2025-10-01"
+      }
+    ],
+    "plan_variant": [
+      {
+        "plan_variant_id": "vv000001-0001-4e5f-8a9b-000000000001",
+        "plan_id": "pp000001-0001-4e5f-8a9b-000000000001",
+        "variant_na": "Silver 87 CSR Variant",
+        "csr_level_cd": "CSR_87",
+        "effv_start_dt": "2025-01-01",
+        "effv_end_dt": "2025-12-31",
+        "last_update_ts": "2025-10-01T06:00:00Z",
+        "run_date": "2025-10-01"
+      },
+      {
+        "plan_variant_id": "vv000002-0002-4e5f-8a9b-000000000002",
+        "plan_id": "pp000001-0001-4e5f-8a9b-000000000001",
+        "variant_na": "Silver Standard Variant",
+        "csr_level_cd": "NONE",
+        "effv_start_dt": "2025-01-01",
+        "effv_end_dt": "2025-12-31",
+        "last_update_ts": "2025-10-01T06:00:00Z",
+        "run_date": "2025-10-01"
+      },
+      {
+        "plan_variant_id": "vv000003-0003-4e5f-8a9b-000000000003",
+        "plan_id": "pp000002-0002-4e5f-8a9b-000000000002",
+        "variant_na": "Bronze Standard Variant",
+        "csr_level_cd": "NONE",
+        "effv_start_dt": "2025-01-01",
+        "effv_end_dt": "2025-12-31",
+        "last_update_ts": "2025-10-01T06:00:00Z",
+        "run_date": "2025-10-01"
+      }
+    ],
+    "plan_enrt": [
+      {
+        "enrollment_id": "ee000001-0001-4e5f-8a9b-000000000001",
+        "employeeid": "EMP-10001",
+        "member_id": "MBR-20250001",
+        "hpf_plan_id": "pp000001-0001-4e5f-8a9b-000000000001",
+        "enrt_status_cd": "ACTIVE",
+        "effv_start_dt": "2025-01-01",
+        "effv_end_dt": null,
+        "last_update_ts": "2025-11-01T08:00:00Z",
+        "run_date": "2025-11-01"
+      },
+      {
+        "enrollment_id": "ee000002-0002-4e5f-8a9b-000000000002",
+        "employeeid": "EMP-10002",
+        "member_id": "MBR-20250002",
+        "hpf_plan_id": "pp000003-0003-4e5f-8a9b-000000000003",
+        "enrt_status_cd": "TERMED",
+        "effv_start_dt": "2025-01-01",
+        "effv_end_dt": "2025-09-30",
+        "last_update_ts": "2025-09-15T14:22:00Z",
+        "run_date": "2025-09-15"
+      },
+      {
+        "enrollment_id": "ee000003-0003-4e5f-8a9b-000000000003",
+        "employeeid": "EMP-10003",
+        "member_id": "MBR-20260003",
+        "hpf_plan_id": "pp000002-0002-4e5f-8a9b-000000000002",
+        "enrt_status_cd": "PENDING",
+        "effv_start_dt": "2026-02-01",
+        "effv_end_dt": null,
+        "last_update_ts": "2026-01-10T09:05:00Z",
+        "run_date": "2026-01-10"
+      }
+    ],
+    "plan_enrt_person_mbrsh_ac": [
+      {
+        "pepma_id": "mm000001-0001-4e5f-8a9b-000000000001",
+        "enrollment_id": "ee000001-0001-4e5f-8a9b-000000000001",
+        "employeeid": "EMP-10001",
+        "member_id": "MBR-20250001",
+        "member_cov_start_dt": "2025-01-01",
+        "member_cov_end_dt": null,
+        "relationship_type_cd": "SUBSCRIBER",
+        "last_update_ts": "2025-11-01T08:00:00Z",
+        "run_date": "2025-11-01"
+      },
+      {
+        "pepma_id": "mm000002-0002-4e5f-8a9b-000000000002",
+        "enrollment_id": "ee000002-0002-4e5f-8a9b-000000000002",
+        "employeeid": "EMP-10002",
+        "member_id": "MBR-20250002",
+        "member_cov_start_dt": "2025-01-01",
+        "member_cov_end_dt": "2025-09-30",
+        "relationship_type_cd": "SUBSCRIBER",
+        "last_update_ts": "2025-09-15T14:22:00Z",
+        "run_date": "2025-09-15"
+      },
+      {
+        "pepma_id": "mm000003-0003-4e5f-8a9b-000000000003",
+        "enrollment_id": "ee000003-0003-4e5f-8a9b-000000000003",
+        "employeeid": "EMP-10003",
+        "member_id": "MBR-20260003",
+        "member_cov_start_dt": "2026-02-01",
+        "member_cov_end_dt": null,
+        "relationship_type_cd": "SUBSCRIBER",
+        "last_update_ts": "2026-01-10T09:05:00Z",
+        "run_date": "2026-01-10"
+      }
+    ],
+    "plan_enrt_prem": [
+      {
+        "plan_enrt_prem_id": "rr000001-0001-4e5f-8a9b-000000000001",
+        "enrollment_id": "ee000001-0001-4e5f-8a9b-000000000001",
+        "employeeid": "EMP-10001",
+        "member_id": "MBR-20250001",
+        "plan_id": "pp000001-0001-4e5f-8a9b-000000000001",
+        "plan_enrt_prem_am": 487.32,
+        "subsidy_amount": 210.00,
+        "net_amount": 277.32,
+        "premium_effective_date": "2025-01-01",
+        "premium_end_date": null,
+        "last_update_ts": "2025-11-01T08:00:00Z",
+        "run_date": "2025-11-01"
+      },
+      {
+        "plan_enrt_prem_id": "rr000002-0002-4e5f-8a9b-000000000002",
+        "enrollment_id": "ee000002-0002-4e5f-8a9b-000000000002",
+        "employeeid": "EMP-10002",
+        "member_id": "MBR-20250002",
+        "plan_id": "pp000003-0003-4e5f-8a9b-000000000003",
+        "plan_enrt_prem_am": 712.50,
+        "subsidy_amount": 0.00,
+        "net_amount": 712.50,
+        "premium_effective_date": "2025-01-01",
+        "premium_end_date": "2025-09-30",
+        "last_update_ts": "2025-09-15T14:22:00Z",
+        "run_date": "2025-09-15"
+      },
+      {
+        "plan_enrt_prem_id": "rr000003-0003-4e5f-8a9b-000000000003",
+        "enrollment_id": "ee000003-0003-4e5f-8a9b-000000000003",
+        "employeeid": "EMP-10003",
+        "member_id": "MBR-20260003",
+        "plan_id": "pp000002-0002-4e5f-8a9b-000000000002",
+        "plan_enrt_prem_am": 318.76,
+        "subsidy_amount": 175.50,
+        "net_amount": 143.26,
+        "premium_effective_date": "2026-02-01",
+        "premium_end_date": null,
+        "last_update_ts": "2026-01-10T09:05:00Z",
+        "run_date": "2026-01-10"
+      }
+    ]
+  }
+}

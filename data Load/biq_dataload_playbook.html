@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BIQ SmartDev Data Load — Developer Playbook</title>
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--green:#3fb950;--blue:#58a6ff;--purple:#bc8cff;--yellow:#d29922;--red:#f85149;--accent:#1f6feb;--orange:#f0883e;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 32px;}
+header h1{font-size:20px;font-weight:700;}
+header p{color:var(--muted);font-size:13px;margin-top:4px;}
+.tab-bar{display:flex;gap:2px;padding:0 32px;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;flex-wrap:wrap;}
+.tab-btn{padding:10px 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
+.tab-content{display:none;padding:32px;max-width:1100px;margin:0 auto;}
+.tab-content.active{display:block;}
+h2{font-size:18px;font-weight:700;margin-bottom:6px;}
+h3{font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--blue);}
+h4{font-size:13px;font-weight:600;margin:16px 0 6px;color:var(--purple);}
+p{color:var(--muted);line-height:1.7;margin-bottom:12px;font-size:13px;}
+b{color:var(--text);}
+.subtitle{color:var(--muted);font-size:13px;margin-bottom:24px;}
+pre{background:#010409;border:1px solid var(--border);border-radius:6px;padding:16px;overflow-x:auto;font-size:12px;line-height:1.6;margin:12px 0;}
+code{font-family:'Cascadia Code','Fira Code',monospace;}
+.kw{color:#ff7b72;}.fn{color:#d2a8ff;}.str{color:#a5d6ff;}.cm{color:#8b949e;font-style:italic;}.num{color:#79c0ff;}.var{color:#ffa657;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:16px 0;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;}
+.card.green{border-left:3px solid var(--green);}.card.blue{border-left:3px solid var(--blue);}.card.purple{border-left:3px solid var(--purple);}.card.yellow{border-left:3px solid var(--yellow);}.card.red{border-left:3px solid var(--red);}.card.orange{border-left:3px solid var(--orange);}
+.card-title{font-size:13px;font-weight:700;margin-bottom:8px;}
+.card p{font-size:12px;}
+.method-table{width:100%;border-collapse:collapse;margin:12px 0;}
+.method-table th{background:var(--bg);padding:8px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);border-bottom:1px solid var(--border);}
+.method-table td{padding:10px 12px;font-size:12px;border-bottom:1px solid var(--border);vertical-align:top;}
+.method-table tr:last-child td{border-bottom:none;}
+.method-table td:first-child{font-family:monospace;color:var(--purple);font-weight:600;}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge.green{background:rgba(63,185,80,.15);color:var(--green);}
+.badge.blue{background:rgba(88,166,255,.15);color:var(--blue);}
+.badge.yellow{background:rgba(210,153,34,.15);color:var(--yellow);}
+.badge.red{background:rgba(248,81,73,.15);color:var(--red);}
+.badge.purple{background:rgba(188,140,255,.15);color:var(--purple);}
+.badge.orange{background:rgba(240,136,62,.15);color:var(--orange);}
+.alert{border-radius:6px;padding:12px 16px;margin:12px 0;font-size:12px;line-height:1.6;}
+.alert.info{background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.3);color:var(--blue);}
+.alert.warn{background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.3);color:var(--yellow);}
+.alert.success{background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.3);color:var(--green);}
+.alert.red{background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.3);color:var(--red);}
+hr{border:none;border-top:1px solid var(--border);margin:24px 0;}
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin:16px 0;}
+.flow-step{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;min-width:120px;}
+.flow-step.green{border-top:2px solid var(--green);}
+.flow-step.blue{border-top:2px solid var(--blue);}
+.flow-step.purple{border-top:2px solid var(--purple);}
+.flow-step.orange{border-top:2px solid var(--orange);}
+.flow-step.yellow{border-top:2px solid var(--yellow);}
+.flow-step .fs-name{font-size:12px;font-weight:700;}
+.flow-step .fs-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+.flow-arrow{font-size:18px;color:var(--muted);padding:6px 8px;}
+.steps{list-style:none;display:flex;flex-direction:column;gap:10px;margin:12px 0;}
+.steps li{display:flex;gap:12px;align-items:flex-start;}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step-body{font-size:13px;color:var(--muted);line-height:1.6;}
+.step-body b{color:var(--text);}
+.url-block{background:rgba(31,111,235,.08);border:1px solid rgba(31,111,235,.4);border-radius:6px;padding:14px 18px;margin:12px 0;font-family:monospace;font-size:12px;color:var(--blue);line-height:1.8;}
+.checklist{list-style:none;margin:12px 0;}
+.checklist li{padding:5px 0;font-size:13px;color:var(--muted);display:flex;gap:10px;align-items:flex-start;}
+.checklist li::before{content:"☐";color:var(--yellow);font-size:14px;flex-shrink:0;}
+.new-tag{background:rgba(63,185,80,.15);color:var(--green);font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:8px;vertical-align:middle;}
+.domain-pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;margin:2px;}
+.domain-pill.person{background:rgba(63,185,80,.15);color:var(--green);}
+.domain-pill.emp{background:rgba(88,166,255,.15);color:var(--blue);}
+.domain-pill.rel{background:rgba(188,140,255,.15);color:var(--purple);}
+</style>
+</head>
+<body>
+<header>
+  <h1>BIQ SmartDev Data Load — Developer Playbook</h1>
+  <p>Sprint 4 · July 8, 2026 · Branch: feature/biq-data-lineage-framework · Event-Driven Architecture · 323 tests passing</p>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+  <button class="tab-btn" onclick="showTab('architecture')">Architecture</button>
+  <button class="tab-btn" onclick="showTab('contracts')">JSON Contracts</button>
+  <button class="tab-btn" onclick="showTab('streaming')">Streaming Model</button>
+  <button class="tab-btn" onclick="showTab('validation')">L1 + L4 Validation</button>
+  <button class="tab-btn" onclick="showTab('writers')">Writers</button>
+  <button class="tab-btn" onclick="showTab('envvars')">Env Vars + Config</button>
+  <button class="tab-btn" onclick="showTab('topics')">Kafka Topics</button>
+  <button class="tab-btn" onclick="showTab('repos')">Repos + Files</button>
+  <button class="tab-btn" onclick="showTab('tests')">Unit Tests</button>
+  <button class="tab-btn" onclick="showTab('todo')">Pending + DevOps</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="tab-overview" class="tab-content active">
+  <h2>What Changed in Sprint 4</h2>
+  <p class="subtitle">Complete event-driven data load pipeline for SmartDev — Person, Employment, and Relationship domains. Domain services listen directly to Kafka, validate, and write simultaneously to Silver Iceberg, Gold Iceberg, and HBE Postgres.</p>
+
+  <div class="alert success">323 unit tests passing across 3 repos · All DDL gaps resolved · REST API layer removed · Architecture fully event-driven per Lori's direction</div>
+
+  <h3>The Three Domains</h3>
+  <div class="grid-3">
+    <div class="card green">
+      <div class="card-title"><span class="domain-pill person">Person</span></div>
+      <p><b>Topic in:</b> person.create<br>
+      <b>Consumer group:</b> biq-person-load-cg<br>
+      <b>Topic out:</b> person.created<br>
+      <b>Error topic:</b> person.error<br><br>
+      One event = one employee with all addresses, emails, phones bundled.</p>
+    </div>
+    <div class="card blue">
+      <div class="card-title"><span class="domain-pill emp">Employment</span></div>
+      <p><b>Topic in:</b> employment.create<br>
+      <b>Consumer group:</b> biq-employment-load-cg<br>
+      <b>Error topic:</b> employment.error<br>
+      <b>DLQ:</b> employment.dlq<br><br>
+      Polls person.created before writing. Requeues with backoff if PersonCreated not found.</p>
+    </div>
+    <div class="card purple">
+      <div class="card-title"><span class="domain-pill rel">Relationship</span></div>
+      <p><b>Topic in:</b> relationship.create<br>
+      <b>Consumer group:</b> biq-relationship-load-cg<br>
+      <b>Error topic:</b> relationship.error<br>
+      <b>DLQ:</b> relationship.dlq<br><br>
+      One event = one dependent. SP and C for same employee = two separate events.</p>
+    </div>
+  </div>
+
+  <h3>What One Record Looks Like Per Domain</h3>
+  <div class="alert info">SmartDev sends one Kafka event per employee for Person and Employment. For Relationship, one event per dependent — so an employee with a spouse and one child produces two relationship events.</div>
+
+  <table class="method-table">
+    <thead><tr><th>Domain</th><th>One Kafka Event Contains</th><th>Sub-records bundled</th><th>Example count for 1000 employees</th></tr></thead>
+    <tbody>
+      <tr><td>Person</td><td>One employee — all personal attributes</td><td>addresses[], emails[], phones[]</td><td>1,000 events</td></tr>
+      <tr><td>Employment</td><td>One employment record per employee</td><td>departmentCode, businessUnitCode, pay plan, duty station</td><td>1,000 events</td></tr>
+      <tr><td>Relationship</td><td>One dependent per event</td><td>addresses[], emails[], phones[] for the dependent</td><td>2,000+ events (one per dependent)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>What Changed — Full Summary</h3>
+  <table class="method-table">
+    <thead><tr><th>Change</th><th>Repo</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Event-driven architecture — no REST API calls</td><td>biq-data-load-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>person_domain_service.py — Kafka consumer + 3-target write</td><td>biq-data-load-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>employment_domain_service.py — PersonCreated poll + backoff + DLQ</td><td>biq-data-load-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>relationship_domain_service.py — one event per dependent</td><td>biq-data-load-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>domain_writer.py — atomic Gold + HBE write</td><td>biq-data-load-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>silver_writer.py — Iceberg raw JSON archive</td><td>biq-data-load-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>hbe_writer.py — moved to biq-data-load-processor/writers/</td><td>biq-data-load-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>REST APIs removed (person_api, employment_api, relationship_api)</td><td>biq-data-load-api</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>52 L1 structural validation rules — enabled flag per rule</td><td>biq-data-load-file-ingestion-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>32 L4 business rules — disabled_rules parameter</td><td>biq-data-load-file-ingestion-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>KNOWN_DDL_GAPS cleared — departmentCode + businessUnitCode resolved</td><td>biq-data-load-file-ingestion-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>BATCH_SIZE configurable via env var — default 100</td><td>biq-data-load-processor</td><td><span class="badge green">Done</span></td></tr>
+      <tr><td>6 JSON contracts in landing/ folders</td><td>biq-data-load-file-ingestion-processor</td><td><span class="badge yellow">Pending Lori + Subha approval</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ARCHITECTURE -->
+<div id="tab-architecture" class="tab-content">
+  <h2>Architecture — Event-Driven Pipeline</h2>
+  <p class="subtitle">Per Lori's direction: domain services listen directly to Kafka, consume events, validate, and persist. No REST API calls anywhere in the active pipeline.</p>
+
+  <h3>End-to-End Flow</h3>
+  <div class="flow">
+    <div class="flow-step green"><div class="fs-name">SmartDev</div><div class="fs-sub">PGP-encrypted<br>JSON files</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step blue"><div class="fs-name">S3 Landing</div><div class="fs-sub">Person.json.pgp<br>Employment.json.pgp<br>Relationship.json.pgp</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step orange"><div class="fs-name">File Ingest</div><div class="fs-sub">Decrypt<br>Parse<br>Route by domain</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step purple"><div class="fs-name">Kafka Topics</div><div class="fs-sub">person.create<br>employment.create<br>relationship.create</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step green"><div class="fs-name">Domain Services</div><div class="fs-sub">L1 + L4 validate<br>Silver write<br>Gold + HBE write</div></div>
+  </div>
+
+  <h3>Domain Service Write Flow</h3>
+  <div class="flow">
+    <div class="flow-step purple"><div class="fs-name">Kafka event</div><div class="fs-sub">person.create<br>1 employee</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step yellow"><div class="fs-name">L1 Validate</div><div class="fs-sub">52 structural<br>rules</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step yellow"><div class="fs-name">L4 Validate</div><div class="fs-sub">32 business<br>rules</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step blue"><div class="fs-name">Silver Write</div><div class="fs-sub">Iceberg<br>raw JSON blob</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step green"><div class="fs-name">Gold + HBE</div><div class="fs-sub">Atomic write<br>domain_writer.py</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step purple"><div class="fs-name">PersonCreated</div><div class="fs-sub">person.created<br>(person only)</div></div>
+  </div>
+
+  <h3>Employment + Relationship — PersonCreated Dependency</h3>
+  <div class="flow">
+    <div class="flow-step purple"><div class="fs-name">employment.create</div><div class="fs-sub">Kafka event arrives</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step yellow"><div class="fs-name">Poll person.created</div><div class="fs-sub">Is PersonCreated<br>on topic?</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step green"><div class="fs-name">Found</div><div class="fs-sub">Proceed to<br>L1 + L4 + write</div></div>
+  </div>
+  <div class="flow">
+    <div class="flow-step purple" style="opacity:0.4"><div class="fs-name">employment.create</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step yellow" style="opacity:0.4"><div class="fs-name">Poll person.created</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step red"><div class="fs-name">Not found</div><div class="fs-sub">Requeue 2s→4s→8s<br>DLQ after 3 retries</div></div>
+  </div>
+
+  <h3>Three Write Targets Per Domain</h3>
+  <div class="grid">
+    <div class="card blue">
+      <div class="card-title">Silver — Iceberg (silver_writer.py)</div>
+      <p>Raw JSON blob — denormalized. Always written first, best-effort. Never rolled back on downstream failure. Used for AI, analytics, and audit trail. Schema: <b>recon.silver.{domain}</b></p>
+    </div>
+    <div class="card green">
+      <div class="card-title">Gold — Iceberg (domain_writer.py)</div>
+      <p>Normalized tables aligned to HBE schema. Written atomically with HBE. If Gold fails, HBE write does not happen. Schema: <b>biq_gold.{table}</b></p>
+    </div>
+    <div class="card purple">
+      <div class="card-title">HBE — Postgres (domain_writer.py)</div>
+      <p>System of record. Written atomically with Gold. One psycopg2 cursor — one transaction. Tables: <b>hbe.person, hbe.person_name, hbe.person_mbrsh, hbe.adr, hbe.person_adr, hbe.person_email, hbe.person_phone, hbe.person_addl_attr, hbe.person_employment, hbe.person_reln</b></p>
+    </div>
+  </div>
+</div>
+
+<!-- JSON CONTRACTS -->
+<div id="tab-contracts" class="tab-content">
+  <h2>JSON Contracts</h2>
+  <p class="subtitle">Six contracts in landing/ folders — three client-facing (no envelope) and three Kafka event contracts (with envelope). Pending Lori and Subha approval before writing to HBE.</p>
+
+  <div class="alert warn">Do not write directly to HBE until contracts are confirmed by Lori and Subha.</div>
+
+  <h3>Contract Locations in Repo</h3>
+  <pre><code>biq-data-load-file-ingestion-processor/
+  landing/
+    person/
+      BIQ_Person.json          <span class="cm">← client contract (no envelope)</span>
+      BIQ_Person_Events.json   <span class="cm">← Kafka event contract (with envelope)</span>
+    employment/
+      BIQ_Employment.json
+      BIQ_Employment_Events.json
+    relationship/
+      BIQ_Relationship.json
+      BIQ_Relationship_Events.json</code></pre>
+
+  <h3>Client Contract vs Kafka Event Contract</h3>
+  <table class="method-table">
+    <thead><tr><th>Contract Type</th><th>Has Envelope</th><th>Has orgId</th><th>Who uses it</th></tr></thead>
+    <tbody>
+      <tr><td>BIQ_Person.json</td><td>No — raw payload only</td><td>No — derived from employerCode</td><td>SmartDev sends this to S3</td></tr>
+      <tr><td>BIQ_Person_Events.json</td><td>Yes — eventId, eventType, eventVersion, eventTimestamp, payload</td><td>No</td><td>file_ingest.py publishes this to Kafka</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Validated Field Requirements</h3>
+  <table class="method-table">
+    <thead><tr><th>Field</th><th>Person</th><th>Employment</th><th>Relationship</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>uniqueId</td><td>Required</td><td>Required</td><td>Required</td><td>Client-generated, must be unique per employee</td></tr>
+      <tr><td>employerCode</td><td>Required</td><td>Required</td><td>Not present</td><td>Confirmed Subha July 8 2026. Drives orgId derivation.</td></tr>
+      <tr><td>employeeId</td><td>Required</td><td>Required</td><td>Required</td><td>Links all three domains</td></tr>
+      <tr><td>emailType</td><td>Required in emails[]</td><td>N/A</td><td>Required in emails[]</td><td>Resolves email_type_cd DDL gap</td></tr>
+      <tr><td>departmentCode</td><td>N/A</td><td>Required</td><td>N/A</td><td>DDL gap resolved July 8 2026</td></tr>
+      <tr><td>businessUnitCode</td><td>N/A</td><td>Required</td><td>N/A</td><td>DDL gap resolved July 8 2026</td></tr>
+      <tr><td>relationship</td><td>N/A</td><td>N/A</td><td>Required</td><td>Must be one of: SP, C, DP, P, SB, O</td></tr>
+      <tr><td>nonEmployeeTaxIdNumber</td><td>N/A</td><td>N/A</td><td>Required</td><td>Identifies the dependent — required for person_reln write</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Cross-Domain uniqueId Linkage</h3>
+  <div class="alert info">The same uniqueId must appear in all three domains for the same employee. Employment and Relationship poll person.created using employeeId — uniqueId is the stable business key across all HBE tables.</div>
+  <pre><code><span class="cm"># All three contracts for the same employee share the same uniqueId</span>
+BIQ_Person.json       → uniqueId: "UID-000000144507-PSHB"
+BIQ_Employment.json   → uniqueId: "UID-000000144507-PSHB"
+BIQ_Relationship.json → uniqueId: "UID-000000144507-PSHB"  <span class="cm"># one per dependent</span></code></pre>
+</div>
+
+<!-- STREAMING MODEL -->
+<div id="tab-streaming" class="tab-content">
+  <h2>Streaming Model — How Events Flow</h2>
+  <p class="subtitle">Batch-within-a-loop. Each domain service polls Kafka for up to BATCH_SIZE messages per loop iteration, processes each record individually, then commits offsets. BATCH_SIZE is configurable per client.</p>
+
+  <h3>The Processing Loop</h3>
+  <pre><code><span class="cm"># Each domain service runs this loop continuously</span>
+<span class="kw">while not</span> stop:
+    msgs = consumer.<span class="fn">consume</span>(num_messages=BATCH_SIZE, timeout=<span class="num">1.0</span>)
+    <span class="kw">if not</span> msgs: <span class="kw">continue</span>
+
+    <span class="kw">for</span> msg <span class="kw">in</span> msgs:                      <span class="cm"># process each record individually</span>
+        event = json.<span class="fn">loads</span>(msg.value())
+        outcome = <span class="fn">process_event</span>(event, ...)  <span class="cm"># L1 → L4 → Silver → Gold+HBE</span>
+
+    consumer.<span class="fn">commit</span>()                    <span class="cm"># commit after full batch processed</span></code></pre>
+
+  <h3>One Record Per Domain — What That Means</h3>
+  <div class="grid">
+    <div class="card green">
+      <div class="card-title">Person event — one employee</div>
+      <p>One Kafka message contains all attributes for one employee: name, DOB, gender, addresses[], emails[], phones[]. All sub-records are written in one domain_writer.py call — one HBE transaction.</p>
+    </div>
+    <div class="card blue">
+      <div class="card-title">Employment event — one employment record</div>
+      <p>One Kafka message = one employment record for one employee. departmentCode, businessUnitCode, payPlan, grade, PSHB eligibility — all in one event.</p>
+    </div>
+    <div class="card purple">
+      <div class="card-title">Relationship event — one dependent</div>
+      <p>One Kafka message = one dependent. Employee with spouse + 2 children = 3 relationship events on relationship.create. Each processed independently. No employerCode — orgId resolved from PersonCreated.</p>
+    </div>
+  </div>
+
+  <h3>Throughput Tuning — BATCH_SIZE</h3>
+  <table class="method-table">
+    <thead><tr><th>BATCH_SIZE value</th><th>Use case</th><th>Behaviour</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Debugging / dev testing</td><td>One record per poll — slowest, easiest to trace</td></tr>
+      <tr><td>100</td><td>Default</td><td>100 records per poll — balanced throughput and latency</td></tr>
+      <tr><td>500</td><td>High volume — production catch-up</td><td>500 records per poll — higher throughput, more memory per loop</td></tr>
+      <tr><td>1000</td><td>Bulk load — initial data load</td><td>Maximum throughput — use with caution on memory-constrained pods</td></tr>
+    </tbody>
+  </table>
+  <div class="alert info">Set via env var: <b>BATCH_SIZE=100</b> — see Env Vars tab. Applied per domain service independently — person can run at 100 while employment runs at 500.</div>
+
+  <h3>Offset Commit Strategy</h3>
+  <div class="alert warn"><b>Current:</b> commit after full batch. If the service crashes mid-batch, the entire batch replays from the first offset on restart. All writes are idempotent — cycle_id + employeeId prevent duplicate HBE rows on replay.</div>
+
+  <h3>PersonCreated Dependency — Backoff and DLQ</h3>
+  <pre><code><span class="cm"># Employment and Relationship poll person.created before processing</span>
+<span class="cm"># Retry schedule: 2s → 4s → 8s → DLQ after 3 retries</span>
+
+MAX_RETRIES = <span class="fn">int</span>(os.<span class="fn">getenv</span>(<span class="str">"MAX_RETRIES"</span>, <span class="str">"3"</span>))
+
+<span class="kw">if not</span> <span class="fn">_poll_person_created</span>(employee_id, org_id):
+    attempt = event.<span class="fn">get</span>(<span class="str">"_retry_count"</span>, <span class="num">0</span>) + <span class="num">1</span>
+    backoff = <span class="num">2</span> ** attempt                      <span class="cm"># 2s, 4s, 8s</span>
+    topic = TOPIC_DLQ <span class="kw">if</span> attempt >= MAX_RETRIES <span class="kw">else</span> TOPIC_IN
+    time.<span class="fn">sleep</span>(backoff)
+    <span class="fn">_publish</span>(producer, topic, event)            <span class="cm"># requeue or DLQ</span>
+    <span class="kw">return</span> <span class="str">"REQUEUE"</span></code></pre>
+</div>
+
+<!-- L1 + L4 VALIDATION -->
+<div id="tab-validation" class="tab-content">
+  <h2>L1 + L4 Validation</h2>
+  <p class="subtitle">Two validation layers run sequentially on every event before any write. L1 is structural — field presence and type. L4 is business rules — domain logic, cross-record consistency, duplicate detection.</p>
+
+  <h3>L1 — Structural Validator (l1_structural_validator.py)</h3>
+  <div class="alert info">Config file: config/structural_rules.yaml · 52 rules across 3 domains · enabled flag on every rule</div>
+
+  <table class="method-table">
+    <thead><tr><th>What it checks</th><th>Outcome</th><th>Example rules</th></tr></thead>
+    <tbody>
+      <tr><td>Required fields present</td><td>REJECT if missing</td><td>uniqueId, employeeId, employerCode, emailType in emails[]</td></tr>
+      <tr><td>Field type correct</td><td>REJECT if wrong type</td><td>dateOfBirth is string, fullTimePercentage is number</td></tr>
+      <tr><td>String length within DDL limit</td><td>REJECT if over limit</td><td>firstName max 50, streetAddress max 64</td></tr>
+      <tr><td>Enum values in approved set</td><td>REJECT if invalid</td><td>gender in M/F/U, relationship in SP/C/DP/P/SB/O</td></tr>
+      <tr><td>Rule disabled per client</td><td>Skip rule entirely</td><td>enabled: false in structural_rules.yaml — no code change needed</td></tr>
+    </tbody>
+  </table>
+
+  <h3>L4 — Business Rules (l4_business_rules.py)</h3>
+  <div class="alert info">32 business rules · Outcomes: ACCEPT / REJECT / WARN / FIX / SKIP · disabled_rules parameter for per-client suppression</div>
+
+  <table class="method-table">
+    <thead><tr><th>Rule ID</th><th>Domain</th><th>What it checks</th><th>Outcome</th></tr></thead>
+    <tbody>
+      <tr><td>PERSON-BR-004</td><td>Person</td><td>Subscriber vs dependent classification — personType must match relationship context</td><td>REJECT</td></tr>
+      <tr><td>PERSON-BR-006</td><td>Person</td><td>Blank child collections (addresses[], emails[]) do not create empty rows in HBE</td><td>FIX</td></tr>
+      <tr><td>PERSON-BR-007</td><td>Person</td><td>Duplicate person detection — employeeId already exists in HBE for cycle + org</td><td>SKIP</td></tr>
+      <tr><td>EMP-BR-002</td><td>Employment</td><td>Orphan employment — parent Person must exist before Employment can be written</td><td>REJECT</td></tr>
+      <tr><td>EMP-BR-004</td><td>Employment</td><td>DDL gap tracking — departmentCode + businessUnitCode now RESOLVED, written directly</td><td>N/A — cleared</td></tr>
+      <tr><td>EMP-BR-005</td><td>Employment</td><td>Date validation — effectiveDate and pshbEligibilityEffectiveDate must be between 1900 and 2036</td><td>REJECT</td></tr>
+      <tr><td>EMP-BR-006</td><td>Employment</td><td>Duplicate employment — employeeId already has employment record in HBE for cycle + org</td><td>SKIP</td></tr>
+      <tr><td>REL-BR-002</td><td>Relationship</td><td>nonEmployeeTaxIdNumber required — cannot create person_reln without dependent key</td><td>REJECT</td></tr>
+      <tr><td>REL-BR-004</td><td>Relationship</td><td>Relationship code crosswalk — must be SP, C, DP, P, SB, or O</td><td>REJECT</td></tr>
+      <tr><td>REL-BR-005</td><td>Relationship</td><td>Orphan relationship — parent Person must exist before Relationship can be written</td><td>REJECT</td></tr>
+      <tr><td>REL-BR-007</td><td>Relationship</td><td>Duplicate relationship — same employeeId + nonEmployeeTaxIdNumber + relationship already exists</td><td>SKIP</td></tr>
+      <tr><td>DL-BR-006</td><td>All</td><td>Blank strings normalized to null before write</td><td>FIX</td></tr>
+      <tr><td>DL-BR-025</td><td>All</td><td>Final HBE count vs accepted count reconciliation per cycle</td><td>WARN</td></tr>
+      <tr><td>DL-BR-029</td><td>All</td><td>Idempotency — no duplicate Gold/HBE rows on pipeline rerun</td><td>SKIP</td></tr>
+      <tr><td>DL-BR-030</td><td>All</td><td>Post-load JDBC validation — row exists in HBE after write, no duplicates</td><td>REJECT / WARN</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Disabling Rules Per Client</h3>
+  <pre><code><span class="cm"># L1 — disable per rule in structural_rules.yaml</span>
+rules:
+  - rule_id: uniqueId_required
+    enabled: <span class="kw">false</span>   <span class="cm"># skipped for this client — no code change needed</span>
+
+<span class="cm"># L4 — pass disabled_rules set to apply()</span>
+result = l4.<span class="fn">apply</span>(
+    payload, <span class="str">"employment"</span>,
+    run_id=run_id, cycle_id=cycle_id, org_id=org_id,
+    disabled_rules={<span class="str">"EMP-BR-006"</span>, <span class="str">"REL-BR-007"</span>}  <span class="cm"># skip duplicate checks for this client</span>
+)</code></pre>
+</div>
+
+<!-- WRITERS -->
+<div id="tab-writers" class="tab-content">
+  <h2>Writers — Three Files, Three Targets</h2>
+  <p class="subtitle">All three writers live in biq-data-load-processor/writers/. Silver is written first independently. Gold and HBE are written together as one atomic logical operation.</p>
+
+  <div class="url-block">
+    writers/<br>
+    &nbsp;&nbsp;silver_writer.py &nbsp;&nbsp;&nbsp;← Iceberg raw JSON (analytics/AI layer)<br>
+    &nbsp;&nbsp;domain_writer.py &nbsp;&nbsp;← Gold Iceberg + HBE Postgres (one atomic write)<br>
+    &nbsp;&nbsp;hbe_writer.py &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← HBE Postgres write utilities (moved from biq-data-load-api)
+  </div>
+
+  <h3>silver_writer.py</h3>
+  <table class="method-table">
+    <thead><tr><th>Function</th><th>What it does</th><th>When called</th></tr></thead>
+    <tbody>
+      <tr><td>write_silver_record()</td><td>Writes one raw JSON event as a single row in Iceberg Silver. Denormalized — no schema mapping. Always written even if Gold/HBE fails.</td><td>Before domain_writer.py in every domain service</td></tr>
+      <tr><td>write_silver_batch()</td><td>Writes multiple events in one Spark DataFrame write. Used for bulk backfill.</td><td>Batch load scenarios</td></tr>
+    </tbody>
+  </table>
+
+  <h3>domain_writer.py</h3>
+  <table class="method-table">
+    <thead><tr><th>Function</th><th>Gold tables written</th><th>HBE tables written</th></tr></thead>
+    <tbody>
+      <tr><td>write_person(spark, cur, payload, cycle_id, run_id, org_id)</td><td>person, person_name, person_addl_attr, person_adr, person_email, person_phone</td><td>hbe.person, hbe.person_name, hbe.person_addl_attr, hbe.person_mbrsh, hbe.adr, hbe.person_adr, hbe.person_email, hbe.person_phone</td></tr>
+      <tr><td>write_employment(spark, cur, payload, cycle_id, run_id, org_id)</td><td>person_employment</td><td>hbe.person_employment (incl. department_code + business_unit_code)</td></tr>
+      <tr><td>write_relationship(spark, cur, payload, cycle_id, run_id, org_id)</td><td>person_reln, reln_adr, reln_email</td><td>hbe.person_reln, hbe.adr, hbe.person_adr, hbe.person_email, hbe.person_phone</td></tr>
+    </tbody>
+  </table>
+
+  <h3>DDL Gaps — All Resolved</h3>
+  <table class="method-table">
+    <thead><tr><th>Field</th><th>HBE column</th><th>Status</th><th>Resolved</th></tr></thead>
+    <tbody>
+      <tr><td>emailType</td><td>hbe.person_email.email_type_cd</td><td><span class="badge green">Resolved</span></td><td>Written directly via emailType in emails[]</td></tr>
+      <tr><td>departmentCode</td><td>hbe.person_employment.department_code</td><td><span class="badge green">Resolved</span></td><td>July 8 2026 — Lori + Subha confirmed</td></tr>
+      <tr><td>businessUnitCode</td><td>hbe.person_employment.business_unit_code</td><td><span class="badge green">Resolved</span></td><td>July 8 2026 — Lori + Subha confirmed</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Write Sequence Per Domain Service</h3>
+  <pre><code><span class="cm"># 1. Silver — always written first, best-effort archive</span>
+<span class="fn">write_silver_record</span>(spark, event, <span class="str">"person"</span>, CYCLE_ID, run_id)
+
+<span class="cm"># 2. Gold + HBE — one atomic logical write</span>
+<span class="kw">with</span> <span class="fn">get_conn</span>() <span class="kw">as</span> conn:
+    <span class="kw">with</span> conn.<span class="fn">cursor</span>() <span class="kw">as</span> cur:
+        <span class="fn">write_person</span>(spark, cur, payload, CYCLE_ID, run_id, org_id)
+        <span class="cm"># Gold Iceberg MERGE INTO — upsert by org_id + employee_id + cycle_id</span>
+        <span class="cm"># HBE Postgres INSERT — all person tables in one transaction</span>
+
+<span class="cm"># 3. PersonCreated — only published after both Silver and Gold+HBE succeed</span>
+<span class="fn">_publish</span>(producer, TOPIC_CREATED, person_created_event)</code></pre>
+</div>
+
+<!-- ENV VARS -->
+<div id="tab-envvars" class="tab-content">
+  <h2>Environment Variables + Configuration</h2>
+  <p class="subtitle">All configuration is via environment variables — no hardcoded values in code. Set in OCP ConfigMap for production. Set in .env for local development.</p>
+
+  <h3>Kafka Configuration — All Domain Services</h3>
+  <table class="method-table">
+    <thead><tr><th>Env Var</th><th>Default</th><th>Required</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>KAFKA_BOOTSTRAP_SERVERS</td><td>localhost:9092</td><td>Yes</td><td>Comma-separated list for OCP</td></tr>
+      <tr><td>KAFKA_SECURITY_PROTOCOL</td><td>PLAINTEXT</td><td>OCP only</td><td>Use SASL_SSL in OCP</td></tr>
+      <tr><td>KAFKA_SASL_MECHANISM</td><td>PLAIN</td><td>OCP only</td><td>PLAIN or SCRAM-SHA-512</td></tr>
+      <tr><td>KAFKA_SASL_USERNAME</td><td>(empty)</td><td>OCP only</td><td>From Vault secret</td></tr>
+      <tr><td>KAFKA_SASL_PASSWORD</td><td>(empty)</td><td>OCP only</td><td>From Vault secret</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Topic Configuration — Per Domain Service</h3>
+  <table class="method-table">
+    <thead><tr><th>Env Var</th><th>Default</th><th>Domain</th></tr></thead>
+    <tbody>
+      <tr><td>KAFKA_TOPIC_PERSON</td><td>person.create</td><td>Person</td></tr>
+      <tr><td>KAFKA_TOPIC_PERSON_CREATED</td><td>person.created</td><td>Person (out), Employment + Relationship (poll)</td></tr>
+      <tr><td>KAFKA_TOPIC_EMPLOYMENT</td><td>employment.create</td><td>Employment</td></tr>
+      <tr><td>KAFKA_TOPIC_RELATIONSHIP</td><td>relationship.create</td><td>Relationship</td></tr>
+      <tr><td>KAFKA_TOPIC_ERROR</td><td>{domain}.error</td><td>All</td></tr>
+      <tr><td>KAFKA_TOPIC_DLQ</td><td>{domain}.dlq</td><td>Employment + Relationship</td></tr>
+      <tr><td>KAFKA_CONSUMER_GROUP</td><td>biq-{domain}-load-cg</td><td>All — set per service</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Processing Configuration</h3>
+  <table class="method-table">
+    <thead><tr><th>Env Var</th><th>Default</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>BATCH_SIZE</td><td>100</td><td>Records per Kafka poll. Tune per client — 1 for debug, 1000 for bulk load.</td></tr>
+      <tr><td>MAX_RETRIES</td><td>3</td><td>PersonCreated poll retries before DLQ. Backoff: 2s → 4s → 8s.</td></tr>
+      <tr><td>ORG_ID</td><td>PSHB</td><td>Derived from payload.employerCode — do not set manually.</td></tr>
+      <tr><td>CYCLE_ID</td><td>(empty)</td><td>Set per pipeline run — links all records in one load to one cycle.</td></tr>
+      <tr><td>RULES_PATH</td><td>config/structural_rules.yaml</td><td>Path to L1 validation rules YAML.</td></tr>
+      <tr><td>LOG_LEVEL</td><td>INFO</td><td>Set to DEBUG for local development.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Postgres / HBE Configuration</h3>
+  <table class="method-table">
+    <thead><tr><th>Env Var</th><th>Local default</th><th>OCP</th></tr></thead>
+    <tbody>
+      <tr><td>PG_HOST</td><td>localhost</td><td>OCP Postgres service name</td></tr>
+      <tr><td>PG_PORT</td><td>5433</td><td>5432</td></tr>
+      <tr><td>PG_DATABASE</td><td>benefitsiq-dev</td><td>benefitsiq</td></tr>
+      <tr><td>PG_USER</td><td>recon</td><td>From Vault</td></tr>
+      <tr><td>PG_PASSWORD</td><td>recon</td><td>From Vault</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Iceberg / Spark Configuration</h3>
+  <table class="method-table">
+    <thead><tr><th>Env Var</th><th>Default</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>ICEBERG_CATALOG</td><td>glue</td><td>Catalog name for Iceberg MERGE INTO</td></tr>
+      <tr><td>ICEBERG_WAREHOUSE</td><td>(empty)</td><td>S3 warehouse path — required in OCP</td></tr>
+      <tr><td>GOLD_DATABASE</td><td>biq_gold</td><td>Iceberg database for Gold tables</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Local .env Template — Copy and Fill In</h3>
+  <pre><code><span class="cm"># Kafka</span>
+KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+KAFKA_SECURITY_PROTOCOL=PLAINTEXT
+KAFKA_TOPIC_PERSON=person.create
+KAFKA_TOPIC_PERSON_CREATED=person.created
+KAFKA_TOPIC_EMPLOYMENT=employment.create
+KAFKA_TOPIC_RELATIONSHIP=relationship.create
+KAFKA_CONSUMER_GROUP=biq-person-load-cg   <span class="cm"># change per service</span>
+KAFKA_TOPIC_ERROR=person.error             <span class="cm"># change per service</span>
+KAFKA_TOPIC_DLQ=person.dlq                 <span class="cm"># change per service</span>
+
+<span class="cm"># Processing</span>
+BATCH_SIZE=10        <span class="cm"># use small value for local dev</span>
+MAX_RETRIES=3
+CYCLE_ID=2026-07-08
+LOG_LEVEL=DEBUG
+
+<span class="cm"># Postgres</span>
+PG_HOST=localhost
+PG_PORT=5433
+PG_DATABASE=benefitsiq-dev
+PG_USER=recon
+PG_PASSWORD=recon
+
+<span class="cm"># Iceberg</span>
+ICEBERG_CATALOG=glue
+GOLD_DATABASE=biq_gold</code></pre>
+</div>
+
+<!-- KAFKA TOPICS -->
+<div id="tab-topics" class="tab-content">
+  <h2>Kafka Topics — Full Reference</h2>
+  <p class="subtitle">Nine topics across three domains. Three in, three created/out, three error/DLQ.</p>
+
+  <table class="method-table">
+    <thead><tr><th>Topic</th><th>Direction</th><th>Producer</th><th>Consumer</th><th>When</th></tr></thead>
+    <tbody>
+      <tr><td>person.create</td><td>IN</td><td>smartdev_file_ingest.py</td><td>person_domain_service.py</td><td>File ingest publishes one event per employee</td></tr>
+      <tr><td>person.created</td><td>OUT</td><td>person_domain_service.py</td><td>employment_domain_service.py, relationship_domain_service.py</td><td>Published after all three writes succeed</td></tr>
+      <tr><td>person.error</td><td>ERROR</td><td>person_domain_service.py</td><td>Monitoring</td><td>L1/L4 reject or write failure</td></tr>
+      <tr><td>employment.create</td><td>IN</td><td>smartdev_file_ingest.py</td><td>employment_domain_service.py</td><td>One event per employment record</td></tr>
+      <tr><td>employment.error</td><td>ERROR</td><td>employment_domain_service.py</td><td>Monitoring</td><td>Reject or write failure</td></tr>
+      <tr><td>employment.dlq</td><td>DLQ</td><td>employment_domain_service.py</td><td>Manual review</td><td>PersonCreated not found after 3 retries</td></tr>
+      <tr><td>relationship.create</td><td>IN</td><td>smartdev_file_ingest.py</td><td>relationship_domain_service.py</td><td>One event per dependent</td></tr>
+      <tr><td>relationship.error</td><td>ERROR</td><td>relationship_domain_service.py</td><td>Monitoring</td><td>Reject or write failure</td></tr>
+      <tr><td>relationship.dlq</td><td>DLQ</td><td>relationship_domain_service.py</td><td>Manual review</td><td>PersonCreated not found after 3 retries</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Event Envelope — Kafka Message Format</h3>
+  <pre><code>{
+  <span class="str">"eventId"</span>:        <span class="str">"evt-144507-person-001"</span>,
+  <span class="str">"eventType"</span>:      <span class="str">"PersonCreate"</span>,
+  <span class="str">"eventVersion"</span>:   <span class="str">"1.0"</span>,
+  <span class="str">"eventTimestamp"</span>: <span class="str">"2026-07-08T14:30:00Z"</span>,
+  <span class="str">"sourceSystem"</span>:   <span class="str">"SmartDev"</span>,
+  <span class="str">"sourceFileName"</span>: <span class="str">"Person.json.pgp"</span>,
+  <span class="str">"recordPosition"</span>: <span class="num">1</span>,
+  <span class="str">"payload"</span>: {
+    <span class="str">"uniqueId"</span>:      <span class="str">"UID-000000144507-PSHB"</span>,
+    <span class="str">"employerCode"</span>:  <span class="str">"PSHB"</span>,
+    <span class="str">"employeeId"</span>:    <span class="str">"000000144507"</span>,
+    <span class="str">"firstName"</span>:     <span class="str">"John"</span>,
+    <span class="str">"lastName"</span>:      <span class="str">"Smith"</span>,
+    ...
+  }
+}</code></pre>
+
+  <h3>PersonCreated Event — What Employment + Relationship Poll For</h3>
+  <pre><code>{
+  <span class="str">"eventType"</span>:   <span class="str">"PersonCreated"</span>,
+  <span class="str">"employeeId"</span>:  <span class="str">"000000144507"</span>,
+  <span class="str">"uniqueId"</span>:    <span class="str">"UID-000000144507-PSHB"</span>,
+  <span class="str">"orgId"</span>:       <span class="str">"PSHB"</span>,
+  <span class="str">"personId"</span>:    <span class="num">12345</span>,             <span class="cm">← HBE person_id assigned after write</span>
+  <span class="str">"cycleId"</span>:     <span class="str">"2026-07-08"</span>,
+  <span class="str">"publishedAt"</span>: <span class="str">"2026-07-08T14:30:01Z"</span>
+}</code></pre>
+</div>
+
+<!-- REPOS + FILES -->
+<div id="tab-repos" class="tab-content">
+  <h2>Repos + Files — Complete Inventory</h2>
+  <p class="subtitle">Three repos, all on branch: feature/biq-data-lineage-framework</p>
+
+  <h3>biq-data-load-file-ingestion-processor</h3>
+  <table class="method-table">
+    <thead><tr><th>File</th><th>What changed</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>config/structural_rules.yaml</td><td>52 L1 rules, enabled flag, new required fields</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>config/config.yaml</td><td>org_id removed, three S3 landing prefixes</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>smartdev_pipeline/smartdev_file_ingest.py</td><td>orgId from payload.employerCode, domain routing</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>utils/l1_structural_validator.py</td><td>Respects enabled flag per rule</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>utils/l4_business_rules.py</td><td>KNOWN_DDL_GAPS cleared, disabled_rules parameter</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>landing/person/BIQ_Person.json</td><td>Client contract — 2 sample records</td><td><span class="badge yellow">Pending approval</span></td></tr>
+      <tr><td>landing/person/BIQ_Person_Events.json</td><td>Kafka event contract — 2 sample records</td><td><span class="badge yellow">Pending approval</span></td></tr>
+      <tr><td>landing/employment/BIQ_Employment.json</td><td>Client contract — 2 sample records</td><td><span class="badge yellow">Pending approval</span></td></tr>
+      <tr><td>landing/employment/BIQ_Employment_Events.json</td><td>Kafka event contract</td><td><span class="badge yellow">Pending approval</span></td></tr>
+      <tr><td>landing/relationship/BIQ_Relationship.json</td><td>Client contract — 3 sample records</td><td><span class="badge yellow">Pending approval</span></td></tr>
+      <tr><td>landing/relationship/BIQ_Relationship_Events.json</td><td>Kafka event contract</td><td><span class="badge yellow">Pending approval</span></td></tr>
+      <tr><td>tests/test_l1_structural_validator.py</td><td>54 tests</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>tests/test_l4_business_rules.py</td><td>42 tests</td><td><span class="badge green">Pushed</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>biq-data-load-processor</h3>
+  <table class="method-table">
+    <thead><tr><th>File</th><th>What changed</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>services/person_domain_service.py</td><td>Kafka consumer, L1+L4, Silver+Gold+HBE, PersonCreated</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>services/employment_domain_service.py</td><td>Kafka consumer, PersonCreated poll, backoff, DLQ</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>services/relationship_domain_service.py</td><td>Kafka consumer, one event per dependent</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>writers/silver_writer.py</td><td>Iceberg raw JSON write</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>writers/domain_writer.py</td><td>Gold Iceberg + HBE Postgres atomic write — all three domains</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>writers/hbe_writer.py</td><td>Moved from biq-data-load-api — HBE write utilities</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>tests/test_silver_writer.py</td><td>27 tests</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>tests/test_gold_writer.py</td><td>35 tests</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>tests/test_person_domain_service.py</td><td>23 tests</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>tests/test_employment_domain_service.py</td><td>33 tests</td><td><span class="badge green">Pushed</span></td></tr>
+      <tr><td>tests/test_relationship_domain_service.py</td><td>35 tests</td><td><span class="badge green">Pushed</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>biq-data-load-api</h3>
+  <table class="method-table">
+    <thead><tr><th>File</th><th>Change</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>api/person_api.py</td><td>DELETED — event-driven, no REST layer</td><td><span class="badge red">Removed</span></td></tr>
+      <tr><td>api/employment_api.py</td><td>DELETED — event-driven, no REST layer</td><td><span class="badge red">Removed</span></td></tr>
+      <tr><td>api/relationship_api.py</td><td>DELETED — event-driven, no REST layer</td><td><span class="badge red">Removed</span></td></tr>
+      <tr><td>tests/test_person_api.py</td><td>DELETED — no REST layer</td><td><span class="badge red">Removed</span></td></tr>
+      <tr><td>tests/test_employment_api.py</td><td>DELETED — no REST layer</td><td><span class="badge red">Removed</span></td></tr>
+      <tr><td>tests/test_relationship_api.py</td><td>DELETED — no REST layer</td><td><span class="badge red">Removed</span></td></tr>
+      <tr><td>utils/hbe_writer.py</td><td>Retained — moved to biq-data-load-processor/writers/</td><td><span class="badge green">Moved</span></td></tr>
+      <tr><td>tests/test_hbe_writer.py</td><td>39 tests — retained</td><td><span class="badge green">Retained</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- UNIT TESTS -->
+<div id="tab-tests" class="tab-content">
+  <h2>Unit Tests — 323 Passing</h2>
+  <p class="subtitle">All tests run locally without PySpark or Kafka. Heavy mocking via sys.modules injection. Run each repo independently to avoid mock pollution between test files.</p>
+
+  <h3>Test Counts by Repo</h3>
+  <table class="method-table">
+    <thead><tr><th>Repo</th><th>File</th><th>Classes</th><th>Tests</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="2">biq-data-load-file-ingestion-processor</td><td>test_l1_structural_validator.py</td><td>TestEnvelopeValidation, TestSharedPayloadRules, TestPersonPositive, TestPersonNegative, TestEmploymentPositive, TestEmploymentNegative, TestRelationshipPositive, TestRelationshipNegative, TestValidateBatch</td><td>54</td></tr>
+      <tr><td>test_l4_business_rules.py</td><td>TestPersonRules, TestEmploymentRules, TestRelationshipRules, TestPostLoadValidation, TestHbeAcceptedCountReconciliation, TestChildCollectionCounts, TestOutcomeResolution, TestDDLGaps, TestDisabledRules</td><td>42</td></tr>
+      <tr><td rowspan="5">biq-data-load-processor</td><td>test_silver_writer.py</td><td>TestTableRouting, TestWriteSilverRecord, TestWriteSilverBatch</td><td>27</td></tr>
+      <tr><td>test_gold_writer.py</td><td>TestDDLHelpers, TestUpsert, TestWriteGoldPerson, TestWriteGoldEmployment, TestWriteGoldRelationship</td><td>35</td></tr>
+      <tr><td>test_person_domain_service.py</td><td>TestL1Validation, TestL4Validation, TestThreeTargetWrites, TestWriteFailure</td><td>23</td></tr>
+      <tr><td>test_employment_domain_service.py</td><td>TestPersonCreatedPoll, TestRequeueAndDLQ, TestL1Validation, TestL4BusinessRules, TestThreeTargetWrites, TestFailureIsolation</td><td>33</td></tr>
+      <tr><td>test_relationship_domain_service.py</td><td>TestContractVerification, TestOneEventPerDependent, TestPersonCreatedPoll, TestRequeueAndDLQ, TestValidation, TestThreeTargetWrites, TestFailureIsolation</td><td>35</td></tr>
+      <tr><td>biq-data-load-api</td><td>test_hbe_writer.py</td><td>HBE write utilities</td><td>39</td></tr>
+      <tr><td colspan="2"><b>Total</b></td><td></td><td><b>288</b></td></tr>
+    </tbody>
+  </table>
+
+  <h3>How to Run</h3>
+  <pre><code><span class="cm"># biq-data-load-file-ingestion-processor</span>
+cd ~/biq-repos/biq-data-load-file-ingestion-processor
+python3 -m pytest tests/test_l1_structural_validator.py tests/test_l4_business_rules.py -v
+
+<span class="cm"># biq-data-load-processor — run each file separately (mock isolation)</span>
+cd ~/biq-repos/biq-data-load-processor
+PYTHONPATH=writers:services python3 -m pytest tests/test_silver_writer.py tests/test_gold_writer.py -v
+PYTHONPATH=writers:services python3 -m pytest tests/test_person_domain_service.py -v
+PYTHONPATH=writers:services python3 -m pytest tests/test_employment_domain_service.py -v
+PYTHONPATH=writers:services python3 -m pytest tests/test_relationship_domain_service.py -v</code></pre>
+</div>
+
+<!-- PENDING + DEVOPS -->
+<div id="tab-todo" class="tab-content">
+  <h2>Pending + DevOps Actions</h2>
+
+  <div class="alert warn">JSON contracts are pending Lori and Subha approval. Do not write directly to HBE until confirmed.</div>
+
+  <h3>Blocked — Waiting on Lori + Subha</h3>
+  <ul class="checklist">
+    <li>JSON contract approval — BIQ_Person.json, BIQ_Employment.json, BIQ_Relationship.json</li>
+    <li>DDL confirmation — department_code and business_unit_code on hbe.person_employment (John)</li>
+  </ul>
+
+  <h3>DevOps — John</h3>
+  <ul class="checklist">
+    <li>Create biq-data-load-api GitLab repo (if not already exists)</li>
+    <li>Create three Kafka topics: person.create · employment.create · relationship.create</li>
+    <li>Create three PersonCreated / error / DLQ topics: person.created · person.error · employment.dlq · relationship.dlq</li>
+    <li>Deploy three domain services as OCP Deployments — one pod per domain service</li>
+    <li>Add OCP ConfigMap with all env vars from the Env Vars tab</li>
+    <li>Add Vault secrets for KAFKA_SASL_USERNAME, KAFKA_SASL_PASSWORD, PG_PASSWORD</li>
+    <li>Add DDL migration — department_code and business_unit_code on hbe.person_employment</li>
+  </ul>
+
+  <h3>Development — Next Steps</h3>
+  <ul class="checklist">
+    <li>Wire domain services to observability — lineage_tracker.py and abc_control.py (see Observability Playbook Job Configuration tab)</li>
+    <li>Add JDBC post-load validation (DL-BR-030) once OCP JDBC catalog table names confirmed</li>
+    <li>Implement per-record offset commit — replace batch commit with per-record for safer partial batch recovery</li>
+    <li>Add Trino query evidence to ABC layer count snapshots</li>
+  </ul>
+
+  <h3>HBE Tables Written by Domain Services</h3>
+  <table class="method-table">
+    <thead><tr><th>HBE Table</th><th>Domain</th><th>Written by</th><th>DDL Status</th></tr></thead>
+    <tbody>
+      <tr><td>hbe.person</td><td>Person</td><td>domain_writer.write_person()</td><td><span class="badge green">Ready</span></td></tr>
+      <tr><td>hbe.person_name</td><td>Person</td><td>domain_writer.write_person()</td><td><span class="badge green">Ready</span></td></tr>
+      <tr><td>hbe.person_addl_attr</td><td>Person</td><td>domain_writer.write_person()</td><td><span class="badge green">Ready</span></td></tr>
+      <tr><td>hbe.person_mbrsh</td><td>Person</td><td>domain_writer.write_person()</td><td><span class="badge green">Ready</span></td></tr>
+      <tr><td>hbe.adr</td><td>Person + Relationship</td><td>domain_writer.write_person() / write_relationship()</td><td><span class="badge green">Ready</span></td></tr>
+      <tr><td>hbe.person_adr</td><td>Person + Relationship</td><td>domain_writer.write_person() / write_relationship()</td><td><span class="badge green">Ready</span></td></tr>
+      <tr><td>hbe.person_email</td><td>Person + Relationship</td><td>domain_writer.write_person() / write_relationship()</td><td><span class="badge green">Ready</span></td></tr>
+      <tr><td>hbe.person_phone</td><td>Person + Relationship</td><td>domain_writer.write_person() / write_relationship()</td><td><span class="badge green">Ready</span></td></tr>
+      <tr><td>hbe.person_employment</td><td>Employment</td><td>domain_writer.write_employment()</td><td><span class="badge yellow">Needs DDL — department_code + business_unit_code</span></td></tr>
+      <tr><td>hbe.person_reln</td><td>Relationship</td><td>domain_writer.write_relationship()</td><td><span class="badge green">Ready</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

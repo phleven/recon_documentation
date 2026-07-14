@@ -1,0 +1,468 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "benefitsiq-sit/hc-plan-management/enrollment_domain",
+  "title": "Enrollment Domain",
+  "description": "Schema definitions for the enrollment domain sourced from the benefitsiq-sit PostgreSQL database (hc_plan_management schema). Covers health plan definitions, issuers, plan variants, enrollment records, member coverage associations, and premium records.",
+  "database": "benefitsiq-sit",
+  "pg_schema": "hc_plan_management",
+  "source_system": "BENEFITIQ",
+  "natural_key": "employeeid",
+  "tables": {
+    "issuer": {
+      "description": "Health insurance issuer (carrier) — the organization that underwrites and administers health plans.",
+      "primary_key": ["issuer_id"],
+      "columns": {
+        "issuer_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key uniquely identifying an issuer."
+        },
+        "issuer_na": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 255,
+          "description": "Legal name of the issuer organization."
+        },
+        "state_cd": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 2,
+          "description": "Two-letter US state code of the issuer's primary operating state."
+        },
+        "issuer_type_cd": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 20,
+          "enum": ["QHP", "MEDICAID", "MEDICARE_ADVANTAGE", "STAND_ALONE_DENTAL"],
+          "description": "Type of issuer for marketplace classification."
+        },
+        "hios_issuer_id": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 10,
+          "description": "CMS Health Insurance Oversight System (HIOS) Issuer ID."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Timestamp of the most recent update; used as the watermark column for incremental extraction."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date — date the row was ingested into Bronze."
+        }
+      }
+    },
+    "hpf_plan": {
+      "description": "Health plan definition record — represents a specific insurance product offered by an issuer.",
+      "primary_key": ["plan_id"],
+      "foreign_keys": {
+        "issuer_id": { "references_table": "issuer", "references_column": "issuer_id" }
+      },
+      "columns": {
+        "plan_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "issuer_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → issuer.issuer_id — plan must reference an issuer."
+        },
+        "plan_na": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 255,
+          "description": "Marketing name of the health plan."
+        },
+        "hios_plan_id": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 14,
+          "description": "CMS HIOS Plan ID in format XXXXXXXXXX-XXXXX (14 chars)."
+        },
+        "metal_level_cd": {
+          "type": "string",
+          "nullable": true,
+          "enum": ["BRONZE", "SILVER", "GOLD", "PLATINUM", "CATASTROPHIC"],
+          "description": "ACA metal tier indicating actuarial value."
+        },
+        "market_type_cd": {
+          "type": "string",
+          "nullable": true,
+          "enum": ["INDIVIDUAL", "SHOP", "MEDICARE", "MEDICAID"],
+          "description": "Market segment in which this plan is offered."
+        },
+        "plan_type_cd": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 10,
+          "enum": ["HMO", "PPO", "EPO", "POS", "HDHP"],
+          "description": "Plan network/benefit design type."
+        },
+        "effv_start_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": false,
+          "description": "Date from which this plan is effective (plan effective date)."
+        },
+        "effv_end_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Date on which this plan expires; NULL = currently active."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    },
+    "plan_variant": {
+      "description": "Plan variant — a specific benefit variant within a plan (e.g. CSR silver variants 73%, 87%, 94%).",
+      "primary_key": ["plan_variant_id"],
+      "foreign_keys": {
+        "plan_id": { "references_table": "hpf_plan", "references_column": "plan_id" }
+      },
+      "columns": {
+        "plan_variant_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "plan_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → hpf_plan.plan_id."
+        },
+        "variant_na": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 100,
+          "description": "Name or label of the plan variant."
+        },
+        "csr_level_cd": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 10,
+          "enum": ["NONE", "CSR_73", "CSR_87", "CSR_94", "CSR_100"],
+          "description": "Cost-sharing reduction (CSR) level for silver plan variants."
+        },
+        "effv_start_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": false,
+          "description": "Date from which this variant is effective."
+        },
+        "effv_end_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Date on which this variant expires; NULL = currently active."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    },
+    "plan_enrt": {
+      "description": "Plan enrollment record — the primary enrollment of a member into a health plan.",
+      "primary_key": ["enrollment_id"],
+      "foreign_keys": {
+        "hpf_plan_id": { "references_table": "hpf_plan", "references_column": "plan_id" }
+      },
+      "columns": {
+        "enrollment_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "employeeid": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 50,
+          "description": "Natural business key shared across person, employment, and enrollment domains."
+        },
+        "member_id": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 50,
+          "description": "Business member identifier — FK to person_management.person_mbrsh.member_id."
+        },
+        "hpf_plan_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → hpf_plan.plan_id — enrollment must reference a plan."
+        },
+        "enrt_status_cd": {
+          "type": "string",
+          "nullable": false,
+          "enum": ["ACTIVE", "TERMED", "CANCELLED", "PENDING", "SUSPENDED"],
+          "description": "Current status of the enrollment."
+        },
+        "effv_start_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": false,
+          "description": "Date the enrollment becomes effective."
+        },
+        "effv_end_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Date the enrollment terminates; NULL = currently enrolled."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    },
+    "plan_enrt_person_mbrsh_ac": {
+      "description": "Association record between a plan enrollment and a person membership — tracks individual member coverage dates within an enrollment.",
+      "primary_key": ["pepma_id"],
+      "foreign_keys": {
+        "enrollment_id": { "references_table": "plan_enrt", "references_column": "enrollment_id" },
+        "member_id": {
+          "references_schema": "person_management",
+          "references_table": "person_mbrsh",
+          "references_column": "member_id"
+        }
+      },
+      "columns": {
+        "pepma_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "employeeid": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 50,
+          "description": "Natural business key aligned with plan_enrt.employeeid."
+        },
+        "enrollment_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → plan_enrt.enrollment_id."
+        },
+        "member_id": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 50,
+          "description": "FK → person_management.person_mbrsh.member_id."
+        },
+        "member_cov_start_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": false,
+          "description": "Date from which this member's coverage under the enrollment begins."
+        },
+        "member_cov_end_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Date on which this member's coverage ends; NULL = currently covered."
+        },
+        "relationship_type_cd": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 20,
+          "enum": ["SUBSCRIBER", "SPOUSE", "DEPENDENT", "DOMESTIC_PARTNER"],
+          "description": "Relationship of this member to the primary subscriber on the enrollment."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    },
+    "plan_enrt_prem": {
+      "description": "Premium record for a plan enrollment — tracks gross premium, APTC subsidy, and net member responsibility amounts.",
+      "primary_key": ["plan_enrt_prem_id"],
+      "foreign_keys": {
+        "enrollment_id": { "references_table": "plan_enrt", "references_column": "enrollment_id" },
+        "plan_id": { "references_table": "hpf_plan", "references_column": "plan_id" }
+      },
+      "columns": {
+        "plan_enrt_prem_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "employeeid": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 50,
+          "description": "Natural business key aligned with plan_enrt.employeeid."
+        },
+        "enrollment_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → plan_enrt.enrollment_id — premium must link to an enrollment."
+        },
+        "member_id": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 50,
+          "description": "FK → person_management.person_mbrsh.member_id."
+        },
+        "plan_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → hpf_plan.plan_id."
+        },
+        "plan_enrt_prem_am": {
+          "type": "number",
+          "nullable": false,
+          "minimum": 0,
+          "maximum": 99999.99,
+          "description": "Gross monthly premium amount before subsidies."
+        },
+        "subsidy_amount": {
+          "type": "number",
+          "nullable": true,
+          "minimum": 0,
+          "maximum": 99999.99,
+          "description": "Advance Premium Tax Credit (APTC) subsidy applied to reduce the premium."
+        },
+        "net_amount": {
+          "type": "number",
+          "nullable": true,
+          "minimum": 0,
+          "maximum": 99999.99,
+          "description": "Net member responsibility after subtracting subsidy_amount from plan_enrt_prem_am."
+        },
+        "premium_effective_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": false,
+          "description": "Date from which this premium record is effective."
+        },
+        "premium_end_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Date on which this premium record expires; NULL = currently active."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    }
+  },
+  "gold_entities": {
+    "enrollment": {
+      "pk_cols": ["enrollment_id"],
+      "source_tables": ["plan_enrt", "plan_enrt_person_mbrsh_ac", "person_mbrsh"],
+      "gold_columns": [
+        "enrollment_id", "member_id", "appln_id", "plan_id",
+        "enrollment_status", "coverage_start_date", "coverage_end_date",
+        "source_system", "record_hash", "run_id",
+        "is_current_flag", "effective_start_ts", "effective_end_ts",
+        "source_event_ts", "created_ts", "run_date"
+      ],
+      "hash_cols": [
+        "member_id", "appln_id", "plan_id", "enrollment_status",
+        "coverage_start_date", "coverage_end_date"
+      ],
+      "iceberg_curr_table": "recon.gold.enrollment_curr",
+      "iceberg_hist_table": "recon.gold.enrollment_hist",
+      "pg_curr_table": "recon.enrollment_curr"
+    },
+    "plan": {
+      "pk_cols": ["plan_id"],
+      "source_tables": ["hpf_plan", "issuer"],
+      "gold_columns": [
+        "plan_id", "issuer_id", "plan_name", "metal_level", "market_type",
+        "effective_date", "expiration_date",
+        "source_system", "record_hash", "run_id",
+        "is_current_flag", "effective_start_ts", "effective_end_ts",
+        "source_event_ts", "created_ts", "run_date"
+      ],
+      "hash_cols": [
+        "issuer_id", "plan_name", "metal_level", "market_type",
+        "effective_date", "expiration_date"
+      ],
+      "iceberg_curr_table": "recon.gold.plan_curr",
+      "iceberg_hist_table": "recon.gold.plan_hist",
+      "pg_curr_table": "recon.plan_curr"
+    },
+    "premium": {
+      "pk_cols": ["enrollment_id"],
+      "source_tables": ["plan_enrt_prem"],
+      "gold_columns": [
+        "premium_id", "enrollment_id", "member_id", "plan_id",
+        "premium_amount", "subsidy_amount", "net_amount", "premium_effective_date",
+        "source_system", "record_hash", "run_id",
+        "is_current_flag", "effective_start_ts", "effective_end_ts",
+        "source_event_ts", "created_ts", "run_date"
+      ],
+      "hash_cols": [
+        "premium_id", "member_id", "plan_id", "premium_amount",
+        "subsidy_amount", "net_amount", "premium_effective_date"
+      ],
+      "iceberg_curr_table": "recon.gold.premium_curr",
+      "iceberg_hist_table": "recon.gold.premium_hist",
+      "pg_curr_table": "recon.premium_curr"
+    }
+  }
+}

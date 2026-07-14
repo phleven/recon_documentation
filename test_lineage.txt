@@ -1,0 +1,69 @@
+
+
+
+STEP 4 - Set up Python virtual environment
+
+  mkdir C:\Users\phleven\biq-nlq
+  cd C:\Users\phleven\biq-nlq
+
+  python -m venv venv
+  venv\Scripts\activate
+
+  pip install fastapi uvicorn psycopg2-binary python-dotenv
+
+  Note: psycopg2-binary may not have a pre-built wheel for Python 3.14 yet.
+  If the install fails run this instead:
+  pip install fastapi uvicorn python-dotenv
+  pip install psycopg2 --no-binary psycopg2
+
+  If that also fails install the PostgreSQL client libraries first:
+  Download from https://www.postgresql.org/download/windows and then retry.
+
+STEP 5 - Copy api_app.py and dashboard files
+  All files are already in GitLab. Since you cloned the repo in Step 1 they are already on your machine. Just copy them to the working folder:
+
+ copy C:\Users\phleven\git\biq-data-load-processor\api\api_app.py C:\Users\phleven\biq-nlq\
+ copy C:\Users\phleven\git\biq-data-load-processor\api\biq_lineage_dashboard.html C:\Users\phleven\biq-nlq\
+ copy C:\Users\phleven\git\biq-data-load-processor\scripts\seed_lineage_data.py C:\Users\phleven\biq-nlq\
+
+STEP 6 - Create .env file
+ C:\Users\phleven\biq-nlq
+
+ Create a file called .env in that folder with this content:
+ PG_HOST=localhost
+ PG_PORT=5433
+ PG_DATABASE=benefitsiq-dev
+ PG_USER=recon
+ PG_PASSWORD=recon
+ ABC_ENABLED=true
+ LOG_LEVEL=DEBUG
+
+STEP 7 - Load test data
+ copy C:\Users\phleven\git\biq-recon-snapshot-job\lineage_tracker.py C:\Users\phleven\biq-nlq\
+
+ cd C:\Users\phleven\biq-nlq
+ venv\Scripts\activate
+ python seed_lineage_data.py
+
+ You should see: Seeded X lineage runs and X ABC runs
+
+STEP 8 - Start the API server
+  cd C:\Users\phleven\biq-nlq\
+  venv\Scripts\activate
+  python -m uvicorn api_app:app --port 8002 2>&1
+
+  You should see:
+  INFO: Uvicorn running on http://127.0.0.1:8002
+  Leave this window open.
+
+
+STEP 9 - Open the dashboard
+
+  Open Chrome and go to:
+  http://127.0.0.1:8002/dashboard
+
+  API docs: http://127.0.0.1:8002/docs
+  Health check: http://127.0.0.1:8002/health
+
+  You should see three tabs: Data Lineage, ABC Balance and Control, Errors and Rejects.
+

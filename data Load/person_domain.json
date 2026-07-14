@@ -1,0 +1,374 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "benefitsiq-sit/person-management/person_domain",
+  "title": "Person Domain",
+  "description": "Schema definitions for the person-management domain sourced from the benefitsiq-sit PostgreSQL database. Covers core person identity, name, membership, eligibility, and additional attributes.",
+  "database": "benefitsiq-sit",
+  "pg_schema": "person_management",
+  "source_system": "BENEFITIQ",
+  "natural_key": "employeeid",
+  "tables": {
+    "person": {
+      "description": "Root person record — one row per unique individual in the system.",
+      "primary_key": ["person_id"],
+      "columns": {
+        "person_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key uniquely identifying a person."
+        },
+        "employeeid": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 50,
+          "description": "Natural business key shared across person, employment, and enrollment domains."
+        },
+        "person_status": {
+          "type": "string",
+          "nullable": false,
+          "enum": ["ACTIVE", "INACTIVE", "TERMED", "PENDING", "SUSPENDED"],
+          "description": "Lifecycle status of the person record."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Timestamp of the most recent update; used as the watermark column for incremental extraction."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date — date the row was ingested into Bronze."
+        }
+      }
+    },
+    "person_name": {
+      "description": "Temporal name record for a person. Multiple rows per person are allowed to track name changes over time.",
+      "primary_key": ["person_name_id"],
+      "foreign_keys": {
+        "person_id": { "references_table": "person", "references_column": "person_id" }
+      },
+      "columns": {
+        "person_name_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "person_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → person.person_id."
+        },
+        "first_name": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 100,
+          "description": "Legal first (given) name — required for member identity."
+        },
+        "last_name": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 100,
+          "description": "Legal last (family) name — required for member identity."
+        },
+        "middle_name": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 100,
+          "description": "Middle name or initial — optional."
+        },
+        "name_type_cd": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 20,
+          "description": "Name type code, e.g. LEGAL, PREFERRED, AKA."
+        },
+        "effective_start_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": false,
+          "description": "Date from which this name record is effective."
+        },
+        "effective_end_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Date on which this name record expires; NULL means currently active."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    },
+    "person_mbrsh": {
+      "description": "Membership association record linking a person to a member ID and application.",
+      "primary_key": ["person_mbrsh_id"],
+      "foreign_keys": {
+        "person_id": { "references_table": "person", "references_column": "person_id" }
+      },
+      "columns": {
+        "person_mbrsh_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "person_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → person.person_id."
+        },
+        "employeeid": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 50,
+          "description": "Natural business key aligned with person.employeeid."
+        },
+        "member_id": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 50,
+          "description": "Business member identifier assigned by the carrier or exchange."
+        },
+        "application_id": {
+          "type": "string",
+          "nullable": false,
+          "maxLength": 50,
+          "description": "Application or intake ID — required for intake traceability."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    },
+    "person_addl_attr": {
+      "description": "Additional demographic and biographic attributes for a person (birth date, gender, etc.).",
+      "primary_key": ["person_addl_attr_id"],
+      "foreign_keys": {
+        "person_id": { "references_table": "person", "references_column": "person_id" }
+      },
+      "columns": {
+        "person_addl_attr_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "person_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → person.person_id."
+        },
+        "birth_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Date of birth — must be a valid date when present."
+        },
+        "gender": {
+          "type": "string",
+          "nullable": true,
+          "enum": ["M", "F", "U", "X"],
+          "description": "Gender code: M=Male, F=Female, U=Unknown, X=Non-binary."
+        },
+        "ssn_last4": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 4,
+          "pattern": "^[0-9]{4}$",
+          "description": "Last 4 digits of Social Security Number — partial PII, stored for identity matching only."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    },
+    "person_elgt": {
+      "description": "Person eligibility record — defines the overall eligibility window for a person.",
+      "primary_key": ["person_elgt_id"],
+      "foreign_keys": {
+        "person_id": { "references_table": "person", "references_column": "person_id" }
+      },
+      "columns": {
+        "person_elgt_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "person_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → person.person_id."
+        },
+        "effv_start_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": false,
+          "description": "Start date of the eligibility window."
+        },
+        "effv_end_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "End date of the eligibility window; NULL = currently eligible."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    },
+    "person_elgt_segm": {
+      "description": "Eligibility segment — a discrete contiguous period within a person eligibility record.",
+      "primary_key": ["person_elgt_segm_id"],
+      "foreign_keys": {
+        "person_elgt_id": { "references_table": "person_elgt", "references_column": "person_elgt_id" }
+      },
+      "columns": {
+        "person_elgt_segm_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "person_elgt_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → person_elgt.person_elgt_id."
+        },
+        "segm_start_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": false,
+          "description": "Start date of this eligibility segment."
+        },
+        "segm_end_dt": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "End date of this segment; NULL = open-ended."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    },
+    "person_elgt_reason": {
+      "description": "Reason codes associated with a person eligibility record (e.g. life event, open enrollment).",
+      "primary_key": ["person_elgt_reason_id"],
+      "foreign_keys": {
+        "person_elgt_id": { "references_table": "person_elgt", "references_column": "person_elgt_id" }
+      },
+      "columns": {
+        "person_elgt_reason_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "Surrogate UUID primary key."
+        },
+        "person_elgt_id": {
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "description": "FK → person_elgt.person_elgt_id."
+        },
+        "reason_cd": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 30,
+          "description": "Eligibility reason code, e.g. OPEN_ENROLL, LIFE_EVENT, NEW_HIRE, TERMED."
+        },
+        "reason_desc": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 255,
+          "description": "Human-readable description of the eligibility reason."
+        },
+        "last_update_ts": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "Watermark timestamp."
+        },
+        "run_date": {
+          "type": "string",
+          "format": "date",
+          "nullable": true,
+          "description": "Pipeline partition date."
+        }
+      }
+    }
+  },
+  "gold_entity": {
+    "name": "member",
+    "pk_cols": ["member_id"],
+    "source_tables": ["person", "person_name", "person_mbrsh", "person_addl_attr"],
+    "gold_columns": [
+      "member_id", "appln_id", "person_id", "first_name", "last_name",
+      "middle_name", "dob", "gender", "person_status",
+      "source_system", "record_hash", "run_id",
+      "is_current_flag", "effective_start_ts", "effective_end_ts",
+      "source_event_ts", "created_ts", "run_date"
+    ],
+    "hash_cols": [
+      "appln_id", "person_id", "first_name", "last_name",
+      "middle_name", "dob", "gender", "person_status"
+    ],
+    "iceberg_curr_table": "recon.gold.member_curr",
+    "iceberg_hist_table": "recon.gold.member_hist",
+    "pg_curr_table": "recon.member_curr"
+  }
+}

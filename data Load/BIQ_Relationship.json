@@ -1,0 +1,142 @@
+[
+  {
+    "uniqueId": "UID-000000144507-PSHB",
+    "employeeId": "000000144507",
+    "employeeSourceAssignmentId": null,
+    "employeeLastName": "Johnson",
+    "employeeFirstName": "James",
+    "relationship": "SP",
+    "nonEmployeeTaxIdNumber": "a1ff5bbca62b304b3e5cad3b9dfba183569ca6e6348aecfa464984ef4ef94cc7",
+    "nonEmployeeTaxIdType": "SSN",
+    "nonEmployeeUsCitizen": true,
+    "lastName": "Johnson",
+    "firstName": "Sarah",
+    "dateOfBirth": "1980-09-10",
+    "dateOfDeath": null,
+    "personType": "NONEMPLOYEE",
+    "gender": "F",
+    "title": "Ms",
+    "suffix": null,
+    "primaryAddressType": "H",
+    "primaryPhoneType": "P",
+    "primaryEmailType": "P",
+    "preferredCommunication": "E",
+    "addresses": [
+      {
+        "addressType": "H",
+        "streetAddress": "123 Main St",
+        "addressLine2": "Apt 4B",
+        "city": "Washington",
+        "state": "DC",
+        "zipCode": "20001",
+        "foreignAddressLine": null,
+        "county": null,
+        "country": "US"
+      }
+    ],
+    "emails": [
+      {
+        "emailType": "P",
+        "email": "sarah.johnson@example.com",
+        "comment": null
+      }
+    ],
+    "phones": [
+      {
+        "phoneType": "P",
+        "countryCode": "+1",
+        "phoneNumber": "5718765432",
+        "comment": null
+      }
+    ]
+  },
+  {
+    "uniqueId": "UID-000000144507-PSHB",
+    "employeeId": "000000144507",
+    "employeeSourceAssignmentId": null,
+    "employeeLastName": "Johnson",
+    "employeeFirstName": "James",
+    "relationship": "C",
+    "nonEmployeeTaxIdNumber": "7ded744196abac0c822aba7b40c09320241319dd718129772c2ae50b92cfd82b",
+    "nonEmployeeTaxIdType": "SSN",
+    "nonEmployeeUsCitizen": true,
+    "lastName": "Johnson",
+    "firstName": "Emily",
+    "dateOfBirth": "2010-04-05",
+    "dateOfDeath": null,
+    "personType": "NONEMPLOYEE",
+    "gender": "F",
+    "title": null,
+    "suffix": null,
+    "primaryAddressType": "H",
+    "primaryPhoneType": null,
+    "primaryEmailType": null,
+    "preferredCommunication": null,
+    "addresses": [
+      {
+        "addressType": "H",
+        "streetAddress": "123 Main St",
+        "addressLine2": "Apt 4B",
+        "city": "Washington",
+        "state": "DC",
+        "zipCode": "20001",
+        "foreignAddressLine": null,
+        "county": null,
+        "country": "US"
+      }
+    ],
+    "emails": [],
+    "phones": []
+  },
+  {
+    "uniqueId": "UID-000000316395-PSHB",
+    "employeeId": "000000316395",
+    "employeeSourceAssignmentId": null,
+    "employeeLastName": "Williams",
+    "employeeFirstName": "Maria",
+    "relationship": "DP",
+    "nonEmployeeTaxIdNumber": "16363067e841c1df856f975832a36eed5e38c381f7c0adb93dda679edba4181f",
+    "nonEmployeeTaxIdType": "SSN",
+    "nonEmployeeUsCitizen": true,
+    "lastName": "Garcia",
+    "firstName": "Carlos",
+    "dateOfBirth": "1984-11-30",
+    "dateOfDeath": null,
+    "personType": "NONEMPLOYEE",
+    "gender": "M",
+    "title": "Mr",
+    "suffix": null,
+    "primaryAddressType": "H",
+    "primaryPhoneType": "P",
+    "primaryEmailType": "P",
+    "preferredCommunication": "E",
+    "addresses": [
+      {
+        "addressType": "H",
+        "streetAddress": "456 Oak Ave",
+        "addressLine2": null,
+        "city": "Chicago",
+        "state": "IL",
+        "zipCode": "60601",
+        "foreignAddressLine": null,
+        "county": null,
+        "country": "US"
+      }
+    ],
+    "emails": [
+      {
+        "emailType": "P",
+        "email": "carlos.garcia@example.com",
+        "comment": null
+      }
+    ],
+    "phones": [
+      {
+        "phoneType": "P",
+        "countryCode": "+1",
+        "phoneNumber": "3129876543",
+        "comment": null
+      }
+    ]
+  }
+]
