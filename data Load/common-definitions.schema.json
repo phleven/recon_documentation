@@ -1,0 +1,451 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benefitsiq.local/contracts/smartdev/v2/common-definitions.schema.json",
+  "title": "SmartDev common JSON contract definitions - Final",
+  "type": "object",
+  "$defs": {
+    "productModule": {
+      "type": "string",
+      "const": "SmartDev",
+      "description": "Product module. Final review direction: validations/configuration must be grouped by product module."
+    },
+    "orgId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9._:-]{1,64}$",
+      "description": "Mandatory source-provided organization identifier. Do not inject this only in the adapter."
+    },
+    "clientId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9._:-]{1,64}$"
+    },
+    "sourceSystem": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "System that produced the JSON payload."
+    },
+    "uniqueId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9._:-]{1,64}$",
+      "description": "Client-defined unique identifier. Final review direction: this is usually employee ID or Tax ID, and the project team owns translation."
+    },
+    "sourceAssignmentId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 12,
+      "pattern": "^[A-Za-z0-9]{1,12}$",
+      "description": "Optional SmartDev assignment identifier. Use only when needed for assignment/job disambiguation."
+    },
+    "taxIdValue": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]{9}$",
+          "description": "Raw 9-digit SSN/ITIN with no dashes."
+        },
+        {
+          "type": "string",
+          "minLength": 32,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9+/=_:-]{32,256}$",
+          "description": "Encrypted or HMAC-protected value accepted through client configuration."
+        },
+        {
+          "type": "null",
+          "description": "Allowed for SmartDev because Tax ID is optional for SmartDev."
+        }
+      ],
+      "description": "SmartDev Tax ID value. Final review direction: support raw or encrypted values; Tax ID must be nullable for SmartDev."
+    },
+    "taxIdValueFormat": {
+      "type": "string",
+      "enum": [
+        "RAW",
+        "HMAC",
+        "ENCRYPTED",
+        "NOT_PROVIDED"
+      ],
+      "description": "Declares how the Tax ID value should be interpreted. Encryption support is configuration-driven."
+    },
+    "taxIdType": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "SSN",
+        "ITIN",
+        null
+      ],
+      "description": "Tax ID type. Null is allowed when Tax ID value is not provided."
+    },
+    "dateIso": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$",
+      "description": "ISO date format YYYY-MM-DD for JSON/Kafka contracts."
+    },
+    "nullableDateIso": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$",
+      "description": "Nullable ISO date format YYYY-MM-DD."
+    },
+    "personType": {
+      "type": "string",
+      "enum": [
+        "EMPLOYEE",
+        "NONEMPLOYEE"
+      ]
+    },
+    "gender": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "M",
+        "F",
+        "U",
+        null
+      ],
+      "description": "Use BIQ reference values."
+    },
+    "maritalStatus": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "M",
+        "D",
+        "S",
+        "W",
+        "O",
+        null
+      ],
+      "description": "Use BIQ reference values."
+    },
+    "titleCode": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "01",
+        "02",
+        "03",
+        "04",
+        null
+      ],
+      "description": "Use Reference Table Title codes."
+    },
+    "languageCode": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "001",
+        "002",
+        null
+      ],
+      "description": "Use Reference Table Language codes."
+    },
+    "commPreference": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "E",
+        "P",
+        null
+      ],
+      "description": "Use BIQ reference values."
+    },
+    "addressType": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "H",
+        "W",
+        "A",
+        null
+      ],
+      "description": "Use BIQ reference values."
+    },
+    "phoneType": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "W",
+        "P",
+        "A",
+        null
+      ],
+      "description": "Use BIQ reference values."
+    },
+    "emailType": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "W",
+        "P",
+        "A",
+        null
+      ],
+      "description": "Use BIQ reference values."
+    },
+    "relationshipCode": {
+      "type": "string",
+      "enum": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "11",
+        "12",
+        "13"
+      ],
+      "description": "Use Data Files Reference Table relationship codes."
+    },
+    "employmentStatus": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "ACT",
+        "TERM",
+        "LOA",
+        "DTH",
+        "DIS",
+        "DIV",
+        null
+      ],
+      "description": "Optional for SmartDev. Use BIQ reference values if provided."
+    },
+    "jobType": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "FT",
+        "PT",
+        null
+      ]
+    },
+    "positionStatus": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        null
+      ]
+    },
+    "workAuthorizationStatus": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        null
+      ]
+    },
+    "actionCode": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "HIR",
+        "RHIR",
+        "LOA",
+        "RTW",
+        "XFER",
+        "TRM",
+        "HRS",
+        "CLS",
+        "LOC",
+        "PAY",
+        "RET",
+        "DTH",
+        "DIV",
+        "DIS",
+        "CONT",
+        null
+      ],
+      "description": "Optional for SmartDev. Use BIQ reference values if provided."
+    },
+    "reasonCode": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^(0[1-9]|[1-5][0-9]|6[0-4])$",
+      "description": "Optional for SmartDev. Use BIQ reference values if provided."
+    },
+    "employerCode": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4,
+      "pattern": "^[A-Za-z0-9]{1,4}$",
+      "description": "BenefitsIQ employer code from the Data Files source specification. This is separate from product module and client lineage metadata."
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "addressType": {
+          "$ref": "common-definitions.schema.json#/$defs/addressType"
+        },
+        "streetAddress": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200
+        },
+        "addressLine2": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200
+        },
+        "city": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 50
+        },
+        "state": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 4
+        },
+        "zipCode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 10
+        },
+        "foreignAddressLine": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 500
+        },
+        "county": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 4
+        },
+        "country": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 2
+        }
+      }
+    },
+    "emailContact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "emailType": {
+          "$ref": "common-definitions.schema.json#/$defs/emailType"
+        },
+        "email": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "email",
+          "maxLength": 254
+        },
+        "comment": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200
+        }
+      }
+    },
+    "phoneContact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "phoneType": {
+          "$ref": "common-definitions.schema.json#/$defs/phoneType"
+        },
+        "countryCode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 6
+        },
+        "phoneNumber": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 15
+        },
+        "comment": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200
+        }
+      }
+    }
+  }
+}

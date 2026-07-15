@@ -1,0 +1,255 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benefitsiq.local/contracts/smartdev/v2/person.schema.json",
+  "title": "SmartDev Person JSON Contract - Final",
+  "description": "Person record contract after final review decisions. Tax ID is optional for SmartDev and can be raw or encrypted by client configuration.",
+  "type": "object",
+  "additionalProperties": false,
+  "x-contractStage": "domain-json-record-before-kafka-envelope",
+  "x-reviewDecisionsApplied": [
+    "Validations/configurations grouped by product module.",
+    "orgId is required from source payload.",
+    "uniqueId is client-defined, usually employee ID or Tax ID.",
+    "Tax ID is optional for SmartDev.",
+    "Tax ID can be raw or encrypted based on client configuration.",
+    "Reference codes are used for title, language, and other controlled values.",
+    "Validated against Data Files: employerCode and contact collections are represented in the contract."
+  ],
+  "required": [
+    "productModule",
+    "orgId",
+    "sourceSystem",
+    "uniqueId",
+    "employeeUniqueId",
+    "firstName",
+    "lastName",
+    "dateOfBirth",
+    "personType",
+    "employerCode"
+  ],
+  "properties": {
+    "productModule": {
+      "$ref": "common-definitions.schema.json#/$defs/productModule"
+    },
+    "orgId": {
+      "$ref": "common-definitions.schema.json#/$defs/orgId"
+    },
+    "clientId": {
+      "$ref": "common-definitions.schema.json#/$defs/clientId"
+    },
+    "sourceSystem": {
+      "$ref": "common-definitions.schema.json#/$defs/sourceSystem"
+    },
+    "loadId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 80,
+      "description": "Optional load/cycle identifier for lineage and error investigation."
+    },
+    "sourceFileName": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 255,
+      "description": "Optional file name for lineage. File naming should include file type and timestamp."
+    },
+    "uniqueId": {
+      "$ref": "common-definitions.schema.json#/$defs/uniqueId"
+    },
+    "employeeUniqueId": {
+      "$ref": "common-definitions.schema.json#/$defs/uniqueId"
+    },
+    "sourceAssignmentId": {
+      "$ref": "common-definitions.schema.json#/$defs/sourceAssignmentId"
+    },
+    "firstName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "middleName": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 100
+    },
+    "lastName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "taxIdNumber": {
+      "$ref": "common-definitions.schema.json#/$defs/taxIdValue"
+    },
+    "taxIdValueFormat": {
+      "$ref": "common-definitions.schema.json#/$defs/taxIdValueFormat"
+    },
+    "taxIdType": {
+      "$ref": "common-definitions.schema.json#/$defs/taxIdType"
+    },
+    "dateOfBirth": {
+      "$ref": "common-definitions.schema.json#/$defs/dateIso"
+    },
+    "dateOfDeath": {
+      "$ref": "common-definitions.schema.json#/$defs/nullableDateIso"
+    },
+    "personType": {
+      "const": "EMPLOYEE"
+    },
+    "usCitizen": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "gender": {
+      "$ref": "common-definitions.schema.json#/$defs/gender"
+    },
+    "maritalStatus": {
+      "$ref": "common-definitions.schema.json#/$defs/maritalStatus"
+    },
+    "maritalStatusEffectiveDate": {
+      "$ref": "common-definitions.schema.json#/$defs/nullableDateIso"
+    },
+    "title": {
+      "$ref": "common-definitions.schema.json#/$defs/titleCode"
+    },
+    "suffix": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 2
+    },
+    "languagePreference": {
+      "$ref": "common-definitions.schema.json#/$defs/languageCode"
+    },
+    "preferredCommunication": {
+      "$ref": "common-definitions.schema.json#/$defs/commPreference"
+    },
+    "primaryAddressType": {
+      "$ref": "common-definitions.schema.json#/$defs/addressType"
+    },
+    "primaryPhoneType": {
+      "$ref": "common-definitions.schema.json#/$defs/phoneType"
+    },
+    "primaryEmailType": {
+      "$ref": "common-definitions.schema.json#/$defs/emailType"
+    },
+    "disabilityStatus": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "disabilityStatusEffectiveDate": {
+      "$ref": "common-definitions.schema.json#/$defs/nullableDateIso"
+    },
+    "veteranStatus": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "veteranStatusEffectiveDate": {
+      "$ref": "common-definitions.schema.json#/$defs/nullableDateIso"
+    },
+    "medicareEligible": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "medicareEligDate": {
+      "$ref": "common-definitions.schema.json#/$defs/nullableDateIso"
+    },
+    "originalHireDate": {
+      "$ref": "common-definitions.schema.json#/$defs/nullableDateIso"
+    },
+    "adjustedHireDate": {
+      "$ref": "common-definitions.schema.json#/$defs/nullableDateIso"
+    },
+    "terminationDate": {
+      "$ref": "common-definitions.schema.json#/$defs/nullableDateIso"
+    },
+    "participatingGroup": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 20
+    },
+    "jobType": {
+      "$ref": "common-definitions.schema.json#/$defs/jobType"
+    },
+    "jobTitle": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 100
+    },
+    "workAuthorizationStatus": {
+      "$ref": "common-definitions.schema.json#/$defs/workAuthorizationStatus"
+    },
+    "supervisorName": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 150
+    },
+    "supervisorEmail": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "email",
+      "maxLength": 120
+    },
+    "annuitantClaimNumber": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 20
+    },
+    "employerCode": {
+      "$ref": "common-definitions.schema.json#/$defs/employerCode"
+    },
+    "addresses": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "common-definitions.schema.json#/$defs/address"
+      },
+      "description": "Optional address collection from Data Files."
+    },
+    "emails": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "common-definitions.schema.json#/$defs/emailContact"
+      },
+      "description": "Optional email collection from Data Files."
+    },
+    "phones": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "common-definitions.schema.json#/$defs/phoneContact"
+      },
+      "description": "Optional phone collection from Data Files."
+    }
+  }
+}
