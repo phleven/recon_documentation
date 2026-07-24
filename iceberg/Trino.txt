@@ -1,0 +1,10 @@
+Configure Trino in DBeaver
+
+1. DBeaver --> Database --> New Database Connection --> Trino
+   a. Host = biq-analytics-recon-trino-dev.apps.ocp.npd-biq.idap-oc-usaws.com
+   b. Port = 443
+   c. Database = silver
+   d. User name = admin
+   c. Password = 
+   
+   Then download Trino driver.
