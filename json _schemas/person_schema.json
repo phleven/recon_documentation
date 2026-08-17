@@ -1,0 +1,416 @@
+{
+  "manifest": {
+    "recordType": {
+      "description": "Identifies the record as a header record.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "fileName": {
+      "description": "Unique file name for each type of file, such as Person, Employment, or Relationship.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "fileType": {
+      "description": "Identifies the file type. The file type must match the extension of the file itself.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "sourceId": {
+      "description": "Unique identifier associated with the vendor sending the file.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "createDate": {
+      "description": "File creation date. Defaults to the effective date if none is provided.",
+      "required or optional": "R",
+      "dataType": "date",
+      "null": false
+    },
+    "createTimestamp": {
+      "description": "File creation timestamp. Defaults to the timestamp of the effective date if none is provided.",
+      "required or optional": "R",
+      "dataType": "time",
+      "null": false
+    },
+    "periodBeginDate": {
+      "description": "Marks the beginning of the data period. Typically defaults to the first day of the previous month unless otherwise defined by the client.",
+      "required or optional": "O",
+      "dataType": "date",
+      "null": true
+    },
+    "periodEndDate": {
+      "description": "Marks the ending of the data period. Typically defaults to the last day of the previous month unless otherwise defined by the client.",
+      "required or optional": "O",
+      "dataType": "date",
+      "null": true
+    },
+    "recordCount": {
+      "description": "Number of person records in the file.",
+      "required or optional": "R",
+      "dataType": "number",
+      "null": false
+    }
+  },
+  "Persons": {
+    "person": {
+      "uniqueId": {
+        "description": "Primary participant identifier. This could be the SSN or Employee ID as determined by the project team.",
+        "required or optional": "R",
+        "dataType": "string",
+        "null": false
+      },
+      "firstName": {
+        "description": "Person's first name. Must reflect the employee's legal name as maintained on the employee's employment record.",
+        "required or optional": "R",
+        "dataType": "string",
+        "null": false
+      },
+      "middleName": {
+        "description": "Person's middle name. Must reflect the employee's legal name as maintained on the employee's employment record.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "lastName": {
+        "description": "Person's last name. Must reflect the employee's legal name as maintained on the employee's employment record.",
+        "required or optional": "R",
+        "dataType": "string",
+        "null": false
+      },
+      "taxIdNumber": {
+        "description": "SSN or ITIN of the person being reported. SSN is required unless applicable foreign-national reporting rules allow the SSN to be omitted.",
+        "required or optional": "R",
+        "dataType": "string",
+        "null": true
+      },
+      "taxIdType": {
+        "description": "Identifies whether the reported tax identification number is an SSN or ITIN.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "usCitizen": {
+        "description": "Indicates whether the individual is a US citizen.",
+        "required or optional": "O",
+        "dataType": "boolean",
+        "null": true
+      },
+      "dateOfBirth": {
+        "description": "Represents the person's date of birth.",
+        "required or optional": "R",
+        "dataType": "date",
+        "null": false
+      },
+      "dateOfDeath": {
+        "description": "Represents the person's date of death, when applicable.",
+        "required or optional": "O",
+        "dataType": "date",
+        "null": true
+      },
+      "personType": {
+        "description": "Represents the type of person. Available options are defined in the Person Type valid values.",
+        "required or optional": "R",
+        "dataType": "string",
+        "null": false
+      },
+      "gender": {
+        "description": "Represents the person's gender. Available options are defined in the Gender valid values.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "maritalStatus": {
+        "description": "Represents the person's marital status. Available options are defined in the Marital Status valid values.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "maritalStatusEffectiveDate": {
+        "description": "Represents the date as of which the person's marital status is effective.",
+        "required or optional": "O",
+        "dataType": "date",
+        "null": true
+      },
+      "title": {
+        "description": "Represents the person's title. Available options are defined in the Title valid values.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "languagePreference": {
+        "description": "Represents the person's language preference. Available options are defined in the Language valid values.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "suffix": {
+        "description": "Represents the person's name suffix.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "disabilityStatus": {
+        "description": "Represents the disability status of the person.",
+        "required or optional": "O",
+        "dataType": "boolean",
+        "null": true
+      },
+      "disabilityStatusEffectiveDate": {
+        "description": "Represents the date as of which the person's disability status is effective.",
+        "required or optional": "O",
+        "dataType": "date",
+        "null": true
+      },
+      "veteranStatus": {
+        "description": "Represents the person's veteran status.",
+        "required or optional": "O",
+        "dataType": "boolean",
+        "null": true
+      },
+      "veteranStatusEffectiveDate": {
+        "description": "Represents the date as of which the person's veteran status is effective.",
+        "required or optional": "O",
+        "dataType": "date",
+        "null": true
+      },
+      "medicareEligible": {
+        "description": "Indicates whether the person is eligible for Medicare.",
+        "required or optional": "O",
+        "dataType": "boolean",
+        "null": true
+      },
+      "medicareEligDate": {
+        "description": "Represents the date as of which the person's Medicare eligibility is effective.",
+        "required or optional": "O",
+        "dataType": "date",
+        "null": true
+      },
+      "primaryAddressType": {
+        "description": "Indicates the person's primary address type.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "primaryPhoneType": {
+        "description": "Indicates the person's primary phone type.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "primaryEmailType": {
+        "description": "Indicates the person's primary email type.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "preferredCommunication": {
+        "description": "Indicates the person's preferred communication method.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "addresses": {
+        "description": "Nested address information associated with the person. The source supports work, home, and alternate address records.",
+        "required or optional": "O",
+        "dataType": "object",
+        "null": true,
+        "address": {
+          "addressType": {
+            "description": "Indicates the type of address, such as home, work, or alternate.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "streetAddress": {
+            "description": "Address line 1.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "addressLine2": {
+            "description": "Address line 2.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "city": {
+            "description": "City associated with the address.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "state": {
+            "description": "State associated with the address.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "zipCode": {
+            "description": "ZIP or postal code associated with the address.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "foreignAddressLine": {
+            "description": "Foreign address information when the country code is other than USA.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "county": {
+            "description": "County associated with the address.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "country": {
+            "description": "Country associated with the address.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          }
+        }
+      },
+      "emails": {
+        "description": "Nested email information associated with the person. The source supports work, personal, and alternate email records.",
+        "required or optional": "O",
+        "dataType": "object",
+        "null": true,
+        "email": {
+          "emailType": {
+            "description": "Type of email address, such as personal, work, or alternate.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "email": {
+            "description": "Email address associated with the person.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "comment": {
+            "description": "Additional comment associated with the email address.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          }
+        }
+      },
+      "phones": {
+        "description": "Nested phone information associated with the person. The source supports work, personal, and alternate phone records.",
+        "required or optional": "O",
+        "dataType": "object",
+        "null": true,
+        "phone": {
+          "phoneType": {
+            "description": "Type of phone number, such as personal, work, or alternate.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "countryCode": {
+            "description": "Country calling code associated with the phone number.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "phoneNumber": {
+            "description": "Phone number associated with the person.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          },
+          "comment": {
+            "description": "Additional comment associated with the phone number.",
+            "required or optional": "O",
+            "dataType": "string",
+            "null": true
+          }
+        }
+      },
+      "employeeId": {
+        "description": "Unique employee identifier. This is the internal payroll employee number.",
+        "required or optional": "R",
+        "dataType": "string",
+        "null": false
+      },
+      "sourceAssignmentId": {
+        "description": "Assignment key used to identify a job when an employee has the same employee ID across multiple jobs under the same employer.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "employerCode": {
+        "description": "Unique employer code generated by BenefitsIQ and used by the employer when providing the file.",
+        "required or optional": "R",
+        "dataType": "string",
+        "null": false
+      },
+      "originalHireDate": {
+        "description": "Original hire date of the employee.",
+        "required or optional": "O",
+        "dataType": "date",
+        "null": true
+      },
+      "adjustedHireDate": {
+        "description": "Adjusted hire date of the employee, when applicable.",
+        "required or optional": "O",
+        "dataType": "date",
+        "null": true
+      },
+      "terminationDate": {
+        "description": "Termination date of the employee, when applicable.",
+        "required or optional": "O",
+        "dataType": "date",
+        "null": true
+      },
+      "participatingGroupCode": {
+        "description": "Code identifying the employee's participating group.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "jobType": {
+        "description": "Type of job or employment.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "jobTitle": {
+        "description": "Job title of the employee.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "workAuthorizationStatus": {
+        "description": "Work authorization status of the employee.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "supervisorName": {
+        "description": "Name of the employee's supervisor.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "supervisorEmail": {
+        "description": "Email address of the employee's supervisor.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      },
+      "annuitantClaimNumber": {
+        "description": "Annuitant claim number associated with the employee.",
+        "required or optional": "O",
+        "dataType": "string",
+        "null": true
+      }
+    }
+  }
+}

@@ -1,0 +1,725 @@
+{
+  "schema_version": "1.0.0",
+  "domain": "Person",
+  "categories": [
+    {
+      "category": "STRUCTURAL",
+      "rule_configs": [
+        {
+          "rule_config_id": "RC-PER-001",
+          "rule_type": "PATTERN",
+          "enabled": true,
+          "execution_type": "FRAMEWORK",
+          "validations": [
+            {
+              "validation_id": "VAL-00020",
+              "error_code": "ERR-PER-00020",
+              "columns": [
+                "employerCode"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`employerCode` RLIKE '^[A-Za-z0-9]{1,4}$'",
+              "error_message": "Value must match the business-approved pattern"
+            },
+            {
+              "validation_id": "VAL-00028",
+              "error_code": "ERR-PER-00028",
+              "columns": [
+                "uniqueId"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`uniqueId` RLIKE '^[A-Za-z0-9._:-]{1,64}$'",
+              "error_message": "uniqueId must contain only letters, numbers, period (.), underscore (_), colon (:), or hyphen (-), and be 1 to 64 characters long."
+            },
+            {
+              "validation_id": "VAL-00036",
+              "error_code": "ERR-PER-00036",
+              "columns": [
+                "taxIdNumber"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`taxIdNumber` IS NULL OR `taxIdNumber` RLIKE '^[0-9]{9}$' OR `taxIdNumber` RLIKE '^[A-Za-z0-9+/=_:-]{32,256}$'",
+              "error_message": "taxIdNumber must be null, a 9-digit raw Tax ID, or an encrypted/HMAC value of 32 to 256 permitted characters."
+            },
+            {
+              "validation_id": "VAL-00137",
+              "error_code": "ERR-PER-00137",
+              "columns": [
+                "employeeUniqueId"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`employeeUniqueId` RLIKE \"^[A-Za-z0-9._:-]{1,64}$\"",
+              "error_message": "employeeUniqueId must match the json pattern"
+            },
+            {
+              "validation_id": "VAL-00140",
+              "error_code": "ERR-PER-00140",
+              "columns": [
+                "sourceAssignmentId"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`sourceAssignmentId` IS NULL OR `sourceAssignmentId` RLIKE '^[A-Za-z0-9]{1,12}$'",
+              "error_message": "sourceAssignmentId must be null or contain 1 to 12 alphanumeric characters only."
+            }
+          ]
+        },
+        {
+          "rule_config_id": "RC-PER-002",
+          "rule_type": "MAX_LENGTH",
+          "enabled": true,
+          "execution_type": "FRAMEWORK",
+          "validations": [
+            {
+              "validation_id": "VAL-00023",
+              "error_code": "ERR-PER-00023",
+              "columns": [
+                "sourceFileName"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`sourceFileName` IS NULL OR (length(`sourceFileName`) <= 255)",
+              "error_message": "sourceFileName must not exceed 255 characters."
+            },
+            {
+              "validation_id": "VAL-00027",
+              "error_code": "ERR-PER-00027",
+              "columns": [
+                "uniqueId"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "length(`uniqueId`) <= 64",
+              "error_message": "uniqueId must not exceed 64 characters."
+            },
+            {
+              "validation_id": "VAL-00030",
+              "error_code": "ERR-PER-00030",
+              "columns": [
+                "firstName"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`firstName` IS NULL OR (length(`firstName`) <= 60)",
+              "error_message": "firstName must not exceed 60 characters."
+            },
+            {
+              "validation_id": "VAL-00032",
+              "error_code": "ERR-PER-00032",
+              "columns": [
+                "middleName"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`middleName` IS NULL OR (length(`middleName`) <= 100)",
+              "error_message": "middleName must not exceed 100 characters."
+            },
+            {
+              "validation_id": "VAL-00034",
+              "error_code": "ERR-PER-00034",
+              "columns": [
+                "lastName"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "length(`lastName`) <= 100",
+              "error_message": "lastName must not exceed 100 characters."
+            },
+            {
+              "validation_id": "VAL-00067",
+              "error_code": "ERR-PER-00067",
+              "columns": [
+                "suffix"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`suffix` IS NULL OR (length(`suffix`) <= 2)",
+              "error_message": "suffix must not exceed 2 characters."
+            },
+            {
+              "validation_id": "VAL-00105",
+              "error_code": "ERR-PER-00105",
+              "columns": [
+                "addresses[].addressLine2"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`addresses` IS NULL OR forall(`addresses`, address_item -> (address_item.`addressLine2` IS NULL OR (length(address_item.`addressLine2`) <= 200)))",
+              "error_message": "addresses[].addressLine2 must not exceed 200 characters."
+            },
+            {
+              "validation_id": "VAL-00115",
+              "error_code": "ERR-PER-00115",
+              "columns": [
+                "addresses[].foreignAddressLine"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`addresses` IS NULL OR forall(`addresses`, address_item -> (address_item.`foreignAddressLine` IS NULL OR (length(address_item.`foreignAddressLine`) <= 500)))",
+              "error_message": "addresses[].foreignAddressLine must not exceed 500 characters."
+            },
+            {
+              "validation_id": "VAL-00118",
+              "error_code": "ERR-PER-00118",
+              "columns": [
+                "addresses[].county"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`addresses` IS NULL OR forall(`addresses`, address_item -> (address_item.`county` IS NULL OR (length(address_item.`county`) <= 4)))",
+              "error_message": "addresses[].county must not exceed 4 characters."
+            },
+            {
+              "validation_id": "VAL-00131",
+              "error_code": "ERR-PER-00131",
+              "columns": [
+                "phones[].countryCode"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`phones` IS NULL OR forall(`phones`, phone_item -> (phone_item.`countryCode` IS NULL OR (length(phone_item.`countryCode`) <= 6)))",
+              "error_message": "phones[].countryCode must not exceed 6 characters."
+            },
+            {
+              "validation_id": "VAL-00134",
+              "error_code": "ERR-PER-00134",
+              "columns": [
+                "phones[].phoneNumber"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`phones` IS NULL OR forall(`phones`, phone_item -> (phone_item.`phoneNumber` IS NULL OR (length(phone_item.`phoneNumber`) <= 15)))",
+              "error_message": "phones[].phoneNumber must not exceed 15 characters."
+            },
+            {
+              "validation_id": "VAL-00139",
+              "error_code": "ERR-PER-00139",
+              "columns": [
+                "sourceAssignmentId"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`sourceAssignmentId` IS NULL OR (length(`sourceAssignmentId`) <= 12)",
+              "error_message": "sourceAssignmentId must not exceed 12 characters."
+            },
+            {
+              "validation_id": "VAL-00152",
+              "error_code": "ERR-PER-00152",
+              "columns": [
+                "participatingGroup"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`participatingGroup` IS NULL OR (length(`participatingGroup`) <= 20)",
+              "error_message": "participatingGroup must not exceed 20 characters."
+            },
+            {
+              "validation_id": "VAL-00158",
+              "error_code": "ERR-PER-00158",
+              "columns": [
+                "jobTitle"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`jobTitle` IS NULL OR (length(`jobTitle`) <= 100)",
+              "error_message": "jobTitle must not exceed 100 characters."
+            },
+            {
+              "validation_id": "VAL-00163",
+              "error_code": "ERR-PER-00163",
+              "columns": [
+                "supervisorName"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`supervisorName` IS NULL OR (length(`supervisorName`) <= 150)",
+              "error_message": "supervisorName must not exceed 150 characters."
+            },
+            {
+              "validation_id": "VAL-00165",
+              "error_code": "ERR-PER-00165",
+              "columns": [
+                "supervisorEmail"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`supervisorEmail` IS NULL OR (length(`supervisorEmail`) <= 120)",
+              "error_message": "supervisorEmail must not exceed 120 characters."
+            },
+            {
+              "validation_id": "VAL-00168",
+              "error_code": "ERR-PER-00168",
+              "columns": [
+                "annuitantClaimNumber"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`annuitantClaimNumber` IS NULL OR (length(`annuitantClaimNumber`) <= 20)",
+              "error_message": "annuitantClaimNumber must not exceed 20 characters."
+            },
+            {
+              "validation_id": "VAL-00177",
+              "error_code": "ERR-PER-00177",
+              "columns": [
+                "addresses[].city"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`addresses` IS NULL OR forall(`addresses`, address_item -> (address_item.`city` IS NULL OR (length(address_item.`city`) <= 50)))",
+              "error_message": "addresses[].city must not exceed 50 characters."
+            },
+            {
+              "validation_id": "VAL-00179",
+              "error_code": "ERR-PER-00179",
+              "columns": [
+                "addresses[].country"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`addresses` IS NULL OR forall(`addresses`, address_item -> (address_item.`country` IS NULL OR (length(address_item.`country`) <= 2)))",
+              "error_message": "addresses[].country must not exceed 2 characters."
+            },
+            {
+              "validation_id": "VAL-00181",
+              "error_code": "ERR-PER-00181",
+              "columns": [
+                "addresses[].state"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`addresses` IS NULL OR forall(`addresses`, address_item -> (address_item.`state` IS NULL OR (length(address_item.`state`) <= 4)))",
+              "error_message": "addresses[].state must not exceed 4 characters."
+            },
+            {
+              "validation_id": "VAL-00183",
+              "error_code": "ERR-PER-00183",
+              "columns": [
+                "addresses[].streetAddress"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`addresses` IS NULL OR forall(`addresses`, address_item -> (address_item.`streetAddress` IS NULL OR (length(address_item.`streetAddress`) <= 200)))",
+              "error_message": "addresses[].streetAddress must not exceed 200 characters."
+            },
+            {
+              "validation_id": "VAL-00185",
+              "error_code": "ERR-PER-00185",
+              "columns": [
+                "addresses[].zipCode"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`addresses` IS NULL OR forall(`addresses`, address_item -> (address_item.`zipCode` IS NULL OR (length(address_item.`zipCode`) <= 10)))",
+              "error_message": "addresses[].zipCode must not exceed 10 characters."
+            },
+            {
+              "validation_id": "VAL-00187",
+              "error_code": "ERR-PER-00187",
+              "columns": [
+                "emails[].email"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`emails` IS NULL OR forall(`emails`, email_item -> (email_item.`email` IS NULL OR (length(email_item.`email`) <= 254)))",
+              "error_message": "emails[].email must not exceed 254 characters."
+            }
+          ]
+        },
+        {
+          "rule_config_id": "RC-PER-003",
+          "rule_type": "REFERENCE_VALUES",
+          "enabled": true,
+          "execution_type": "CUSTOM_LOGIC",
+          "validations": [
+            {
+              "validation_id": "VAL-00040",
+              "error_code": "ERR-PER-00040",
+              "columns": [
+                "taxIdType"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "taxIdType must be one of: SSN, ITIN."
+            },
+            {
+              "validation_id": "VAL-00051",
+              "error_code": "ERR-PER-00051",
+              "columns": [
+                "personType"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "personType must be one of EMPLOYEE, NONEMPLOYEE. In person.schema.json personType is missing NONEMPLOYEE constant. common-definitions.schema.json has both."
+            },
+            {
+              "validation_id": "VAL-00053",
+              "error_code": "ERR-PER-00053",
+              "columns": [
+                "gender"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "gender must be one of : 'M', 'F', 'U'"
+            },
+            {
+              "validation_id": "VAL-00056",
+              "error_code": "ERR-PER-00056",
+              "columns": [
+                "maritalStatus"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "maritalStatus must be one of: M, D, S, W, O."
+            },
+            {
+              "validation_id": "VAL-00062",
+              "error_code": "ERR-PER-00062",
+              "columns": [
+                "title"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "Values should be from the allowed list present in JSON"
+            },
+            {
+              "validation_id": "VAL-00065",
+              "error_code": "ERR-PER-00065",
+              "columns": [
+                "languagePreference"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "languagepreference must be one of : \"001\", \"002\","
+            },
+            {
+              "validation_id": "VAL-00089",
+              "error_code": "ERR-PER-00089",
+              "columns": [
+                "primaryAddressType"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "primaryAddressType must be one of: H, W, A."
+            },
+            {
+              "validation_id": "VAL-00092",
+              "error_code": "ERR-PER-00092",
+              "columns": [
+                "primaryPhoneType"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "primaryPhoneType must be one of: W, P, A."
+            },
+            {
+              "validation_id": "VAL-00095",
+              "error_code": "ERR-PER-00095",
+              "columns": [
+                "primaryEmailType"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "primaryEmailType must be one of: W, P, A."
+            },
+            {
+              "validation_id": "VAL-00098",
+              "error_code": "ERR-PER-00098",
+              "columns": [
+                "preferredCommunication"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "Validate against the allowed list of values in Json schema"
+            },
+            {
+              "validation_id": "VAL-00101",
+              "error_code": "ERR-PER-00101",
+              "columns": [
+                "addresses[].addressType"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "addressType = W,H or A."
+            },
+            {
+              "validation_id": "VAL-00124",
+              "error_code": "ERR-PER-00124",
+              "columns": [
+                "emails[].emailType"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "emails[].emailType must be one of: W, P, A."
+            },
+            {
+              "validation_id": "VAL-00129",
+              "error_code": "ERR-PER-00129",
+              "columns": [
+                "phones[].phoneType"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "phones[].phoneType must be one of: W, P, A."
+            },
+            {
+              "validation_id": "VAL-00156",
+              "error_code": "ERR-PER-00156",
+              "columns": [
+                "jobType"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "jobType must be one of: FT, PT."
+            },
+            {
+              "validation_id": "VAL-00161",
+              "error_code": "ERR-PER-00161",
+              "columns": [
+                "workAuthorizationStatus"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "workAuthorizationStatus must be one of: 01, 02, 03, 04, 05, 06."
+            },
+            {
+              "validation_id": "VAL-00193",
+              "error_code": "ERR-PER-00193",
+              "columns": [
+                "taxIdValueFormat"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "taxIdValueFormat must be one of: \"RAW\", \"HMAC\", \"ENCRYPTED\", \"NOT_PROVIDED\"."
+            },
+            {
+              "validation_id": "VAL-00113",
+              "error_code": "ERR-PER-00113",
+              "columns": [
+                "addresses[].zipCode"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "Value must match workbook example code list or Reference Table where defined; codes should be compared after trim and case normalization only where business-approved."
+            },
+            {
+              "validation_id": "VAL-00116",
+              "error_code": "ERR-PER-00116",
+              "columns": [
+                "addresses[].foreignAddressLine"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "Value must match workbook example code list or Reference Table where defined; codes should be compared after trim and case normalization only where business-approved."
+            }
+          ]
+        },
+        {
+          "rule_config_id": "RC-PER-004",
+          "rule_type": "DATE_FORMAT",
+          "enabled": true,
+          "execution_type": "FRAMEWORK",
+          "validations": [
+            {
+              "validation_id": "VAL-00045",
+              "error_code": "ERR-PER-00045",
+              "columns": [
+                "dateOfBirth"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`dateOfBirth` IS NULL OR (`dateOfBirth` RLIKE '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$' AND to_date(`dateOfBirth`, 'yyyy-MM-dd') IS NOT NULL)",
+              "error_message": "dateOfBirth must be a valid calendar date in yyyy-MM-dd format."
+            },
+            {
+              "validation_id": "VAL-00048",
+              "error_code": "ERR-PER-00048",
+              "columns": [
+                "dateOfDeath"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`dateOfDeath` IS NULL OR (`dateOfDeath` RLIKE '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$' AND to_date(`dateOfDeath`, 'yyyy-MM-dd') IS NOT NULL)",
+              "error_message": "dateOfDeath must be a valid calendar date in yyyy-MM-dd format."
+            },
+            {
+              "validation_id": "VAL-00060",
+              "error_code": "ERR-PER-00060",
+              "columns": [
+                "maritalStatusEffectiveDate"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`maritalStatusEffectiveDate` IS NULL OR (`maritalStatusEffectiveDate` RLIKE '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$' AND to_date(`maritalStatusEffectiveDate`, 'yyyy-MM-dd') IS NOT NULL)",
+              "error_message": "maritalStatusEffectiveDate must be a valid calendar date in yyyy-MM-dd format."
+            },
+            {
+              "validation_id": "VAL-00074",
+              "error_code": "ERR-PER-00074",
+              "columns": [
+                "disabilityStatusEffectiveDate"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`disabilityStatusEffectiveDate` IS NULL OR (`disabilityStatusEffectiveDate` RLIKE '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$' AND to_date(`disabilityStatusEffectiveDate`, 'yyyy-MM-dd') IS NOT NULL)",
+              "error_message": "disabilityStatusEffectiveDate must be a valid calendar date in yyyy-MM-dd format."
+            },
+            {
+              "validation_id": "VAL-00081",
+              "error_code": "ERR-PER-00081",
+              "columns": [
+                "veteranStatusEffectiveDate"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`veteranStatusEffectiveDate` IS NULL OR (`veteranStatusEffectiveDate` RLIKE '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$' AND to_date(`veteranStatusEffectiveDate`, 'yyyy-MM-dd') IS NOT NULL)",
+              "error_message": "veteranStatusEffectiveDate must be a valid calendar date in yyyy-MM-dd format."
+            },
+            {
+              "validation_id": "VAL-00086",
+              "error_code": "ERR-PER-00086",
+              "columns": [
+                "medicareEligDate"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`medicareEligDate` IS NULL OR (`medicareEligDate` RLIKE '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$' AND to_date(`medicareEligDate`, 'yyyy-MM-dd') IS NOT NULL)",
+              "error_message": "medicareEligDate must be a valid calendar date in yyyy-MM-dd format."
+            },
+            {
+              "validation_id": "VAL-00144",
+              "error_code": "ERR-PER-00144",
+              "columns": [
+                "originalHireDate"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`originalHireDate` IS NULL OR (`originalHireDate` RLIKE '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$' AND to_date(`originalHireDate`, 'yyyy-MM-dd') IS NOT NULL)",
+              "error_message": "originalHireDate must be a valid calendar date in yyyy-MM-dd format."
+            },
+            {
+              "validation_id": "VAL-00147",
+              "error_code": "ERR-PER-00147",
+              "columns": [
+                "adjustedHireDate"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`adjustedHireDate` IS NULL OR (`adjustedHireDate` RLIKE '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$' AND to_date(`adjustedHireDate`, 'yyyy-MM-dd') IS NOT NULL)",
+              "error_message": "adjustedHireDate must be a valid calendar date in yyyy-MM-dd format."
+            },
+            {
+              "validation_id": "VAL-00150",
+              "error_code": "ERR-PER-00150",
+              "columns": [
+                "terminationDate"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`terminationDate` IS NULL OR (`terminationDate` RLIKE '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$' AND to_date(`terminationDate`, 'yyyy-MM-dd') IS NOT NULL)",
+              "error_message": "terminationDate must be a valid calendar date in yyyy-MM-dd format."
+            }
+          ]
+        },
+        {
+          "rule_config_id": "RC-PER-005",
+          "rule_type": "EMAIL_FORMAT",
+          "enabled": true,
+          "execution_type": "FRAMEWORK",
+          "validations": [
+            {
+              "validation_id": "VAL-00126",
+              "error_code": "ERR-PER-00126",
+              "columns": [
+                "emails[].email"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "`emails` IS NULL OR forall(`emails`, email_item -> (email_item.`email` IS NULL OR email_item.`email` RLIKE '^[A-Za-z0-9.!#$%&''*+/=?^_`{|}~-]+@[A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)+$'))",
+              "error_message": "emails[].email must be in correct format."
+            },
+            {
+              "validation_id": "VAL-00166",
+              "error_code": "ERR-PER-00166",
+              "columns": [
+                "supervisorEmail"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": "supervisorEmail IS NULL OR supervisorEmail RLIKE '^[A-Za-z0-9.!#$%&''*+/=?^_`{|}~-]+@[A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)+$'",
+              "error_message": "supervisorEmail must be null or a valid email address."
+            }
+          ]
+        },
+        {
+          "rule_config_id": "RC-PER-006",
+          "rule_type": "COMPOSITE_REQUIRED",
+          "enabled": true,
+          "execution_type": "CUSTOM_LOGIC",
+          "validations": [
+            {
+              "validation_id": "VAL-00059",
+              "error_code": "ERR-PER-00059",
+              "columns": [
+                "employeeUniqueId",
+                "sourceAssignmentId",
+                "employerCode"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "SmartDEV rows with Personal-related fields must link to an existing or same-file Person identity for Employee ID/employer."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "DATA_QUALITY",
+      "rule_configs": [
+        {
+          "rule_config_id": "RC-PER-101",
+          "rule_type": "CROSS_FIELD",
+          "enabled": true,
+          "execution_type": "FRAMEWORK",
+          "validations": [
+            {
+              "validation_id": "VAL-00172",
+              "error_code": "ERR-PER-00172",
+              "columns": [
+                "adjustedHireDate",
+                "originalHireDate",
+                "terminationDate"
+              ],
+              "rule_condition": "`terminationDate` IS NOT NULL",
+              "rule_expression": " (`originalHireDate` IS NULL OR to_date(`originalHireDate`, 'yyyy-MM-dd') <= to_date(`terminationDate`, 'yyyy-MM-dd')) AND (`adjustedHireDate` IS NULL OR to_date(`adjustedHireDate`, 'yyyy-MM-dd') <= to_date(`terminationDate`, 'yyyy-MM-dd'))",
+              "error_message": "Original Hire Date and Adjusted Hire Date must not be after Termination Date when Termination Date is populated."
+            }
+          ]
+        },
+        {
+          "rule_config_id": "RC-PER-102",
+          "rule_type": "ADDRESS_VERIFICATION",
+          "enabled": true,
+          "execution_type": "CUSTOM_LOGIC",
+          "validations": [
+            {
+              "validation_id": "VAL-00174",
+              "error_code": "ERR-PER-00174",
+              "columns": [
+                "addresses[].country",
+                "addresses[].foreignAddressLine",
+                "addresses[].state",
+                "addresses[].zipCode"
+              ],
+              "rule_condition": "TRUE",
+              "rule_expression": null,
+              "error_message": "Address country/state/zip combination should be valid; foreign address line is required when country is not US/USA if local address fields cannot represent the address."
+            }
+          ]
+        },
+        {
+          "rule_config_id": "RC-PER-103",
+          "rule_type": "COLLECTION_CARDINALITY",
+          "enabled": true,
+          "execution_type": "CUSTOM_LOGIC",
+          "validations": [
+            {
+              "validation_id": "VAL-00194",
+              "error_code": "ERR-PER-00194",
+              "columns": [
+                "addresses[].addressType"
+              ],
+              "rule_condition": "`addresses` IS NOT NULL AND size(filter(`addresses`, a -> a.`addressType` IS NOT NULL AND trim(a.`addressType`) <> '')) > 0",
+              "rule_expression": null,
+              "error_message": "Person address count validation"
+            },
+            {
+              "validation_id": "VAL-00058",
+              "error_code": "ERR-PER-00058",
+              "columns": [
+                "phones[].phoneType"
+              ],
+              "rule_condition": "`phones` IS NOT NULL AND size(filter(`phones`, p -> p.`phoneType` IS NOT NULL AND trim(p.`phoneType`) <> '')) > 0",
+              "rule_expression": null,
+              "error_message": "Person child collection count mismatch"
+            },
+            {
+              "validation_id": "VAL-00173",
+              "error_code": "ERR-PER-00173",
+              "columns": [
+                "emails[].emailType"
+              ],
+              "rule_condition": "`emails` IS NOT NULL AND size(filter(`emails`, e -> e.`email` IS NOT NULL AND trim(e.`email`) <> '')) > 0",
+              "rule_expression": null,
+              "error_message": "Email values should be unique within a person contact collection by email type unless business-approved duplicates are allowed."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
