@@ -1,0 +1,212 @@
+{
+  "manifest": {
+    "recordType": {
+      "description": "Identifies the record as a header record.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "fileName": {
+      "description": "Unique file name for this file type.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "fileType": {
+      "description": "Identifies the file type.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "sourceId": {
+      "description": "Unique identifier associated with the source sending the file.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "createDate": {
+      "description": "File creation date.",
+      "required or optional": "R",
+      "dataType": "date",
+      "null": false
+    },
+    "createTimestamp": {
+      "description": "File creation timestamp.",
+      "required or optional": "R",
+      "dataType": "time",
+      "null": false
+    },
+    "periodBeginDate": {
+      "description": "Beginning of the data period.",
+      "required or optional": "O",
+      "dataType": "date",
+      "null": true
+    },
+    "periodEndDate": {
+      "description": "End of the data period.",
+      "required or optional": "O",
+      "dataType": "date",
+      "null": true
+    },
+    "recordCount": {
+      "description": "Number of body records in the file.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    }
+  },
+  "ReportedWorks": {
+    "reportedWork": {
+      "description": "Collection of reported work records contained in the file.",
+      "required or optional": "R",
+      "dataType": "collection",
+      "null": false,
+      "item": {
+        "employerCode": {
+          "description": "Represents employer code. Source note: From inbound Employer_code is coming but we are maintaining employer_id instead",
+          "required or optional": "R",
+          "dataType": "integer",
+          "null": false
+        },
+        "unitsWorkedDate": {
+          "description": "Represents units worked date. Source note: do we need report date here as we already added same in reported_pay table? Question for product team: can they pass report_date and pay_date separately?",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "unitsWorkedPeriodBeginDate": {
+          "description": "Represents units worked period begin date.",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "unitsWorkedPeriodEndDate": {
+          "description": "Represents units worked period end date.",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "unitsWorkedUpdateType": {
+          "description": "Represents units worked update type.",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "typeOfUnitsWorked": {
+          "description": "Represents type of units worked.",
+          "required or optional": "R",
+          "dataType": "decimal",
+          "null": false
+        },
+        "unitsCategory": {
+          "description": "Represents units category.",
+          "required or optional": "R",
+          "dataType": "decimal",
+          "null": false
+        },
+        "fullTimeUnits": {
+          "description": "Represents full time units. Source note: Column available in Inbound File but not in ER, where are we planning to store the data? This is present in scheduled comp table as Scheduled Full Time Units",
+          "required or optional": "R",
+          "dataType": "time",
+          "null": false
+        },
+        "unitsToWorkFrequency": {
+          "description": "Represents units to work frequency. Source note: Column available in Inbound File but not in ER, where are we planning to store the data? this is present in scheduleed comp table as Scheduled Full Time Units Frequency",
+          "required or optional": "R",
+          "dataType": "decimal",
+          "null": false
+        },
+        "actualUnitsWorked": {
+          "description": "Represents actual units worked.",
+          "required or optional": "R",
+          "dataType": "decimal",
+          "null": false
+        },
+        "uniqueIdentifier": {
+          "description": "Represents unique identifier. Source note: Column available in Inbound File but not in ER, where are we planning to store the data? This is already present in DataFile and NewStructure of Employment_History do we still need to store it in Pay_History",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "sourceAssignmentId": {
+          "description": "Represents source assignment id. Source note: Column available in Inbound File but not in ER, where are we planning to store the data? This is already present in DataFile and NewStructure of Employment_History do we still need to store it in Pay_History",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "lastName": {
+          "description": "Represents last name. Source note: Column available in Inbound File but not in ER, where are we planning to store the data?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "firstName": {
+          "description": "Represents first name. Source note: Column available in Inbound File but not in ER, where are we planning to store the data?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "comment": {
+          "description": "Represents comment. Source note: Column available in Inbound File but not in ER, where are we planning to store the data?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "allowanceType": {
+          "description": "Represents allowance type. Source note: Column available in Inbound File but not in ER, where are we planning to store the data? No reference data available for Allownace Type",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "allowanceBalance": {
+          "description": "Represents allowance balance. Source note: Column available in Inbound File but not in ER, where are we planning to store the data?",
+          "required or optional": "R",
+          "dataType": "decimal",
+          "null": false
+        },
+        "planId": {
+          "description": "Represents plan id. Source note: Column available in Inbound File but not in ER, where are we planning to store the data?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "contributionDate": {
+          "description": "Represents contribution date. Source note: Column available in Inbound File but not in ER, where are we planning to store the data?",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "type": {
+          "description": "Represents type. Source note: Column available in Inbound File but not in ER, where are we planning to store the data?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "participationGroupCode": {
+          "description": "Represents participation group code. Source note: Column available in Inbound File but not in ER, where are we planning to store the data? Should we have pariticipating_group_id in new struture?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "status": {
+          "description": "Represents status. Source note: Column available in Inbound File but not in ER, where are we planning to store the data?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "periodBeginDate": {
+          "description": "Represents period begin date. Source note: Available in DF but not in ER. Mentioned in Contribution data inbound, is this field related to some other date columns?",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "periodEndDate": {
+          "description": "Represents period end date. Source note: Available in DF but not in ER. Mentioned in Contribution data inbound, is this field related to some other date columns?",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        }
+      }
+    }
+  }
+}

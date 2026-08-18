@@ -1,0 +1,43 @@
+{
+  "manifest": {
+    "recordType": "H",
+    "fileName": "REPORTED_WORK_08182026.json",
+    "fileType": "REPORTED_WORK",
+    "sourceId": "VENDOR001",
+    "createDate": "08/18/2026",
+    "createTimestamp": "10:30:00",
+    "periodBeginDate": "08/01/2026",
+    "periodEndDate": "08/31/2026",
+    "recordCount": "1"
+  },
+  "ReportedWorks": {
+    "reportedWork": [
+      {
+        "employerCode": 1,
+        "unitsWorkedDate": "08/01/2026",
+        "unitsWorkedPeriodBeginDate": "08/01/2026",
+        "unitsWorkedPeriodEndDate": "08/01/2026",
+        "unitsWorkedUpdateType": "08/01/2026",
+        "typeOfUnitsWorked": 100,
+        "unitsCategory": 100,
+        "fullTimeUnits": "10:30:00",
+        "unitsToWorkFrequency": 100,
+        "actualUnitsWorked": 100,
+        "uniqueIdentifier": "000000123456",
+        "sourceAssignmentId": "000000000012",
+        "lastName": "Sample Name",
+        "firstName": "Sample Name",
+        "comment": "Sample comment",
+        "allowanceType": "CODE01",
+        "allowanceBalance": 100,
+        "planId": "000000000018",
+        "contributionDate": "08/01/2026",
+        "type": "CODE01",
+        "participationGroupCode": "CODE01",
+        "status": "ACTIVE",
+        "periodBeginDate": "08/01/2026",
+        "periodEndDate": "08/01/2026"
+      }
+    ]
+  }
+}

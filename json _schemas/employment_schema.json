@@ -1,0 +1,410 @@
+{
+  "manifest": {
+    "recordType": {
+      "description": "Identifies the record as a header record.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "fileName": {
+      "description": "Unique file name for this file type.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "fileType": {
+      "description": "Identifies the file type.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "sourceId": {
+      "description": "Unique identifier associated with the source sending the file.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    },
+    "createDate": {
+      "description": "File creation date.",
+      "required or optional": "R",
+      "dataType": "date",
+      "null": false
+    },
+    "createTimestamp": {
+      "description": "File creation timestamp.",
+      "required or optional": "R",
+      "dataType": "time",
+      "null": false
+    },
+    "periodBeginDate": {
+      "description": "Beginning of the data period.",
+      "required or optional": "O",
+      "dataType": "date",
+      "null": true
+    },
+    "periodEndDate": {
+      "description": "End of the data period.",
+      "required or optional": "O",
+      "dataType": "date",
+      "null": true
+    },
+    "recordCount": {
+      "description": "Number of body records in the file.",
+      "required or optional": "R",
+      "dataType": "string",
+      "null": false
+    }
+  },
+  "Employments": {
+    "employment": {
+      "description": "Collection of employment records contained in the file.",
+      "required or optional": "R",
+      "dataType": "collection",
+      "null": false,
+      "item": {
+        "employerCode": {
+          "description": "Represents employer code. Source note: We have mapped DF.Employer_Code with ER.employer_id, assuming that inbound team will fill this data while processing. Yes",
+          "required or optional": "R",
+          "dataType": "integer",
+          "null": false
+        },
+        "effectiveDate": {
+          "description": "Represents effective date.",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "jobType": {
+          "description": "Represents job type.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "jobTitle": {
+          "description": "Represents job title. Source note: Will this be a reference-table data value, or will it be plain text (an open-ended field)? Not ref data as per data file. Keep plain text",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "jobClassification": {
+          "description": "Represents job classification. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "positionStatus": {
+          "description": "Represents position status.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "positionNumber": {
+          "description": "Represents position number. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "fullTimePercentage": {
+          "description": "Represents full time percentage. Source note: What does it mean? Will ask this question",
+          "required or optional": "R",
+          "dataType": "time",
+          "null": false
+        },
+        "status": {
+          "description": "Represents status. Source note: Can we use the action_reason_assoc table primary key instead? No",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "updateType": {
+          "description": "Represents update type.",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "action": {
+          "description": "Represents action. Source note: Can we use the action_reason_assoc table primary key instead? No",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "reason": {
+          "description": "Represents reason. Source note: Can we use the action_reason_assoc table primary key instead? No",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "department": {
+          "description": "Represents department.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "businessUnit": {
+          "description": "Represents business unit. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "region": {
+          "description": "Represents region. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "workLocation": {
+          "description": "Represents work location. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "dutyStationStateCode": {
+          "description": "Represents duty station state code. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "dutyStationCityCode": {
+          "description": "Represents duty station city code. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "supervisorName": {
+          "description": "Represents supervisor name.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "supervisorEmail": {
+          "description": "Represents supervisor email.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "unionAffiliation": {
+          "description": "Represents union affiliation.",
+          "required or optional": "R",
+          "dataType": "boolean",
+          "null": false
+        },
+        "unionCode": {
+          "description": "Represents union code. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "participatingGroupCode": {
+          "description": "Represents participating group code. Source note: Column available in Inbound file but not in ER. Where are we planning to store the data? Are we planning to have a separate master table for this? Yes",
+          "required or optional": "R",
+          "dataType": "integer",
+          "null": false
+        },
+        "payPlan": {
+          "description": "Represents pay plan. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "grade": {
+          "description": "Represents grade. Source note: Please confirm whether Grade and Grade Band represent the same concept. Also, a reference table is not present for this field in the Inbound DataFile. Assumed to be same but ref data not present",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "payLevel": {
+          "description": "Represents pay level. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "salaryRateCode": {
+          "description": "Represents salary rate code. Source note: Reference table is not present for this field in the Inbound DataFile.",
+          "required or optional": "R",
+          "dataType": "decimal",
+          "null": false
+        },
+        "exempt": {
+          "description": "Represents exempt.",
+          "required or optional": "R",
+          "dataType": "boolean",
+          "null": false
+        },
+        "tenure": {
+          "description": "Represents tenure. Source note: The reference-table section says “TBD by project team.” Do we need to discuss and finalize it with the inbound processing team? Do Tenure and tenure_status_code represent the same concept? It is currently assumed that they represent the same concept.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "annuitantClaimNumber": {
+          "description": "Represents annuitant claim number.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "pshbEligibilityStatus": {
+          "description": "Represents pshb eligibility status.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "pshbEligibilityEffectiveDate": {
+          "description": "Represents pshb eligibility effective date.",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "payrollOfficeId": {
+          "description": "Represents payroll office id.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "pshbRateScheduleCode": {
+          "description": "Represents pshb rate schedule code. Source note: The reference-table section says “TBD by project team.” Do we need to discuss and finalize it with the inbound processing team?",
+          "required or optional": "R",
+          "dataType": "decimal",
+          "null": false
+        },
+        "pshbRateCategoryCode": {
+          "description": "Represents pshb rate category code. Source note: The reference-table section says “TBD by project team.” Do we need to discuss and finalize it with the inbound processing team?",
+          "required or optional": "R",
+          "dataType": "decimal",
+          "null": false
+        },
+        "preTaxHealthBenefitIndicator": {
+          "description": "Represents pre tax health benefit indicator.",
+          "required or optional": "R",
+          "dataType": "boolean",
+          "null": false
+        },
+        "terminationNoaCode": {
+          "description": "Represents termination noa code. Source note: The reference-table section says “TBD by project team.” Do we need to discuss and finalize it with the inbound processing team?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "rsActionCode": {
+          "description": "Represents rs action code. Source note: The reference-table section says “TBD by project team.” Do we need to discuss and finalize it with the inbound processing team?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "owcpRollType": {
+          "description": "Represents owcp roll type. Source note: The reference-table section says “TBD by project team.” Do we need to discuss and finalize it with the inbound processing team?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "owcpTerminationIndicator": {
+          "description": "Represents owcp termination indicator.",
+          "required or optional": "R",
+          "dataType": "boolean",
+          "null": false
+        },
+        "owcpTransferInIndicator": {
+          "description": "Represents owcp transfer in indicator.",
+          "required or optional": "R",
+          "dataType": "boolean",
+          "null": false
+        },
+        "transferInEffectiveDate": {
+          "description": "Represents transfer in effective date.",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "owcpReinstatementIndicator": {
+          "description": "Represents owcp reinstatement indicator.",
+          "required or optional": "R",
+          "dataType": "boolean",
+          "null": false
+        },
+        "reinstatementDate": {
+          "description": "Represents reinstatement date.",
+          "required or optional": "R",
+          "dataType": "date",
+          "null": false
+        },
+        "reEmployedAnnuitantIndicator": {
+          "description": "Represents re employed annuitant indicator.",
+          "required or optional": "R",
+          "dataType": "boolean",
+          "null": false
+        },
+        "employeeId": {
+          "description": "Represents employee id.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "uniqueIdentifier": {
+          "description": "Represents unique identifier.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "sourceAssignmentId": {
+          "description": "Represents source assignment id.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "division": {
+          "description": "Represents division.",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "exempt2": {
+          "description": "Represents exempt2. Source note: Column available in Inbound File but not in ER. This field has no stated purpose in the Inbound File. We already have an Exempt field common to the DataFile and ER. Do we also need to retain Exempt 2 in our database? Assumed exemptind and expemptdesc saved separately",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "exempt3": {
+          "description": "Represents exempt3. Source note: Column available in Inbound File but not in ER. This field has no stated purpose in the Inbound File. We already have an Exempt field common to the DataFile and ER. Do we also need to retain Exempt 3 in our database? Assumed exemptind and expemptdesc saved separately",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "dutyStationCountyCode": {
+          "description": "Represents duty station county code. Source note: Column available in Inbound File but not in ER. Required. DB addition needed Reference table is not present for this field in the Inbound DataFile. Do we need to retain this field in our database?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "specialEmployeeCode": {
+          "description": "Represents special employee code. Source note: Column available in Inbound File but not in ER. Required. DB addition needed Reference table is not present for this field in the Inbound DataFile. Do we need to retain this field in our database?",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "expatriate": {
+          "description": "Represents expatriate. Source note: This field is only present in the Inbound File. Do we need it in our database? - Yes, needed",
+          "required or optional": "R",
+          "dataType": "boolean",
+          "null": false
+        },
+        "workAuthorizationStatus": {
+          "description": "Represents work authorization status. Source note: Column available in Inbound File but not in ER. Where are we planning to store the data? - Yes, needed",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        },
+        "officer": {
+          "description": "Represents officer. Source note: Column available in Inbound File but not in ER. Where are we planning to store the data? - Yes, needed",
+          "required or optional": "R",
+          "dataType": "boolean",
+          "null": false
+        },
+        "ficaCode": {
+          "description": "Represents fica code. Source note: Column available in Inbound File but not in ER. Where are we planning to store the data? The reference-table section says “TBD by project team.” Do we need to discuss and finalize it with the inbound processing team? - Yes, needed",
+          "required or optional": "R",
+          "dataType": "string",
+          "null": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "manifest": {
+    "recordType": "H",
+    "fileName": "CONTRIBUTION_08182026.json",
+    "fileType": "CONTRIBUTION",
+    "sourceId": "VENDOR001",
+    "createDate": "08/18/2026",
+    "createTimestamp": "10:30:00",
+    "periodBeginDate": "08/01/2026",
+    "periodEndDate": "08/31/2026",
+    "recordCount": "1"
+  },
+  "Contributions": {
+    "contribution": [
+      {
+        "employerCode": 1,
+        "periodBeginDate": "08/01/2026",
+        "periodEndDate": "08/01/2026",
+        "contributionDate": "08/01/2026",
+        "type": "CODE01",
+        "participationGroupCode": 6,
+        "status": "ACTIVE",
+        "rate": 100,
+        "preTaxEmployeeContribution": 100,
+        "postTaxEmployeeContribution": 100,
+        "interestAmount": 100,
+        "wages": 100,
+        "employerContribution": 100,
+        "currency": "USD",
+        "uniqueIdentifier": "000000123456",
+        "sourceAssignmentId": "000000000016",
+        "lastName": "Sample Name",
+        "comment": "Sample comment",
+        "planId": "000000000019",
+        "periodBeginDate2": "08/01/2026",
+        "periodEndDate2": "08/01/2026"
+      }
+    ]
+  }
+}
