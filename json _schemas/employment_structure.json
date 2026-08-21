@@ -1,0 +1,465 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/employment.schema.json",
+  "title": "Employment Domain",
+  "description": "JSON Schema for the Employment domain.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "File-level metadata.",
+      "properties": {
+        "recordType": {
+          "description": "Record type indicator.",
+          "type": "string"
+        },
+        "fileName": {
+          "description": "Source file name.",
+          "type": "string"
+        },
+        "fileType": {
+          "description": "File type identifier.",
+          "type": "string"
+        },
+        "sourceId": {
+          "description": "Source system or vendor identifier.",
+          "type": "string"
+        },
+        "createDate": {
+          "description": "File creation date in MM/DD/YYYY format.",
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+        },
+        "createTimestamp": {
+          "description": "File creation time in HH:MM:SS format.",
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$"
+        },
+        "periodBeginDate": {
+          "description": "Beginning date of the reporting period in MM/DD/YYYY format.",
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+        },
+        "periodEndDate": {
+          "description": "Ending date of the reporting period in MM/DD/YYYY format.",
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+        },
+        "recordCount": {
+          "description": "Number of employment records contained in the file.",
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "recordType",
+        "fileName",
+        "fileType",
+        "sourceId",
+        "createDate",
+        "createTimestamp",
+        "periodBeginDate",
+        "periodEndDate",
+        "recordCount"
+      ]
+    },
+    "Employments": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Employment domain data.",
+      "properties": {
+        "employment": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Employment record.",
+          "properties": {
+            "uniqueId": {
+              "description": "Unique identifier associated with the person.",
+              "type": "string"
+            },
+            "sourceAssignmentId": {
+              "description": "Assignment identifier provided by the source system.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "employeeId": {
+              "description": "Employee identifier.",
+              "type": "string"
+            },
+            "employerCode": {
+              "description": "Employer identifier or code.",
+              "type": "string"
+            },
+            "lastName": {
+              "description": "Employee last name.",
+              "type": "string"
+            },
+            "firstName": {
+              "description": "Employee first name.",
+              "type": "string"
+            },
+            "effectiveDate": {
+              "description": "Effective date of the employment information in MM/DD/YYYY format.",
+              "type": "string",
+              "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+            },
+            "updateType": {
+              "description": "Type of update represented by the employment record.",
+              "type": "string"
+            },
+            "status": {
+              "description": "Current employment status.",
+              "type": "string"
+            },
+            "action": {
+              "description": "Employment action code.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "reason": {
+              "description": "Reason code associated with the employment action.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "jobType": {
+              "description": "Employment job type.",
+              "type": "string"
+            },
+            "fullTimePercentage": {
+              "description": "Percentage of full-time employment.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "positionStatus": {
+              "description": "Status of the employee position.",
+              "type": "string"
+            },
+            "jobTitle": {
+              "description": "Employee job title.",
+              "type": "string"
+            },
+            "department": {
+              "description": "Department associated with the employee position.",
+              "type": "string"
+            },
+            "division": {
+              "description": "Division associated with the employee position.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "businessUnit": {
+              "description": "Business unit associated with the employee position.",
+              "type": "string"
+            },
+            "workLocation": {
+              "description": "Employee work location.",
+              "type": "string"
+            },
+            "region": {
+              "description": "Geographical or organizational region.",
+              "type": "string"
+            },
+            "exempt": {
+              "description": "Indicates whether the employee is exempt.",
+              "type": "boolean"
+            },
+            "exempt2": {
+              "description": "Additional exempt indicator.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "exempt3": {
+              "description": "Additional exempt indicator.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "unionAffiliation": {
+              "description": "Indicates whether the employee is associated with a union.",
+              "type": "boolean"
+            },
+            "unionCode": {
+              "description": "Union identifier or code.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "positionNumber": {
+              "description": "Position identifier.",
+              "type": "string"
+            },
+            "jobClassification": {
+              "description": "Job classification code.",
+              "type": "string"
+            },
+            "payPlan": {
+              "description": "Pay plan code.",
+              "type": "string"
+            },
+            "grade": {
+              "description": "Position or pay grade.",
+              "type": "string"
+            },
+            "payLevel": {
+              "description": "Pay level associated with the position.",
+              "type": "string"
+            },
+            "salaryRateCode": {
+              "description": "Salary rate code.",
+              "type": "string"
+            },
+            "dutyStationStateCode": {
+              "description": "Duty station state code.",
+              "type": "string"
+            },
+            "dutyStationCountyCode": {
+              "description": "Duty station county code.",
+              "type": "string"
+            },
+            "dutyStationCityCode": {
+              "description": "Duty station city code.",
+              "type": "string"
+            },
+            "specialEmployeeCode": {
+              "description": "Special employee classification code.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "expatriate": {
+              "description": "Indicates whether the employee is an expatriate.",
+              "type": "boolean"
+            },
+            "workAuthorizationStatus": {
+              "description": "Work authorization status code.",
+              "type": "string"
+            },
+            "officer": {
+              "description": "Indicates whether the employee is an officer.",
+              "type": "boolean"
+            },
+            "ficaCode": {
+              "description": "FICA participation or classification code.",
+              "type": "string"
+            },
+            "tenure": {
+              "description": "Employee tenure code.",
+              "type": "string"
+            },
+            "supervisorName": {
+              "description": "Employee supervisor name.",
+              "type": "string"
+            },
+            "supervisorEmail": {
+              "description": "Employee supervisor email address.",
+              "type": "string"
+            },
+            "participatingGroupCode": {
+              "description": "Participating group identifier.",
+              "type": "string"
+            },
+            "annuitantClaimNumber": {
+              "description": "Annuitant claim number.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "pshbEligibilityStatus": {
+              "description": "PSHB eligibility status.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "pshbEligibilityEffectiveDate": {
+              "description": "Effective date of PSHB eligibility in MM/DD/YYYY format.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+            },
+            "payrollOfficeId": {
+              "description": "Payroll office identifier.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "pshbRateScheduleCode": {
+              "description": "PSHB rate schedule code.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "pshbRateCategoryCode": {
+              "description": "PSHB rate category code.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "terminationNoaCode": {
+              "description": "Termination NOA code.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "rsActionCode": {
+              "description": "Retirement system action code.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "owcpRollType": {
+              "description": "OWCP roll type.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "owcpTerminationIndicator": {
+              "description": "Indicates whether an OWCP termination applies.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "owcpTransferInIndicator": {
+              "description": "Indicates whether an OWCP transfer-in applies.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "transferInEffectiveDate": {
+              "description": "Effective date of transfer-in in MM/DD/YYYY format.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+            },
+            "owcpReinstatementIndicator": {
+              "description": "Indicates whether an OWCP reinstatement applies.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "reinstatementDate": {
+              "description": "Reinstatement date in MM/DD/YYYY format.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+            },
+            "reEmployedAnnuitantIndicator": {
+              "description": "Indicates whether the employee is a re-employed annuitant.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "preTaxHealthBenefitIndicator": {
+              "description": "Indicates whether the employee has a pre-tax health benefit.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "uniqueId",
+            "sourceAssignmentId",
+            "employeeId",
+            "employerCode",
+            "lastName",
+            "firstName",
+            "effectiveDate",
+            "updateType",
+            "status",
+            "action",
+            "reason",
+            "jobType",
+            "fullTimePercentage",
+            "positionStatus",
+            "jobTitle",
+            "department",
+            "division",
+            "businessUnit",
+            "workLocation",
+            "region",
+            "exempt",
+            "exempt2",
+            "exempt3",
+            "unionAffiliation",
+            "unionCode",
+            "positionNumber",
+            "jobClassification",
+            "payPlan",
+            "grade",
+            "payLevel",
+            "salaryRateCode",
+            "dutyStationStateCode",
+            "dutyStationCountyCode",
+            "dutyStationCityCode",
+            "specialEmployeeCode",
+            "expatriate",
+            "workAuthorizationStatus",
+            "officer",
+            "ficaCode",
+            "tenure",
+            "supervisorName",
+            "supervisorEmail",
+            "participatingGroupCode",
+            "annuitantClaimNumber",
+            "pshbEligibilityStatus",
+            "pshbEligibilityEffectiveDate",
+            "payrollOfficeId",
+            "pshbRateScheduleCode",
+            "pshbRateCategoryCode",
+            "terminationNoaCode",
+            "rsActionCode",
+            "owcpRollType",
+            "owcpTerminationIndicator",
+            "owcpTransferInIndicator",
+            "transferInEffectiveDate",
+            "owcpReinstatementIndicator",
+            "reinstatementDate",
+            "reEmployedAnnuitantIndicator",
+            "preTaxHealthBenefitIndicator"
+          ]
+        }
+      },
+      "required": [
+        "employment"
+      ]
+    }
+  },
+  "required": [
+    "manifest",
+    "Employments"
+  ]
+}

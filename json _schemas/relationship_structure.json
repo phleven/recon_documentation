@@ -1,0 +1,671 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/relationship.schema.json",
+  "title": "Relationship Domain",
+  "description": "JSON Schema for the Relationship domain.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "File-level metadata.",
+      "properties": {
+        "recordType": {
+          "description": "Record type indicator.",
+          "type": "string"
+        },
+        "fileName": {
+          "description": "Source file name.",
+          "type": "string"
+        },
+        "fileType": {
+          "description": "File type identifier.",
+          "type": "string"
+        },
+        "sourceId": {
+          "description": "Source system or vendor identifier.",
+          "type": "string"
+        },
+        "createDate": {
+          "description": "File creation date in MM/DD/YYYY format.",
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+        },
+        "createTimestamp": {
+          "description": "File creation time in HH:MM:SS format.",
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$"
+        },
+        "periodBeginDate": {
+          "description": "Beginning date of the reporting period in MM/DD/YYYY format.",
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+        },
+        "periodEndDate": {
+          "description": "Ending date of the reporting period in MM/DD/YYYY format.",
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+        },
+        "recordCount": {
+          "description": "Number of relationship records contained in the file.",
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "recordType",
+        "fileName",
+        "fileType",
+        "sourceId",
+        "createDate",
+        "createTimestamp",
+        "periodBeginDate",
+        "periodEndDate",
+        "recordCount"
+      ]
+    },
+
+    "Relationships": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Relationship domain data.",
+      "properties": {
+        "relationship": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Relationship record between an employee and a related person.",
+          "properties": {
+            "employeeUniqueId": {
+              "description": "Unique identifier of the employee.",
+              "type": "string"
+            },
+            "employeeSourceAssignmentId": {
+              "description": "Source assignment identifier of the employee.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "employerCode": {
+              "description": "Employer identifier or code.",
+              "type": "string"
+            },
+            "employeeLastName": {
+              "description": "Employee last name.",
+              "type": "string"
+            },
+            "employeeFirstName": {
+              "description": "Employee first name.",
+              "type": "string"
+            },
+            "relationshipCode": {
+              "description": "Code identifying the relationship between the employee and related person.",
+              "type": "string"
+            },
+
+            "relatedPerson": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Information about the non-employee person related to the employee.",
+              "properties": {
+                "firstName": {
+                  "description": "Related person's first name.",
+                  "type": "string"
+                },
+                "lastName": {
+                  "description": "Related person's last name.",
+                  "type": "string"
+                },
+                "nonEmployeeTaxIdNumber": {
+                  "description": "Tax identification number of the related non-employee person.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "nonEmployeeTaxIdType": {
+                  "description": "Type of tax identification number for the related non-employee person.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "nonEmployeeUsCitizen": {
+                  "description": "Indicates whether the related person is a US citizen.",
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "dateOfBirth": {
+                  "description": "Related person's date of birth in MM/DD/YYYY format.",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+                },
+                "dateOfDeath": {
+                  "description": "Related person's date of death in MM/DD/YYYY format.",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$"
+                },
+                "personType": {
+                  "description": "Person type of the related individual.",
+                  "type": "string"
+                },
+                "gender": {
+                  "description": "Gender of the related person.",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Title of the related person.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "suffix": {
+                  "description": "Name suffix of the related person.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "primaryAddressType": {
+                  "description": "Type of the related person's primary address.",
+                  "type": "string"
+                },
+                "primaryPhoneType": {
+                  "description": "Type of the related person's primary phone.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "primaryEmailType": {
+                  "description": "Type of the related person's primary email.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "preferredCommunication": {
+                  "description": "Preferred communication method for the related person.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+
+                "addresses": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "description": "Addresses associated with the related person.",
+                  "properties": {
+                    "workAddress": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "addressType": {
+                          "description": "Type of work address.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "streetAddress": {
+                          "description": "Work street address.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "addressLine2": {
+                          "description": "Additional work address information.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "city": {
+                          "description": "Work address city.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "state": {
+                          "description": "Work address state or province.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "zipCode": {
+                          "description": "Work address ZIP or postal code.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "foreignAddressLine": {
+                          "description": "Foreign work address information.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "county": {
+                          "description": "Work address county.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "country": {
+                          "description": "Work address country.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    },
+
+                    "homeAddress": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "addressType": {
+                          "description": "Type of home address.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "streetAddress": {
+                          "description": "Home street address.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "addressLine2": {
+                          "description": "Additional home address information.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "city": {
+                          "description": "Home address city.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "state": {
+                          "description": "Home address state or province.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "zipCode": {
+                          "description": "Home address ZIP or postal code.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "foreignAddressLine": {
+                          "description": "Foreign home address information.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "county": {
+                          "description": "Home address county.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "country": {
+                          "description": "Home address country.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    },
+
+                    "alternateAddress": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "addressType": {
+                          "description": "Type of alternate address.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "streetAddress": {
+                          "description": "Alternate street address.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "addressLine2": {
+                          "description": "Additional alternate address information.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "city": {
+                          "description": "Alternate address city.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "state": {
+                          "description": "Alternate address state or province.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "zipCode": {
+                          "description": "Alternate address ZIP or postal code.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "foreignAddressLine": {
+                          "description": "Foreign alternate address information.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "county": {
+                          "description": "Alternate address county.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "country": {
+                          "description": "Alternate address country.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+
+                "emails": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "description": "Email addresses associated with the related person.",
+                  "properties": {
+                    "workEmail": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "emailType": {
+                          "description": "Type of work email.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "email": {
+                          "description": "Work email address.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "comment": {
+                          "description": "Additional information about the work email.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    },
+
+                    "personalEmail": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "emailType": {
+                          "description": "Type of personal email.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "email": {
+                          "description": "Personal email address.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "comment": {
+                          "description": "Additional information about the personal email.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    },
+
+                    "alternateEmail": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "emailType": {
+                          "description": "Type of alternate email.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "email": {
+                          "description": "Alternate email address.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "comment": {
+                          "description": "Additional information about the alternate email.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+
+                "phones": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "description": "Phone numbers associated with the related person.",
+                  "properties": {
+                    "workPhone": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "phoneType": {
+                          "description": "Type of work phone.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "countryCode": {
+                          "description": "Work phone country calling code.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "phoneNumber": {
+                          "description": "Work phone number.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "comment": {
+                          "description": "Additional information about the work phone.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    },
+
+                    "personalPhone": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "phoneType": {
+                          "description": "Type of personal phone.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "countryCode": {
+                          "description": "Personal phone country calling code.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "phoneNumber": {
+                          "description": "Personal phone number.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "comment": {
+                          "description": "Additional information about the personal phone.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    },
+
+                    "alternatePhone": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "phoneType": {
+                          "description": "Type of alternate phone.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "countryCode": {
+                          "description": "Alternate phone country calling code.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "phoneNumber": {
+                          "description": "Alternate phone number.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "comment": {
+                          "description": "Additional information about the alternate phone.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+
+              "required": [
+                "firstName",
+                "lastName",
+                "nonEmployeeTaxIdNumber",
+                "nonEmployeeTaxIdType",
+                "nonEmployeeUsCitizen",
+                "dateOfBirth",
+                "dateOfDeath",
+                "personType",
+                "gender",
+                "title",
+                "suffix",
+                "primaryAddressType",
+                "primaryPhoneType",
+                "primaryEmailType",
+                "preferredCommunication",
+                "addresses",
+                "emails",
+                "phones"
+              ]
+            }
+          },
+
+          "required": [
+            "employeeUniqueId",
+            "employeeSourceAssignmentId",
+            "employerCode",
+            "employeeLastName",
+            "employeeFirstName",
+            "relationshipCode",
+            "relatedPerson"
+          ]
+        }
+      },
+
+      "required": [
+        "relationship"
+      ]
+    }
+  },
+
+  "required": [
+    "manifest",
+    "Relationships"
+  ]
+}
